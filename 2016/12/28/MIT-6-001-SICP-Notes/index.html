@@ -112,7 +112,7 @@ What is square root
 
 Imperative Knowledge //cs
 How">
-<meta property="og:updated_time" content="2016-12-28T03:42:43.000Z">
+<meta property="og:updated_time" content="2017-01-12T05:49:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MIT 6.001 SICP Notes">
 <meta name="twitter:description" content="MIT 6.001 SICP NotesL1lecture-notes
@@ -396,10 +396,11 @@ How">
 </ul>
 </li>
 <li><strong>Meta-linguistic abstraction</strong><ul>
-<li>Making new languages<a id="more"></a>
-<h3 id="Scheme"><a href="#Scheme" class="headerlink" title="Scheme"></a>Scheme</h3></li>
+<li>Making new languages</li>
 </ul>
 </li>
+</ul>
+<h3 id="Scheme"><a href="#Scheme" class="headerlink" title="Scheme"></a>Scheme</h3><ul>
 <li><p>Black-box abstraction</p>
 <ul>
 <li>primitives<br><code>+,1,2.5,#f,#t,&quot;string&quot;...</code></li>
@@ -427,7 +428,7 @@ How">
 </li>
 </ul>
 <p>Peano Arithmetic<br><a href="https://zh.wikipedia.org/wiki/%E7%9A%AE%E4%BA%9A%E8%AF%BA%E5%85%AC%E7%90%86" target="_blank" rel="external">参考：皮亚诺公理</a></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># two ways to add whole numbers, both recursive definitions</div><div class="line"># linear iteration time:O(x) space:O(1)</div><div class="line">(define (+ x y)</div><div class="line">	(if (= x 0)</div><div class="line">		y</div><div class="line">		(+ (-1+ x) (1+ y))))</div><div class="line"># linear recursion time:O(x) space:O(x)</div><div class="line">(define (+ x y)</div><div class="line">	(if (= x 0)</div><div class="line">		y</div><div class="line">		(1+ (+ (-1+ x) y ))))</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># two ways to add whole numbers, both recursive definitions</div><div class="line"># linear iteration time:O(x) space:O(1)</div><div class="line">(define (+ x y)</div><div class="line">	(if (= x 0)</div><div class="line">		y</div><div class="line">		(+ (-1+ x) (1+ y))))</div><div class="line"># linear recursion time:O(x) space:O(x)</div><div class="line">(define (+ x y)</div><div class="line">	(if (= x 0)</div><div class="line">		y</div><div class="line">		(1+ (+ (-1+ x) y ))))</div></pre></td></tr></table></figure>
 <p>recursive fibonacci<br>time: O(~1.618^n) space: O(n) // longest path of tree<br>feeling the procedure to processes<br>general rule break to many instances of local rule</p>
 <p>recursive hanoi</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">#lang racket</div><div class="line">(define (move n src dest temp)</div><div class="line">  (if (&gt; n 0)</div><div class="line">      (begin</div><div class="line">        (move (- n 1) src temp dest)</div><div class="line">        (printf &quot;move ~a from ~a to ~a~n&quot; n src dest)</div><div class="line">        (move (- n 1) temp dest src))</div><div class="line">      &quot;done&quot;))</div><div class="line"></div><div class="line">(move 3 &quot;src&quot; &quot;dest&quot; &quot;temp&quot;)</div></pre></td></tr></table></figure>
@@ -737,6 +738,10 @@ How">
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/01/12/2017/" rel="prev" title="2017年度目标">
+                2017年度目标 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -805,7 +810,7 @@ How">
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -872,7 +877,7 @@ How">
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2016</span>
+  <span itemprop="copyrightYear">2017</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
