@@ -1377,6 +1377,233 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/07/20/kafka/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/20/kafka/" itemprop="url">
+                  Kafka学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-20T12:00:00+08:00">
+                2016-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="kafka-conception"><a href="#kafka-conception" class="headerlink" title="kafka conception"></a>kafka conception</h1><ul>
+<li><p>multiple consumers on one partition</p>
+<ul>
+<li>like mutliple threads with a synchronize block</li>
+</ul>
+</li>
+<li><p><a href="http://kafka.apache.org/documentation.html#semantics" target="_blank" rel="external">Message Delivery Semantics</a></p>
+<ul>
+<li>at-least-once<ul>
+<li>Producer 发送重试，ack=all</li>
+<li>Consumer 关闭auto commit，处理完消息后commit</li>
+</ul>
+</li>
+<li>at-most-once<ul>
+<li>无重试，自动提交</li>
+</ul>
+</li>
+<li>exactly-once<ul>
+<li>重试加基于消息主键的幂等发送/消费</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a href="http://kafka.apache.org/documentation.html#impl_offsettracking" target="_blank" rel="external">Consumer Offset Tracking</a><br><img src=".media/14744540154442.jpg" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>high watermark: message alread copy to all replicas, consumer can only read up to this position</p>
+</blockquote>
+<ul>
+<li><p>Consumer Liveness</p>
+<ul>
+<li>通过心跳机制实现，coordinator超过<code>session.timeout.ms</code>时间没有收到心跳即认为consumer失效，默认30s</li>
+<li>consumer的心跳信息是在调用poll的过程中发送的，并没有使用后台线程，因此只要consumer没有按时执行poll（消息处理太慢，或抛出异常导致线程终止），就会被认为失效，触发group的重平衡，因此需要根据消息处理速度来合理配置timeout</li>
+<li>spring-kafka使用consumer（poll）和listener（process）两个线程来处理消息，当listener处理耗时较长时，consumer线程可以向服务端发送pause，使poll调用不会返回新消息，仅发送心跳，避免了超时</li>
+</ul>
+</li>
+<li><p>Leader Election</p>
+<ul>
+<li>用zk从broker中选出一个controller，负责partition的leader选举，topic增删及rebalance replica</li>
+<li>为什么partition的leader选举不用zk（所有follower watch leader对应的ephemeral node）<ul>
+<li>herd effect，一个broker挂了会触发大量partition选举</li>
+<li>partition过多时需要注册大量watch，有性能压力</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Offset Management</p>
+<ul>
+<li>consumer向controller获取consumer metadata，找到offset manager，向manager提交及查询（有cache）offset</li>
+<li>manager变更时（offset分区leader变更），consumer提交失败，重复上一步骤</li>
+<li>consumer offset默认保存24小时（consumer下线超过24小时删除offset），通过<code>offsets.retention.minutes</code>设置</li>
+</ul>
+</li>
+<li><p>Partition Assignment</p>
+<blockquote>
+<p>目前有两种策略<code>range</code>（默认）及<code>roundrobin</code>，通过<code>partition.assignment.strategy</code>设置</p>
+<ul>
+<li><code>range</code>从单个topic角度对partition进行均分，因此当一个consumer group监听多个分区数不一致的topic时，会导致consumer压力不均</li>
+<li><code>roundrobin</code>会拿所有topic的分区进行均分</li>
+</ul>
+</blockquote>
+</li>
+<li><p>High Availability</p>
+<ul>
+<li>使用ISR机制替代多数派写，容忍更多节点挂掉</li>
+<li>所有replica宕机后的leader选举：等待ISR中的节点活过来，或选择第一个活过来的节点作为leader，由<code>unclean.leader.election.enable</code>控制，默认<code>true</code></li>
+<li><code>ack=all</code>不保证所有replica收到消息，仅保证ISR中存活的replica收到消息，可以通过<code>min.insync.replicas</code>设置需要多少个replica存活才允许ack，默认是<code>1</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="kafka-design"><a href="#kafka-design" class="headerlink" title="kafka design"></a><a href="https://kafka.apache.org/documentation#design" target="_blank" rel="external">kafka design</a></h1><ul>
+<li>持久化 - 依靠文件系统<ul>
+<li>利用操作系统的IO调度（合并排序），pagecache，规避了机械硬盘随机访问的性能弱点</li>
+<li>避免了在内存中维护一份数据带来的数据结构的开销，GC问题，以及内存浪费（同一份持久化数据内存中一份，pagecache中一份）</li>
+<li>使用队列而非Btree，将访问复杂度从O(logN)降为O(1)，节约了存储空间，访问磁盘的效率也更高</li>
+</ul>
+</li>
+<li>效率<ul>
+<li>批量发送及接收消息，减少网络开销</li>
+<li>sendfile / zero-copy 将pagecache中的数据直接发送到socket，避免了在kernel和user-space之间来回copy，并且数据只需copy到pagecache中一次（即可应对后续多次消费），因此kafka消费速度几乎只受网络带宽限制</li>
+<li>支持消息批量压缩（默认未启用）</li>
+</ul>
+</li>
+<li>生产者<ul>
+<li>负载均衡（hash），无中间路由，直接发到leader</li>
+<li>异步发送（积累消息批量发送）</li>
+</ul>
+</li>
+<li>消费者<ul>
+<li>pull<ul>
+<li>避免对下游造成过大压力，并且可以积累消息批量接收，不过在无消息时需要通过阻塞的long poll避免客户端忙等待</li>
+<li>push的实时性更好，但缺少上述优势</li>
+</ul>
+</li>
+<li>consumer position<ul>
+<li>在客户端维护offset，避免由服务端来判断一个消息是否被消费（sent/ack），减少了服务端的性能开销</li>
+<li>partition中消息顺序存储且只有一个消费者，因此offset管理开销很低</li>
+<li>附带的好处是客户端可以回放消息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>复制</li>
+<li>日志压缩</li>
+<li>限流</li>
+</ul>
+<h1 id="kafka-command-line"><a href="#kafka-command-line" class="headerlink" title="kafka command-line"></a>kafka command-line</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 列出当前在线的group</div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --list</div><div class="line"></div><div class="line"># 查看指定在线group的offset</div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --describe --group console1</div><div class="line"></div><div class="line"># 查看任意group在指定topic下的offset</div><div class="line"># topic必填，并且topic下不能有无数据的分区，不然会报zk node不存在的错误</div><div class="line">./kafka-consumer-offset-checker.sh --zookeeper localhost --group console1 --topic test123</div></pre></td></tr></table></figure>
+<h1 id="kafka-producer"><a href="#kafka-producer" class="headerlink" title="kafka producer"></a>kafka producer</h1><p><img src=".media/14792840997146.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/07/20/AAT/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1578,233 +1805,6 @@
 </ul>
 </li>
 </ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/07/20/kafka/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/20/kafka/" itemprop="url">
-                  Kafka学习笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-20T12:00:00+08:00">
-                2016-07-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="kafka-conception"><a href="#kafka-conception" class="headerlink" title="kafka conception"></a>kafka conception</h1><ul>
-<li><p>multiple consumers on one partition</p>
-<ul>
-<li>like mutliple threads with a synchronize block</li>
-</ul>
-</li>
-<li><p><a href="http://kafka.apache.org/documentation.html#semantics" target="_blank" rel="external">Message Delivery Semantics</a></p>
-<ul>
-<li>at-least-once<ul>
-<li>Producer 发送重试，ack=all</li>
-<li>Consumer 关闭auto commit，处理完消息后commit</li>
-</ul>
-</li>
-<li>at-most-once<ul>
-<li>无重试，自动提交</li>
-</ul>
-</li>
-<li>exactly-once<ul>
-<li>重试加基于消息主键的幂等发送/消费</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><a href="http://kafka.apache.org/documentation.html#impl_offsettracking" target="_blank" rel="external">Consumer Offset Tracking</a><br><img src=".media/14744540154442.jpg" alt=""></p>
-</li>
-</ul>
-<blockquote>
-<p>high watermark: message alread copy to all replicas, consumer can only read up to this position</p>
-</blockquote>
-<ul>
-<li><p>Consumer Liveness</p>
-<ul>
-<li>通过心跳机制实现，coordinator超过<code>session.timeout.ms</code>时间没有收到心跳即认为consumer失效，默认30s</li>
-<li>consumer的心跳信息是在调用poll的过程中发送的，并没有使用后台线程，因此只要consumer没有按时执行poll（消息处理太慢，或抛出异常导致线程终止），就会被认为失效，触发group的重平衡，因此需要根据消息处理速度来合理配置timeout</li>
-<li>spring-kafka使用consumer（poll）和listener（process）两个线程来处理消息，当listener处理耗时较长时，consumer线程可以向服务端发送pause，使poll调用不会返回新消息，仅发送心跳，避免了超时</li>
-</ul>
-</li>
-<li><p>Leader Election</p>
-<ul>
-<li>用zk从broker中选出一个controller，负责partition的leader选举，topic增删及rebalance replica</li>
-<li>为什么partition的leader选举不用zk（所有follower watch leader对应的ephemeral node）<ul>
-<li>herd effect，一个broker挂了会触发大量partition选举</li>
-<li>partition过多时需要注册大量watch，有性能压力</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Offset Management</p>
-<ul>
-<li>consumer向controller获取consumer metadata，找到offset manager，向manager提交及查询（有cache）offset</li>
-<li>manager变更时（offset分区leader变更），consumer提交失败，重复上一步骤</li>
-<li>consumer offset默认保存24小时（consumer下线超过24小时删除offset），通过<code>offsets.retention.minutes</code>设置</li>
-</ul>
-</li>
-<li><p>Partition Assignment</p>
-<blockquote>
-<p>目前有两种策略<code>range</code>（默认）及<code>roundrobin</code>，通过<code>partition.assignment.strategy</code>设置</p>
-<ul>
-<li><code>range</code>从单个topic角度对partition进行均分，因此当一个consumer group监听多个分区数不一致的topic时，会导致consumer压力不均</li>
-<li><code>roundrobin</code>会拿所有topic的分区进行均分</li>
-</ul>
-</blockquote>
-</li>
-<li><p>High Availability</p>
-<ul>
-<li>使用ISR机制替代多数派写，容忍更多节点挂掉</li>
-<li>所有replica宕机后的leader选举：等待ISR中的节点活过来，或选择第一个活过来的节点作为leader，由<code>unclean.leader.election.enable</code>控制，默认<code>true</code></li>
-<li><code>ack=all</code>不保证所有replica收到消息，仅保证ISR中存活的replica收到消息，可以通过<code>min.insync.replicas</code>设置需要多少个replica存活才允许ack，默认是<code>1</code></li>
-</ul>
-</li>
-</ul>
-<h1 id="kafka-design"><a href="#kafka-design" class="headerlink" title="kafka design"></a><a href="https://kafka.apache.org/documentation#design" target="_blank" rel="external">kafka design</a></h1><ul>
-<li>持久化 - 依靠文件系统<ul>
-<li>利用操作系统的IO调度（合并排序），pagecache，规避了机械硬盘随机访问的性能弱点</li>
-<li>避免了在内存中维护一份数据带来的数据结构的开销，GC问题，以及内存浪费（同一份持久化数据内存中一份，pagecache中一份）</li>
-<li>使用队列而非Btree，将访问复杂度从O(logN)降为O(1)，节约了存储空间，访问磁盘的效率也更高</li>
-</ul>
-</li>
-<li>效率<ul>
-<li>批量发送及接收消息，减少网络开销</li>
-<li>sendfile / zero-copy 将pagecache中的数据直接发送到socket，避免了在kernel和user-space之间来回copy，并且数据只需copy到pagecache中一次（即可应对后续多次消费），因此kafka消费速度几乎只受网络带宽限制</li>
-<li>支持消息批量压缩（默认未启用）</li>
-</ul>
-</li>
-<li>生产者<ul>
-<li>负载均衡（hash），无中间路由，直接发到leader</li>
-<li>异步发送（积累消息批量发送）</li>
-</ul>
-</li>
-<li>消费者<ul>
-<li>pull<ul>
-<li>避免对下游造成过大压力，并且可以积累消息批量接收，不过在无消息时需要通过阻塞的long poll避免客户端忙等待</li>
-<li>push的实时性更好，但缺少上述优势</li>
-</ul>
-</li>
-<li>consumer position<ul>
-<li>在客户端维护offset，避免由服务端来判断一个消息是否被消费（sent/ack），减少了服务端的性能开销</li>
-<li>partition中消息顺序存储且只有一个消费者，因此offset管理开销很低</li>
-<li>附带的好处是客户端可以回放消息</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>复制</li>
-<li>日志压缩</li>
-<li>限流</li>
-</ul>
-<h1 id="kafka-command-line"><a href="#kafka-command-line" class="headerlink" title="kafka command-line"></a>kafka command-line</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 列出当前在线的group</div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --list</div><div class="line"></div><div class="line"># 查看指定在线group的offset</div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --describe --group console1</div><div class="line"></div><div class="line"># 查看任意group在指定topic下的offset</div><div class="line"># topic必填，并且topic下不能有无数据的分区，不然会报zk node不存在的错误</div><div class="line">./kafka-consumer-offset-checker.sh --zookeeper localhost --group console1 --topic test123</div></pre></td></tr></table></figure>
-<h1 id="kafka-producer"><a href="#kafka-producer" class="headerlink" title="kafka producer"></a>kafka producer</h1><p><img src=".media/14792840997146.jpg" alt=""></p>
 
           
         
@@ -2365,7 +2365,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
