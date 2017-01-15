@@ -112,9 +112,9 @@ Message Delivery Semantics
 at-least-once
 Producer 发送重试，ack=all
 Consumer 关闭auto commit，处理完消息后comm">
-<meta property="og:image" content="http://allenxuyb.github.io/.media/14744540154442.jpg">
-<meta property="og:image" content="http://allenxuyb.github.io/.media/14792840997146.jpg">
-<meta property="og:updated_time" content="2017-01-15T04:37:29.000Z">
+<meta property="og:image" content="http://i.imgur.com/MqgcAux.jpg">
+<meta property="og:image" content="http://i.imgur.com/TxJL2o7.jpg">
+<meta property="og:updated_time" content="2017-01-15T15:23:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kafka学习笔记">
 <meta name="twitter:description" content="kafka conception
@@ -128,7 +128,7 @@ Message Delivery Semantics
 at-least-once
 Producer 发送重试，ack=all
 Consumer 关闭auto commit，处理完消息后comm">
-<meta name="twitter:image" content="http://allenxuyb.github.io/.media/14744540154442.jpg">
+<meta name="twitter:image" content="http://i.imgur.com/MqgcAux.jpg">
 
 
 
@@ -368,12 +368,13 @@ Consumer 关闭auto commit，处理完消息后comm">
 </ul>
 </li>
 <li>exactly-once<ul>
-<li>重试加基于消息主键的幂等发送/消费</li>
-</ul>
+<li>重试加基于消息主键的幂等发送/消费<a id="more"></a>
 </li>
 </ul>
 </li>
-<li><p><a href="http://kafka.apache.org/documentation.html#impl_offsettracking" target="_blank" rel="external">Consumer Offset Tracking</a><br><img src=".media/14744540154442.jpg" alt=""></p>
+</ul>
+</li>
+<li><p><a href="http://kafka.apache.org/documentation.html#impl_offsettracking" target="_blank" rel="external">Consumer Offset Tracking</a><br><img src="http://i.imgur.com/MqgcAux.jpg" alt=""></p>
 </li>
 </ul>
 <blockquote>
@@ -457,8 +458,8 @@ Consumer 关闭auto commit，处理完消息后comm">
 <li>日志压缩</li>
 <li>限流</li>
 </ul>
-<h1 id="kafka-command-line"><a href="#kafka-command-line" class="headerlink" title="kafka command-line"></a>kafka command-line</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 列出当前在线的group</div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --list</div><div class="line"></div><div class="line"># 查看指定在线group的offset</div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --describe --group console1</div><div class="line"></div><div class="line"># 查看任意group在指定topic下的offset</div><div class="line"># topic必填，并且topic下不能有无数据的分区，不然会报zk node不存在的错误</div><div class="line">./kafka-consumer-offset-checker.sh --zookeeper localhost --group console1 --topic test123</div></pre></td></tr></table></figure>
-<h1 id="kafka-producer"><a href="#kafka-producer" class="headerlink" title="kafka producer"></a>kafka producer</h1><p><img src=".media/14792840997146.jpg" alt=""></p>
+<h1 id="kafka-command-line"><a href="#kafka-command-line" class="headerlink" title="kafka command-line"></a>kafka command-line</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 列出当前在线的group</span></div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --list</div><div class="line"></div><div class="line"><span class="comment"># 查看指定在线group的offset</span></div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --describe --group console1</div><div class="line"></div><div class="line"><span class="comment"># 查看任意group在指定topic下的offset</span></div><div class="line"><span class="comment"># topic必填，并且topic下不能有无数据的分区，不然会报zk node不存在的错误</span></div><div class="line">./kafka-consumer-offset-checker.sh --zookeeper localhost --group console1 --topic <span class="built_in">test</span>123</div></pre></td></tr></table></figure>
+<h1 id="kafka-producer"><a href="#kafka-producer" class="headerlink" title="kafka producer"></a>kafka producer</h1><p><img src="http://i.imgur.com/TxJL2o7.jpg" alt=""></p>
 
       
     </div>
@@ -491,8 +492,8 @@ Consumer 关闭auto commit，处理完消息后comm">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/20/AAT/" rel="next" title="AAT读书笔记">
-                <i class="fa fa-chevron-left"></i> AAT读书笔记
+              <a href="/2016/07/19/spark/" rel="next" title="Spark学习笔记">
+                <i class="fa fa-chevron-left"></i> Spark学习笔记
               </a>
             
           </div>
@@ -501,8 +502,8 @@ Consumer 关闭auto commit，处理完消息后comm">
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/08/24/spring-kafka/" rel="prev" title="Spring-kafka学习笔记">
-                Spring-kafka学习笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/07/20/AAT/" rel="prev" title="AAT读书笔记">
+                AAT读书笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

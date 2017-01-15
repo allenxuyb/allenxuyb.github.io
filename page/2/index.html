@@ -240,176 +240,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/06/14/log4j笔记/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/14/log4j笔记/" itemprop="url">
-                  Log4j笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-14T12:00:00+08:00">
-                2016-06-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Log4j-1-2"><a href="#Log4j-1-2" class="headerlink" title="Log4j 1.2"></a>Log4j 1.2</h1><h2 id="性能注意点"><a href="#性能注意点" class="headerlink" title="性能注意点"></a>性能注意点</h2><ul>
-<li>使用Slf4j</li>
-<li>使用<code>if (logger.isDebugEnabled()) { ... }</code>封装String连接或其他高开销的操作</li>
-<li>避免多次打印Stack trace</li>
-<li>尽量避免使用类名<code>%C</code>, 文件名<code>%F</code>, 方法名<code>%M</code>, 行号<code>%L</code>，性能开销很大<a href="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html" target="_blank" rel="external">official warning</a></li>
-<li>通过缓存减少IO次数<ul>
-<li><code>immediateFlush</code><ul>
-<li>是否每次log event都flush到磁盘，默认为<code>true</code>，设置为<code>false</code>能提高性能，但是在系统崩溃时可能会丢失日志</li>
-</ul>
-</li>
-<li><code>bufferedIO</code> <ul>
-<li>默认为<code>false</code>时使用<code>java.io.Writer</code>，设置为<code>ture</code>则改用<code>BufferedWriter</code>，<code>bufferSize</code>默认8K，可调整</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>使用<code>AsyncAppender</code><ul>
-<li>使用<code>addAppender</code>封装普通Appender为异步</li>
-<li>通过独立的<code>AsyncAppender-Dispatcher</code>线程调用Appender</li>
-<li>通过<code>bufferSize</code>设置缓存的event<strong>数量</strong>，到上限时根据<code>blocking</code>参数（默认为<code>true</code>）决定阻塞还是丢弃后续event</li>
-</ul>
-</li>
-</ul>
-<h2 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h2><ul>
-<li><p>场景：单线程写入20,000条日志到文件</p>
-<blockquote>
-<p>flush on, buffer off<br>  656/602/522<br>  flush on, buffer off, <strong>async</strong><br>  469/454/460</p>
-<p>flush off, buffer off<br>  149/154/153<br>  flush off, buffer off, <strong>async</strong><br>  153/140/134</p>
-<p>flush off, buffer <strong>on</strong><br>  104/104/100</p>
-</blockquote>
-</li>
-</ul>
-<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
-<li>Mapped Diagnostic Context (MDC)<ul>
-<li>记录特定信息，用于输出到日志（使用threadlocal存储），如用户等</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//.java</div><div class="line">MDC.put(&quot;user&quot;, session.getUser());</div><div class="line">//log4j.xml</div><div class="line">&lt;param name=&quot;ConversionPattern&quot; value=&quot;%X&#123;user&#125; %-5p - %m%n&quot; /&gt;</div><div class="line">//log</div><div class="line">[user: admin] INFO .......</div></pre></td></tr></table></figure>
-<ul>
-<li>控制日志只输出到一个Appender<ul>
-<li><code>additivity=&quot;false&quot;</code></li>
-</ul>
-</li>
-</ul>
-<h2 id="在程序中控制Appender"><a href="#在程序中控制Appender" class="headerlink" title="在程序中控制Appender"></a>在程序中控制Appender</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">// Set Level</div><div class="line">Logger logger = Logger.getLogger(loggerName);</div><div class="line">logger.setLevel(Level.INFO);</div><div class="line"></div><div class="line">// Get All Appenders </div><div class="line">Enumeration&lt;Appender&gt; appenders = LogManager.getRootLogger().getAllAppenders();</div><div class="line"></div><div class="line">// Get your Appender from Enumeration, </div><div class="line">if (appender instanceof AsyncAppender) &#123; </div><div class="line"></div><div class="line">// Get all internal Appenders user by Asyn Appender</div><div class="line">Enumeration&lt;Appender&gt; mainAppenders = asyncAppender.getAllAppenders();</div><div class="line"></div><div class="line">// Get Main Appender, and do your operations</div><div class="line">mainFileAppender.setImmediateFlush(false);</div><div class="line">mainFileAppender.setBufferedIO(false);</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">private static void init(boolean flush, boolean buffered, boolean async) &#123;</div><div class="line">    FileAppender fileAppender = new FileAppender();</div><div class="line">    fileAppender.setName(&quot;FileLogger&quot;);</div><div class="line">    fileAppender.setFile(&quot;benchmark.log&quot;);</div><div class="line">    fileAppender.setLayout(new PatternLayout(&quot;%d %-5p [%c&#123;1&#125;] %m%n&quot;));</div><div class="line">    fileAppender.setThreshold(Level.INFO);</div><div class="line">    fileAppender.setAppend(false);</div><div class="line">    fileAppender.setImmediateFlush(flush);</div><div class="line">    fileAppender.setBufferedIO(buffered);</div><div class="line">    fileAppender.activateOptions();</div><div class="line"></div><div class="line">    LogManager.getRootLogger().removeAllAppenders();</div><div class="line">    if (async) &#123;</div><div class="line">        AsyncAppender asyncAppender = new AsyncAppender();</div><div class="line">        asyncAppender.addAppender(fileAppender);</div><div class="line">        LogManager.getRootLogger().addAppender(asyncAppender);</div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        LogManager.getRootLogger().addAppender(fileAppender);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://arviarya.wordpress.com/2012/11/09/log4j-for-high-performance-application/" target="_blank" rel="external">Log4j for high performance application</a></li>
-<li><a href="http://fredpuls.com/site/softwaredevelopment/java/log4j/log4j_performance_tips.htm" target="_blank" rel="external">Log4j: Performance Tips</a></li>
-<li><a href="http://stackoverflow.com/questions/8965946/configuring-log4j-loggers-programmatically" target="_blank" rel="external">Configuring Log4j Loggers Programmatically</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/04/18/System Design/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -628,6 +458,141 @@
 </ul>
 
           
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/04/10/MIT-6-001-SICP-Notes/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/04/10/MIT-6-001-SICP-Notes/" itemprop="url">
+                  MIT 6.001 SICP Notes
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-10T12:00:00+08:00">
+                2016-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="MIT-6-001-SICP-Notes"><a href="#MIT-6-001-SICP-Notes" class="headerlink" title="MIT 6.001 SICP Notes"></a>MIT 6.001 SICP Notes</h1><h2 id="L1"><a href="#L1" class="headerlink" title="L1"></a>L1</h2><p><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005/lecture-notes/lecture1webhand.pdf">lecture-notes</a></p>
+<h3 id="Computer-science"><a href="#Computer-science" class="headerlink" title="Computer science"></a>Computer science</h3><ul>
+<li><del>Science</del> engineering or art</li>
+<li><del>Computer</del> process</li>
+<li>cs &amp; geometry<ul>
+<li>Declarative Knowledge //geometry<ul>
+<li><strong>What is</strong> square root</li>
+</ul>
+</li>
+<li>Imperative Knowledge //cs<ul>
+<li><strong>How to</strong> find a square root</li>
+<li><strong>procedure</strong>: describe how-to</li>
+<li><strong>process</strong>: sequence of steps by evaluating the <strong>procedure</strong>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/10/MIT-6-001-SICP-Notes/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -927,7 +892,7 @@
 <p><strong>//TODO</strong></p>
 </blockquote>
 <h1 id="JVM-Internals"><a href="#JVM-Internals" class="headerlink" title="JVM Internals"></a>JVM Internals</h1><blockquote>
-<p><a href="http://blog.jamesdbloom.com/JVMInternals.html" target="_blank" rel="external">原文: JVM Interals</a><br><img src="../.media/14571502464884.jpg" alt=""></p>
+<p><a href="http://blog.jamesdbloom.com/JVMInternals.html" target="_blank" rel="external">原文: JVM Interals</a><br><img src="http://i.imgur.com/Hoc7sxg.jpg" alt=""></p>
 </blockquote>
 <h2 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h2><p>Hotspot JVM    将Java线程一对一映射到操作系统原生线程上。</p>
 <ul>

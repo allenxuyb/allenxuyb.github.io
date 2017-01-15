@@ -86,34 +86,16 @@
 
 
 
-<meta name="description" content="生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理
-
-How TCP backlog works in Linux
-How TCP backlog works in LinuxTCP(7)
-
-
-两个队列管理backl">
+<meta name="description" content="生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TCP backlog引起的Tomcat客户端connect timeout">
 <meta property="og:url" content="http://allenxuyb.github.io/2016/12/06/tcp_backlog/index.html">
 <meta property="og:site_name" content="El Psy Congroo">
-<meta property="og:description" content="生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理
-
-How TCP backlog works in Linux
-How TCP backlog works in LinuxTCP(7)
-
-
-两个队列管理backl">
-<meta property="og:updated_time" content="2017-01-15T04:37:01.000Z">
+<meta property="og:description" content="生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理">
+<meta property="og:updated_time" content="2017-01-15T15:22:21.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TCP backlog引起的Tomcat客户端connect timeout">
-<meta name="twitter:description" content="生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理
-
-How TCP backlog works in Linux
-How TCP backlog works in LinuxTCP(7)
-
-
-两个队列管理backl">
+<meta name="twitter:description" content="生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理">
 
 
 
@@ -336,7 +318,7 @@ How TCP backlog works in LinuxTCP(7)
 
       
         <blockquote>
-<p>生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理</p>
+<p>生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理<br><a id="more"></a></p>
 </blockquote>
 <h1 id="How-TCP-backlog-works-in-Linux"><a href="#How-TCP-backlog-works-in-Linux" class="headerlink" title="How TCP backlog works in Linux"></a>How TCP backlog works in Linux</h1><blockquote>
 <p><a href="http://veithen.github.io/2014/01/01/how-tcp-backlog-works-in-linux.html" target="_blank" rel="external">How TCP backlog works in Linux</a><br><a href="http://man7.org/linux/man-pages/man7/tcp.7.html" target="_blank" rel="external">TCP(7)</a></p>
@@ -434,8 +416,8 @@ How TCP backlog works in LinuxTCP(7)
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/12/28/MIT-6-001-SICP-Notes/" rel="prev" title="MIT 6.001 SICP Notes">
-                MIT 6.001 SICP Notes <i class="fa fa-chevron-right"></i>
+              <a href="/2017/01/12/2017/" rel="prev" title="2017年度目标">
+                2017年度目标 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

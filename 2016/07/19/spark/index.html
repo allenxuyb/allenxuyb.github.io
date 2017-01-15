@@ -98,16 +98,16 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
 What is RDD
 
 RDDs are immutable, fault tolerant, parallel data structures that let users explicitly persist intermediate results in memory, control their part">
-<meta property="og:image" content="http://allenxuyb.github.io/.media/14690053673763.jpg">
-<meta property="og:image" content="http://allenxuyb.github.io/.media/14690057530229.jpg">
-<meta property="og:updated_time" content="2017-01-15T04:14:34.000Z">
+<meta property="og:image" content="http://i.imgur.com/OWbRpkG.jpg">
+<meta property="og:image" content="http://i.imgur.com/EDoUBUP.jpg">
+<meta property="og:updated_time" content="2017-01-15T15:14:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spark学习笔记">
 <meta name="twitter:description" content="SparkRDD (Resilient Distributed Datasets)
 What is RDD
 
 RDDs are immutable, fault tolerant, parallel data structures that let users explicitly persist intermediate results in memory, control their part">
-<meta name="twitter:image" content="http://allenxuyb.github.io/.media/14690053673763.jpg">
+<meta name="twitter:image" content="http://i.imgur.com/OWbRpkG.jpg">
 
 
 
@@ -379,7 +379,7 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
 <ul>
 <li>Transformations</li>
 <li>Actions</li>
-<li><img src=".media/14690053673763.jpg" alt="-w550"></li>
+<li><img src="http://i.imgur.com/OWbRpkG.jpg" alt="-w550"></li>
 </ul>
 </li>
 </ul>
@@ -396,8 +396,8 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
 </ul>
 </li>
 </ul>
-<h2 id="WordCount"><a href="#WordCount" class="headerlink" title="WordCount"></a>WordCount</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def printfunc (x):</div><div class="line">	print &apos;Word %s occurs %d times&apos; % (x[0], x[1])</div><div class="line"></div><div class="line">infile = sc.textFile(&apos;hdfs://localhost:8020/test.txt&apos;, 4)</div><div class="line">rdd1 = infile.flatMap(lambda x: x.split())</div><div class="line">rdd2 = rdd1.map(lambda x: (x, 1)).reduceByKey(lambda x,y: x+y)</div><div class="line">rdd2.foreach(printfunc)</div></pre></td></tr></table></figure>
-<p><img src=".media/14690057530229.jpg" alt=""></p>
+<h2 id="WordCount"><a href="#WordCount" class="headerlink" title="WordCount"></a>WordCount</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">printfunc</span> </span>(x):</div><div class="line">	print <span class="symbol">'Word</span> %s occurs %d times' % (x[<span class="number">0</span>], x[<span class="number">1</span>])</div><div class="line"></div><div class="line">infile = sc.textFile(<span class="symbol">'hdfs</span>:<span class="comment">//localhost:8020/test.txt', 4)</span></div><div class="line">rdd1 = infile.flatMap(lambda x: x.split())</div><div class="line">rdd2 = rdd1.map(lambda x: (x, <span class="number">1</span>)).reduceByKey(lambda x,y: x+y)</div><div class="line">rdd2.foreach(printfunc)</div></pre></td></tr></table></figure>
+<p><img src="http://i.imgur.com/EDoUBUP.jpg" alt=""></p>
 <h2 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h2>
       
     </div>
@@ -440,8 +440,8 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/07/20/AAT/" rel="prev" title="AAT读书笔记">
-                AAT读书笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/07/20/kafka/" rel="prev" title="Kafka学习笔记">
+                Kafka学习笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

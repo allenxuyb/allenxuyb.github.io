@@ -382,473 +382,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/12/28/MIT-6-001-SICP-Notes/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/28/MIT-6-001-SICP-Notes/" itemprop="url">
-                  MIT 6.001 SICP Notes
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-28T10:48:56+08:00">
-                2016-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="MIT-6-001-SICP-Notes"><a href="#MIT-6-001-SICP-Notes" class="headerlink" title="MIT 6.001 SICP Notes"></a>MIT 6.001 SICP Notes</h1><h2 id="L1"><a href="#L1" class="headerlink" title="L1"></a>L1</h2><p><a href="http://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005/lecture-notes/lecture1webhand.pdf" target="_blank" rel="external">lecture-notes</a></p>
-<h3 id="Computer-science"><a href="#Computer-science" class="headerlink" title="Computer science"></a>Computer science</h3><ul>
-<li><del>Science</del> engineering or art</li>
-<li><del>Computer</del> process</li>
-<li>cs &amp; geometry<ul>
-<li>Declarative Knowledge //geometry<ul>
-<li><strong>What is</strong> square root</li>
-</ul>
-</li>
-<li>Imperative Knowledge //cs<ul>
-<li><strong>How to</strong> find a square root</li>
-<li><strong>procedure</strong>: describe how-to</li>
-<li><strong>process</strong>: sequence of steps by evaluating the <strong>procedure</strong> </li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="Controlling-complexity-lt-Key-Idea-in-6-001"><a href="#Controlling-complexity-lt-Key-Idea-in-6-001" class="headerlink" title="Controlling complexity &lt;- ==Key Idea in 6.001=="></a>Controlling complexity &lt;- ==Key Idea in 6.001==</h3><ul>
-<li><strong>Black-box abstraction</strong><ul>
-<li>Primitive objects<ul>
-<li>Primitive procedures</li>
-<li>Primitive data</li>
-</ul>
-</li>
-<li>Means of combination<ul>
-<li>Procedure composition</li>
-<li>Construction of compound data</li>
-</ul>
-</li>
-<li>Means of abstraction // using procedure as primitive<ul>
-<li>Procedure definition</li>
-<li>Simple data abstraction</li>
-</ul>
-</li>
-<li>Capturing common patterns // find sqrt -&gt; find fixed point<ul>
-<li>High-order procedures</li>
-<li>Data as procedures</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>Conventional interfaces</strong><ul>
-<li>OOP</li>
-<li>Manifest typing // List &lt;- Lisp</li>
-<li>Stream // Text &amp; file &lt;- Unix</li>
-</ul>
-</li>
-<li><strong>Meta-linguistic abstraction</strong><ul>
-<li>Making new languages</li>
-</ul>
-</li>
-</ul>
-<h3 id="Scheme"><a href="#Scheme" class="headerlink" title="Scheme"></a>Scheme</h3><ul>
-<li><p>Black-box abstraction</p>
-<ul>
-<li>primitives<br><code>+,1,2.5,#f,#t,&quot;string&quot;...</code></li>
-<li>means of combination<br><code>()</code> <code>if...</code></li>
-<li>means of abstraction - names<br><code>(define (sq x) (* x x))</code><br><code>(define sq2 (λ(x) (* x x)))</code><br><code>(define pi 3.14)</code><br><code>(define plus +)</code></li>
-</ul>
-</li>
-<li><p>Substitution Model</p>
-<ol>
-<li>eval the operator to get procedure</li>
-<li>eval the operands to get args</li>
-<li>apply the procedure to the args:<br> copy the procedure, substituting the args</li>
-<li>eval the result //goto 1</li>
-</ol>
-</li>
-<li><p>Kinds of expressions</p>
-<ul>
-<li>Numbers</li>
-<li>Symbols</li>
-<li>Lambda expressions</li>
-<li>Definitions</li>
-<li>Conditionals</li>
-<li>Combinations</li>
-</ul>
-</li>
-</ul>
-<p>Peano Arithmetic<br><a href="https://zh.wikipedia.org/wiki/%E7%9A%AE%E4%BA%9A%E8%AF%BA%E5%85%AC%E7%90%86" target="_blank" rel="external">参考：皮亚诺公理</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># two ways to add whole numbers, both recursive definitions</div><div class="line"># linear iteration time:O(x) space:O(1)</div><div class="line">(define (+ x y)</div><div class="line">	(if (= x 0)</div><div class="line">		y</div><div class="line">		(+ (-1+ x) (1+ y))))</div><div class="line"># linear recursion time:O(x) space:O(x)</div><div class="line">(define (+ x y)</div><div class="line">	(if (= x 0)</div><div class="line">		y</div><div class="line">		(1+ (+ (-1+ x) y ))))</div></pre></td></tr></table></figure>
-<p>recursive fibonacci<br>time: O(~1.618^n) space: O(n) // longest path of tree<br>feeling the procedure to processes<br>general rule break to many instances of local rule</p>
-<p>recursive hanoi</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">#lang racket</div><div class="line">(define (move n src dest temp)</div><div class="line">  (if (&gt; n 0)</div><div class="line">      (begin</div><div class="line">        (move (- n 1) src temp dest)</div><div class="line">        (printf &quot;move ~a from ~a to ~a~n&quot; n src dest)</div><div class="line">        (move (- n 1) temp dest src))</div><div class="line">      &quot;done&quot;))</div><div class="line"></div><div class="line">(move 3 &quot;src&quot; &quot;dest&quot; &quot;temp&quot;)</div></pre></td></tr></table></figure>
-<h2 id="L2"><a href="#L2" class="headerlink" title="L2"></a>L2</h2><h3 id="High-order-procedures"><a href="#High-order-procedures" class="headerlink" title="High-order procedures"></a>High-order procedures</h3><p><em>SICP 1.3</em></p>
-<p>$\sum_\limits{i=a}^bi$</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">(define (sum-int a b)</div><div class="line">	(if (&gt; a b)</div><div class="line">		0</div><div class="line">		(+ a</div><div class="line">			(sum-int (1+ a) b))))</div></pre></td></tr></table></figure>
-<p>$\sum_\limits{i=a}^bi^2$</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">(define (sum-sq a b)</div><div class="line">	(if (&gt; a b)</div><div class="line">		0</div><div class="line">		(+ (square a)</div><div class="line">			(sum-sq (1+ a) b))))</div></pre></td></tr></table></figure>
-<p>$\sum$ <strong>not depending upon</strong> $i$</p>
-<blockquote>
-<p>… making complicated system and understand them, it’s crucial to divide the things up into as many pieces as I can, each of which I understand separately … having debugged it once and unserstood it once and been able to share that …</p>
-</blockquote>
-<p>Leibnitz’s formula, pi-sum, different ways of sum<br>$\sum_{i=a, by~4}^b\frac1{i(i+2)}$</p>
-<p>General pattern</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">(define (&lt;name&gt; a b)</div><div class="line">	(if (&gt; a b)</div><div class="line">		0</div><div class="line">		(+ (&lt;term&gt; a)</div><div class="line">			(&lt;name&gt; (&lt;next&gt; a) b))))</div><div class="line">			</div><div class="line">(define (sum term a next b)</div><div class="line">	(if (&gt; a b)</div><div class="line">		0</div><div class="line">		(+ (term a)</div><div class="line">			(sum term</div><div class="line">				(next a)</div><div class="line">				next</div><div class="line">				b))))</div><div class="line">				</div><div class="line">(define (pi-sum a b)</div><div class="line">	(sum (λ(i)(/ 1(* i (+ i 2))))</div><div class="line">		a</div><div class="line">		(λ(i)(+ i 4))</div><div class="line">		b))</div></pre></td></tr></table></figure>
-<p>Iterative sum</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">(define (sum term a next b)</div><div class="line">	(define (iter j ans)</div><div class="line">		(if (&gt; j b)</div><div class="line">			ans</div><div class="line">			(iter (next j)</div><div class="line">				(+ (term j) ans ))))</div><div class="line">	(iter a 0))</div></pre></td></tr></table></figure>
-<p>Heron’s square root algorithm<br>$y \to \frac{y+\frac{x}y}{2}$<br>$f(\sqrt{x})=\sqrt{x}$<br>Look for a <strong>Fixed-Point</strong> of $f$</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(define (sqrt x)</div><div class="line">	(fixed-point</div><div class="line">		(λ(y)(average (/ x y) y))</div><div class="line">		1))</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">(define (fixed-point f start)</div><div class="line">	(define tolerance 0.00001)</div><div class="line">	(define (close-enuf? u v)</div><div class="line">		(&lt; (abs (- u v)) tolerance))</div><div class="line">	(define (iter old new)</div><div class="line">		(if (close-enuf? old new)</div><div class="line">			new</div><div class="line">			(iter new (f new))))</div><div class="line">	(iter start (f start)))</div></pre></td></tr></table></figure>
-<p>how converge<br>$y \to \frac{x}y$<br>damp out oscillations</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">(define (sqrt x)</div><div class="line">	(fixed-point</div><div class="line">		(average-damp (λ(y)(/ x y)))</div><div class="line">		1))</div><div class="line"># high-order procedure</div><div class="line">(define average-damp</div><div class="line">	(λ(f)</div><div class="line">		(λ(x)(average (f x) x))))</div></pre></td></tr></table></figure>
-<p>// formal parameter(parameter), actual parameter(argument)</p>
-<p>Newton’s method</p>
-<p>to find a $y$ such that<br>$f(y)=0$<br>start with a guess, $y<em>0$<br>$y</em>{n+1}=y_n-\frac{f(y<em>n)}{\frac{df}{dy}\big|</em>{y=y_n}}$</p>
-<blockquote>
-<p>Wishful thinking, essential to good engineering…</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">(define (sqrt x)</div><div class="line">	(newton (λ(y)(- x (square y)))</div><div class="line">		1))</div><div class="line">		</div><div class="line">(define (newton f guess)</div><div class="line">	(define df (deriv f))</div><div class="line">	(fixed-point</div><div class="line">		(λ(x)(- x (/ (f x)(df x))))</div><div class="line">		guess))</div><div class="line">		</div><div class="line">(define deriv</div><div class="line">	(λ(f)</div><div class="line">		(λ(x)</div><div class="line">			(/ (- (f (+ x dx))</div><div class="line">					(f x))</div><div class="line">				dx))))</div><div class="line">				</div><div class="line">(define dx ...)</div></pre></td></tr></table></figure>
-<p>// derivative, quotient</p>
-<p><a href="https://en.wikipedia.org/wiki/Denotational_semantics" target="_blank" rel="external">Denotational semantics</a></p>
-<p>The rights and privileges of first-class citizens</p>
-<ul>
-<li>To be named by variables</li>
-<li>To be passed as arguments to procedures</li>
-<li>To be returned as values of procedures</li>
-<li>To be incorporated into data structures</li>
-</ul>
-<h3 id="Compound-Data"><a href="#Compound-Data" class="headerlink" title="Compound Data"></a>Compound Data</h3><p><em>SICP 2.1</em></p>
-<blockquote>
-<p>build system in layers</p>
-</blockquote>
-<p>rational number math<br>$\frac{n_1}{d_1}<em>\frac{n_2}{d_2}=\frac{n_1</em>n_2}{d_1*d_2}$</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># abstract data</div><div class="line">define make-rat n d //constructor</div><div class="line">define numer x	 //selector</div><div class="line">define denom x</div><div class="line"></div><div class="line">(define (*rat x y)</div><div class="line">	(make-rat (* (numer x)(numer y)</div><div class="line">					(* (denom x)(denom y))))</div></pre></td></tr></table></figure>
-<p><del>*rat(n1, d1, n2, d2)</del><br>// numerator, denominator</p>
-<p>List structure<br>Pairs: box and pointer notation</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(cons x y) # constructs a pair</div><div class="line">(car p) # selects the 1st part</div><div class="line">(cdr p) # selects the 2nd part</div></pre></td></tr></table></figure>
-<p>+rat *rat -rat<br>make-rat / numer / denom &lt;- abstraction layer<br>pairs</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(define (make-rat n d) (cons n d))</div><div class="line">(define (numer x) (car x))</div><div class="line">(define (denom x) (cdr x))</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># bad way: defining *rat w/o data abstraction</div><div class="line">(define (*rat x y)</div><div class="line">	(make-rat (* (car x)(car y)</div><div class="line">					(* (cdr x)(cdr y))))</div></pre></td></tr></table></figure>
-<p>Data Abstration -&gt; seperate the <strong>use</strong> and <strong>representation</strong></p>
-<blockquote>
-<p>If you have the name of the spirit, you get control over it</p>
-</blockquote>
-<p><strong>Deferring decisions</strong></p>
-<blockquote>
-<p>To reatin flexibility, never make up your mind about anything until you’re forced to do it. Use abstractions.</p>
-</blockquote>
-<p>Layered system:<br>L1. segments # is pairs of vectors<br>constructors/selectors<br>L2. vectors # is pairs of numbers<br>constructors/selectors<br>L3. pairs</p>
-<p>calc the length of segment</p>
-<ol>
-<li>calc by vectors</li>
-<li>calc by pairs &lt;- <em>hard to read, hard to change</em></li>
-</ol>
-<p>What a rational number is <strong>really</strong>?</p>
-<blockquote>
-<p>Axiom for rational number:<br>if x = (make-rat n d)<br>then (numer x)/(denom x) = n/d</p>
-</blockquote>
-<p>What are Pairs <strong>really</strong>?</p>
-<blockquote>
-<p>Axiom for pairs:<br>For any x and y<br>(car (cons x y)) is x<br>(cdr (cons x y)) is y</p>
-</blockquote>
-<p>==spoiler alert==</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">(define (cons a b)</div><div class="line">	(λ(pick)</div><div class="line">		(cond ((= pick 1) a)</div><div class="line">				((= pick 2) b))))</div><div class="line">(define (car x) (x 1))</div><div class="line">(define (cdr x) (x 2))</div></pre></td></tr></table></figure>
-<ul>
-<li>reinfore the idea of abstraction</li>
-<li>introduce an idea about blurring the line between procedure and data</li>
-</ul>
-<h2 id="L3"><a href="#L3" class="headerlink" title="L3"></a>L3</h2><p><em>SICP 2.2</em></p>
-<h3 id="Closure"><a href="#Closure" class="headerlink" title="Closure"></a>Closure</h3><ol>
-<li>elements is said to be <em>closed</em> under an operation if applying the operation to elements in the set produces an element that is again an element of the set </li>
-<li>an implementation technique for representing procedures with free variables <em>not use this sense in this book</em></li>
-</ol>
-<h3 id="LIST"><a href="#LIST" class="headerlink" title="LIST"></a>LIST</h3><p><strong>Conventional Interface</strong><br><code>(1,*)-&gt;(2,*)-&gt;(3,*)-&gt;(4,)</code> // conventional<br><code>(list 1 2 3 4)</code> // syntactic sugar</p>
-<ul>
-<li><p>General pattern to process list</p>
-<ul>
-<li><p>map</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">(define (map p l)</div><div class="line">	(if (null? l)</div><div class="line">		nil</div><div class="line">		(cons (p (car l))	# cons up</div><div class="line">			(map p (cdr l))))) # cdring down</div></pre></td></tr></table></figure>
-</li>
-<li><p>for-each</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="Escher-Square-Limit"><a href="#Escher-Square-Limit" class="headerlink" title="Escher - Square Limit"></a><a href="http://www.wikiart.org/en/m-c-escher/square-limit" target="_blank" rel="external">Escher - Square Limit</a></h3><ul>
-<li><p>Tackling complex system: build a language</p>
-<ul>
-<li>primitives<ul>
-<li>picture</li>
-</ul>
-</li>
-<li>means of combination<ul>
-<li>rotate, flip, beside, above</li>
-</ul>
-</li>
-<li>mean of abstraction</li>
-</ul>
-</li>
-<li><p>embedded languages<br>  making full use of surrounding language</p>
-</li>
-<li><p>Two kinds of design</p>
-<ul>
-<li><p>Layers of language</p>
-<blockquote>
-<p>Language of Schemes of Combination<br>Language of Geometric Positions<br>Language of Primitive Pictures</p>
-</blockquote>
-<ul>
-<li>full range of linguistic power at each level</li>
-<li>more robust</li>
-<li>vocabularies fro talking about the degsign at different levels</li>
-</ul>
-</li>
-<li><p>Trees of task</p>
-<ul>
-<li>each node representing a specific task</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>The powerful of Lisp</p>
-<blockquote>
-<p>the design process is not so much implementing programs as implementing languages</p>
-</blockquote>
-</li>
-</ul>
-<h3 id="Symbolic-Differentiation"><a href="#Symbolic-Differentiation" class="headerlink" title="Symbolic Differentiation"></a>Symbolic Differentiation</h3><p><em>SICP 2.3</em></p>
-<ul>
-<li>Robust system</li>
-</ul>
-<blockquote>
-<p>Insensitive to small changes, the space of solutions ought to be a continuous in this space of problems</p>
-</blockquote>
-<ul>
-<li>How-to<ul>
-<li><del>Solve a problem at every level of<br>decomposition of the problem at the subproblems</del></li>
-<li>Solve the <strong>class of problems</strong> which are a neightborhood of the particulare problem, by <strong>producing a language</strong> at that level of detail in which the solutions to that class of problems is <strong>representable</strong> in that language</li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>make changes to the problems == change the solution constructed by that language</p>
-</blockquote>
-<p>Rest of the lecture:<br>Translate derivative rules to lisp</p>
-<h2 id="L4"><a href="#L4" class="headerlink" title="L4"></a>L4</h2><h3 id="Pattern-maching-Rule-based-Substitution"><a href="#Pattern-maching-Rule-based-Substitution" class="headerlink" title="Pattern-maching: Rule-based Substitution"></a>Pattern-maching: Rule-based Substitution</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Pattern ----Rule----&gt; Skeleton</div><div class="line">|                   |</div><div class="line">|Match              |Instantiation</div><div class="line">|                   |</div><div class="line">Expressions --------&gt; Expressions</div><div class="line">Source                Target</div></pre></td></tr></table></figure>
-<p><a href="https://github.com/allenxuyb/sicp-code/blob/master/code/4A.scm" target="_blank" rel="external">Full code of 4A</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">(define deriv-rules</div><div class="line">	&apos;(</div><div class="line">		((dd (?c c) (? v)) 0)</div><div class="line">		((dd (?v v) (? v)) 1)</div><div class="line">		; ...</div><div class="line"></div><div class="line">		; Derivative of (+ x1 x2) in respect to v</div><div class="line">		((dd (+ (? x1) (? x2)) (? v))</div><div class="line">			(+</div><div class="line">				(dd (: x1) (: v))</div><div class="line">				(dd (: x2) (: v))))</div><div class="line">		;...</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># Pattern match</div><div class="line">foo		- matches exactly foo</div><div class="line">(f a b)	- matches list in which first element if f, second is a, third is b</div><div class="line">(? x)		- matches anything, call it x</div><div class="line">(?c x)	- matches constant, call it x</div><div class="line">(?v x)	- matches variable, call it x</div><div class="line"></div><div class="line"># Skeletons</div><div class="line">foo		- instantiates itself</div><div class="line">(f a b)	- instantiates to a 3-list =&gt; results of initializing f, a, b</div><div class="line">(: x)		- initialize to the value of x in the matched pattern</div></pre></td></tr></table></figure>
-<ul>
-<li>Matcher</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">              Pattern</div><div class="line">                |</div><div class="line">Expression -&gt; Matcher -&gt; Dictionary</div><div class="line">                |</div><div class="line">              Dictionary</div></pre></td></tr></table></figure>
-<p>Pattern: <code>(+ (* (? x) (? y)) (? y))</code><br>Expression: <code>(+ (* 3 x) x)</code><br>traverse two tees simultaneously, result: matched, dict{x=3, y=’x}</p>
-<ul>
-<li>Instantiate</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">              Skeleton</div><div class="line">                |</div><div class="line">Dictionary -&gt; Matcher -&gt; Expression</div></pre></td></tr></table></figure>
-<ul>
-<li>Simplifier<br>// GIGO</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">(define (simplifier the-rules)</div><div class="line">	(define (simplify-exp exp)</div><div class="line">		(try-rules (if (COMPOUND? exp)</div><div class="line">						(simplify-parts exp)</div><div class="line">						exp))</div><div class="line">	)</div><div class="line">	(define (simplify-parts exp)</div><div class="line">		(if (NULL? exp)</div><div class="line">			&apos;() ; empty expression</div><div class="line">			(cons</div><div class="line">				(simplify-exp (car exp))</div><div class="line">				(simplify-parts (cdr exp)))</div><div class="line">		)</div><div class="line">	)</div><div class="line">	(define (try-rules exp)</div><div class="line">		(define (scan rules) ; Loop through rules</div><div class="line">			(if (NULL? rules)</div><div class="line">				exp</div><div class="line">				(let ((dict</div><div class="line">					(match (pattern (car rules)); try first rule </div><div class="line">						exp</div><div class="line">						(empty-dictionary))))</div><div class="line">				(if (EQ? dict &apos;failed)			; if failed, try other rules </div><div class="line">					(scan (cdr (rules))</div><div class="line">					(simplify-exp				; Side-effects, hide!</div><div class="line">						(instantiate</div><div class="line">							(skeleton (car rules) dict))))))</div><div class="line">			))</div><div class="line">		(scan the-rules) </div><div class="line">	)</div><div class="line">	simplify-exp)</div></pre></td></tr></table></figure>
-<ul>
-<li>Dictionary</li>
-</ul>
-<h3 id="Generic-Operators"><a href="#Generic-Operators" class="headerlink" title="Generic Operators"></a>Generic Operators</h3><p><em>SICP 2.4</em></p>
-<ul>
-<li>Horizontal barrier: between use(interface) and representation(implementation)</li>
-<li>Vertical barrier: between different representations</li>
-</ul>
-<h4 id="Complex-number-arithmetic"><a href="#Complex-number-arithmetic" class="headerlink" title="Complex number arithmetic"></a>Complex number arithmetic</h4><p>// real-part, imaginary-part, magnitude, angle</p>
-<ul>
-<li><p>Two representations</p>
-<ul>
-<li>Polar // easy to multiply</li>
-<li>Rectangular // easy to add</li>
-</ul>
-</li>
-<li><p>Typed data<br><code>(define (attach-type type contents) (cons type contents))</code></p>
-</li>
-<li><p>Generic operator</p>
-<ul>
-<li>dispatch on type<ul>
-<li>a manager check the type and call the right procedures</li>
-</ul>
-</li>
-<li><p>data-directed programming</p>
-<ul>
-<li>use a table to replace manager<ul>
-<li><code>(put key1 key2 value)</code></li>
-<li><code>(get key1 key2 value)</code></li>
-</ul>
-</li>
-</ul>
-<p>~              | polar             | rectangular<br>—             | —             | —<br>real-part    | real-polar    | real-rect<br>imag-part    | ~                 | ~<br>mag            | mag-polar     | mag-rect<br>angle            | ~                 | ~</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">(define (operate op obj)</div><div class="line">(let</div><div class="line">	((proc (get (type obj) op)))</div><div class="line">	(if (not (null? proc))</div><div class="line">		(proc (contents obj))</div><div class="line">		(error &quot;undefined op&quot;))))</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>Generic ADD/SUB/MUL/DIV</p>
-<ul>
-<li>operate rational, complex, ordinary, polynomial …</li>
-<li>chains of types<ul>
-<li>(complex,)-&gt;(rect,)-&gt;(1,2)</li>
-<li>(poly,)-&gt;(poly,)-&gt;…-&gt;(complex,)-&gt;(rect,)-&gt;(2,3)</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="L5"><a href="#L5" class="headerlink" title="L5"></a>L5</h2><p><em>SICP 3.1 &amp; 3.2</em></p>
-<ul>
-<li>Variable<ul>
-<li>Introduce <strong>time</strong> in procedure</li>
-</ul>
-</li>
-<li>Functional ~ Imperative</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"># functional</div><div class="line">(define (fact n)</div><div class="line">  (define (iter rlt i)</div><div class="line">    (cond ((&gt; i n) rlt)</div><div class="line">          (else (iter (* rlt i) (add1 i)))))</div><div class="line">  (iter 1 1))</div><div class="line"># imperative</div><div class="line">(define (fact-i n)</div><div class="line">  (let ((i 1) (rlt 1))</div><div class="line">    (define (loop)</div><div class="line">      (cond ((&gt; i n) rlt)</div><div class="line">            (else</div><div class="line">             # sequence sensitive, can&apos;t switch below two</div><div class="line">             (set! rlt (* i rlt)) </div><div class="line">             (set! i (add1 i))</div><div class="line">             (loop))))</div><div class="line">    (loop)))</div></pre></td></tr></table></figure>
-<ul>
-<li>Substitution model not working</li>
-<li><p>Environment model</p>
-<ul>
-<li>Bound variables &amp; Free variables<ul>
-<li><code>(λ(x) (* x y))</code> <code>y</code> is free, <code>*</code> is free, <code>x</code> is bound</li>
-</ul>
-</li>
-<li>Scope<ul>
-<li>bind by lambda</li>
-</ul>
-</li>
-<li>Environment<ul>
-<li>Sequence of linked frames</li>
-</ul>
-</li>
-<li>Frame<ul>
-<li>Map variables to values //on name conflict, child’s shadow parent’s</li>
-</ul>
-</li>
-<li>Procedure<ul>
-<li>Compound of procedure code and environment</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Why assignment</p>
-<ul>
-<li>for objects with local state</li>
-<li>for decomposition</li>
-</ul>
-</li>
-</ul>
-<p><em>SICP 3.3</em></p>
-<ul>
-<li>Circuits simulator</li>
-<li>Agenda</li>
-<li>Mutable CONS</li>
-</ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/12/06/tcp_backlog/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -928,66 +461,15 @@
 
       
         
-          
-            <blockquote>
-<p>生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理</p>
-</blockquote>
-<h1 id="How-TCP-backlog-works-in-Linux"><a href="#How-TCP-backlog-works-in-Linux" class="headerlink" title="How TCP backlog works in Linux"></a>How TCP backlog works in Linux</h1><blockquote>
-<p><a href="http://veithen.github.io/2014/01/01/how-tcp-backlog-works-in-linux.html" target="_blank" rel="external">How TCP backlog works in Linux</a><br><a href="http://man7.org/linux/man-pages/man7/tcp.7.html" target="_blank" rel="external">TCP(7)</a></p>
-</blockquote>
-<ul>
-<li><p>两个队列管理backlog</p>
-<ul>
-<li><p>SYN queue<br>管理三次握手过程中的连接，使用如下参数控制长度，<strong>系统级别</strong></p>
-<blockquote>
-<p><code>/proc/sys/net/ipv4/tcp_max_syn_backlog</code></p>
-</blockquote>
-</li>
-<li><p>accept queue<br>管理ESTABLISHED状态的连接，这个Q中的连接可以被<code>accpet(2)</code>处理，Q长度在<code>listen(2)</code>调用时传入，同时最大值受如下参数限制，<strong>应用级别</strong></p>
-<blockquote>
-<p><code>net.core.somaxconn</code></p>
-</blockquote>
-</li>
-</ul>
-</li>
-<li><p>查看accept queue大小</p>
-<blockquote>
-<p><code>ss -lt</code> #查询结果的<code>Send-Q</code>列</p>
-</blockquote>
-</li>
-<li><p>如果accept queue空间耗尽<br>  服务器默认会<strong>忽略</strong>三次握手最后的<code>ACK</code>包，可以通过将如下参数设置为<code>1</code>将忽略变为发送<code>RST</code>包</p>
-<blockquote>
-<p><code>net.ipv4.tcp_abort_on_overflow</code></p>
-</blockquote>
-<p>  此时服务器仍然处于<code>SYN RECEIVED</code>状态，而客户端已经是<code>ESTABLISHED</code>状态<br>  服务器会继续向客户端发送<code>SYN/ACK</code>包，重试间隔从<code>3s</code>开始，重试次数由如下参数控制</p>
-<blockquote>
-<p><code>net.ipv4.tcp_synack_retries = 5</code></p>
-</blockquote>
-<p>  当客户端收到重发的<code>SYN/ACK</code>包，会重发<code>ACK</code>包，如果queue有空间，即进入<code>ESTABLISHED</code>状态，反之服务端继续忽略<code>ACK</code>包<br>  当重试次数耗尽，queue仍然没有空间，服务器会发送<code>RST</code>包，终止连接</p>
-<p>  从客户端角度来看，发送<code>ACK</code>后连接已经建立，此时客户端如果发送数据，会导致数据重传，由于<a href="http://en.wikipedia.org/wiki/Slow-start" target="_blank" rel="external">TCP Slow-start</a>，重传的数据量会受到限制，如果客户端等待服务器发送数据，即会出现<a href="http://en.wikipedia.org/wiki/Half-open_connection" target="_blank" rel="external">half-open connection</a>问题</p>
-<p>  <strong>SYN queue限流</strong><br>  accept queue空间耗尽时，系统会对SYN queue进行限流，即使SYN queue没满，部分<code>SYN</code>包仍然会被丢弃，由客户端负责重试</p>
-<blockquote>
-<p><code>net.ipv4.tcp_syn_retries = 5</code></p>
-</blockquote>
-<p>  可以通过<code>netstat -s</code>查看丢弃的包</p>
-<blockquote>
-<p>960 times the listen queue of a socket overflowed<br>960 SYNs to LISTEN sockets ignored</p>
-</blockquote>
-<p>或者<code>nstat -a</code></p>
-<blockquote>
-<p>TcpExtListenOverflows 960<br>TcpExtListenDrops 960</p>
-</blockquote>
-</li>
-<li><p>分为两个队列的优势<br>应用根据<strong>处理能力</strong>管理accept queue的大小<br>系统管理员根据流量特征管理SYN queue的大小</p>
-</li>
-<li><p>合理设置accept queue大小<br>设置过大会导致请求堆积，使请求响应变慢<br>设置过小会导致并发高时部分请求被丢弃，引发不合理的connect timeout错误</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"># accept queue空间耗尽情况下的抓包记录</div><div class="line">  0.000  127.0.0.1 -&gt; 127.0.0.1  TCP 74 53302 &gt; 9999 [SYN] Seq=0 Len=0</div><div class="line">  0.000  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line">  0.000  127.0.0.1 -&gt; 127.0.0.1  TCP 66 53302 &gt; 9999 [ACK] Seq=1 Ack=1 Len=0</div><div class="line">  0.000  127.0.0.1 -&gt; 127.0.0.1  TCP 71 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  0.207  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  0.623  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  1.199  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line">  1.199  127.0.0.1 -&gt; 127.0.0.1  TCP 66 [TCP Dup ACK 6#1] 53302 &gt; 9999 [ACK] Seq=6 Ack=1 Len=0</div><div class="line">  1.455  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  3.123  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  3.399  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line">  3.399  127.0.0.1 -&gt; 127.0.0.1  TCP 66 [TCP Dup ACK 10#1] 53302 &gt; 9999 [ACK] Seq=6 Ack=1 Len=0</div><div class="line">  6.459  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  7.599  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line">  7.599  127.0.0.1 -&gt; 127.0.0.1  TCP 66 [TCP Dup ACK 13#1] 53302 &gt; 9999 [ACK] Seq=6 Ack=1 Len=0</div><div class="line"> 13.131  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line"> 15.599  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line"> 15.599  127.0.0.1 -&gt; 127.0.0.1  TCP 66 [TCP Dup ACK 16#1] 53302 &gt; 9999 [ACK] Seq=6 Ack=1 Len=0</div><div class="line"> 26.491  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line"> 31.599  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line"> 31.599  127.0.0.1 -&gt; 127.0.0.1  TCP 66 [TCP Dup ACK 19#1] 53302 &gt; 9999 [ACK] Seq=6 Ack=1 Len=0</div><div class="line"> 53.179  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">106.491  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">106.491  127.0.0.1 -&gt; 127.0.0.1  TCP 54 9999 &gt; 53302 [RST] Seq=1 Len=0</div></pre></td></tr></table></figure>
-<h1 id="Tomcat"><a href="#Tomcat" class="headerlink" title="Tomcat"></a>Tomcat</h1><p><a href="https://tomcat.apache.org/tomcat-7.0-doc/config/http.html" target="_blank" rel="external">The HTTP Connector</a><br><code>acceptCount</code> 控制accept queue长度，默认值为<code>100</code><br><code>maxThreads</code> 最大处理线程数，默认值为<code>200</code><br><code>maxConnections</code> 最大连接数，NIO下默认值为<code>10000</code>，BIO(8.5版本废弃)下同<code>maxThreads</code></p>
-<p><a href="http://techblog.netflix.com/2015/07/tuning-tomcat-for-high-throughput-fail.html" target="_blank" rel="external">Tuning Tomcat For A High Throughput, Fail Fast System</a><br>计算实际处理能力，当超出处理能力时尽量fail fast，防止影响全局性能</p>
-
-          
+          <blockquote>
+<p>生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理<br>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/12/06/tcp_backlog/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1284,7 +766,7 @@
       
         
           
-            <h1 id="Spring-kafka"><a href="#Spring-kafka" class="headerlink" title="Spring-kafka"></a>Spring-kafka</h1><p><img src=".media/14720046268236.jpg" alt="KafkaMessageListenerContainer"></p>
+            <h1 id="Spring-kafka"><a href="#Spring-kafka" class="headerlink" title="Spring-kafka"></a>Spring-kafka</h1><p><img src="http://i.imgur.com/67wDO7O.jpg" alt="KafkaMessageListenerContainer"></p>
 <ul>
 <li><p>AbstractMessageListenerContainer</p>
 <ul>
@@ -1339,233 +821,6 @@
 </ul>
 </li>
 </ul>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/07/20/kafka/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/20/kafka/" itemprop="url">
-                  Kafka学习笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-20T12:00:00+08:00">
-                2016-07-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="kafka-conception"><a href="#kafka-conception" class="headerlink" title="kafka conception"></a>kafka conception</h1><ul>
-<li><p>multiple consumers on one partition</p>
-<ul>
-<li>like mutliple threads with a synchronize block</li>
-</ul>
-</li>
-<li><p><a href="http://kafka.apache.org/documentation.html#semantics" target="_blank" rel="external">Message Delivery Semantics</a></p>
-<ul>
-<li>at-least-once<ul>
-<li>Producer 发送重试，ack=all</li>
-<li>Consumer 关闭auto commit，处理完消息后commit</li>
-</ul>
-</li>
-<li>at-most-once<ul>
-<li>无重试，自动提交</li>
-</ul>
-</li>
-<li>exactly-once<ul>
-<li>重试加基于消息主键的幂等发送/消费</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><a href="http://kafka.apache.org/documentation.html#impl_offsettracking" target="_blank" rel="external">Consumer Offset Tracking</a><br><img src=".media/14744540154442.jpg" alt=""></p>
-</li>
-</ul>
-<blockquote>
-<p>high watermark: message alread copy to all replicas, consumer can only read up to this position</p>
-</blockquote>
-<ul>
-<li><p>Consumer Liveness</p>
-<ul>
-<li>通过心跳机制实现，coordinator超过<code>session.timeout.ms</code>时间没有收到心跳即认为consumer失效，默认30s</li>
-<li>consumer的心跳信息是在调用poll的过程中发送的，并没有使用后台线程，因此只要consumer没有按时执行poll（消息处理太慢，或抛出异常导致线程终止），就会被认为失效，触发group的重平衡，因此需要根据消息处理速度来合理配置timeout</li>
-<li>spring-kafka使用consumer（poll）和listener（process）两个线程来处理消息，当listener处理耗时较长时，consumer线程可以向服务端发送pause，使poll调用不会返回新消息，仅发送心跳，避免了超时</li>
-</ul>
-</li>
-<li><p>Leader Election</p>
-<ul>
-<li>用zk从broker中选出一个controller，负责partition的leader选举，topic增删及rebalance replica</li>
-<li>为什么partition的leader选举不用zk（所有follower watch leader对应的ephemeral node）<ul>
-<li>herd effect，一个broker挂了会触发大量partition选举</li>
-<li>partition过多时需要注册大量watch，有性能压力</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Offset Management</p>
-<ul>
-<li>consumer向controller获取consumer metadata，找到offset manager，向manager提交及查询（有cache）offset</li>
-<li>manager变更时（offset分区leader变更），consumer提交失败，重复上一步骤</li>
-<li>consumer offset默认保存24小时（consumer下线超过24小时删除offset），通过<code>offsets.retention.minutes</code>设置</li>
-</ul>
-</li>
-<li><p>Partition Assignment</p>
-<blockquote>
-<p>目前有两种策略<code>range</code>（默认）及<code>roundrobin</code>，通过<code>partition.assignment.strategy</code>设置</p>
-<ul>
-<li><code>range</code>从单个topic角度对partition进行均分，因此当一个consumer group监听多个分区数不一致的topic时，会导致consumer压力不均</li>
-<li><code>roundrobin</code>会拿所有topic的分区进行均分</li>
-</ul>
-</blockquote>
-</li>
-<li><p>High Availability</p>
-<ul>
-<li>使用ISR机制替代多数派写，容忍更多节点挂掉</li>
-<li>所有replica宕机后的leader选举：等待ISR中的节点活过来，或选择第一个活过来的节点作为leader，由<code>unclean.leader.election.enable</code>控制，默认<code>true</code></li>
-<li><code>ack=all</code>不保证所有replica收到消息，仅保证ISR中存活的replica收到消息，可以通过<code>min.insync.replicas</code>设置需要多少个replica存活才允许ack，默认是<code>1</code></li>
-</ul>
-</li>
-</ul>
-<h1 id="kafka-design"><a href="#kafka-design" class="headerlink" title="kafka design"></a><a href="https://kafka.apache.org/documentation#design" target="_blank" rel="external">kafka design</a></h1><ul>
-<li>持久化 - 依靠文件系统<ul>
-<li>利用操作系统的IO调度（合并排序），pagecache，规避了机械硬盘随机访问的性能弱点</li>
-<li>避免了在内存中维护一份数据带来的数据结构的开销，GC问题，以及内存浪费（同一份持久化数据内存中一份，pagecache中一份）</li>
-<li>使用队列而非Btree，将访问复杂度从O(logN)降为O(1)，节约了存储空间，访问磁盘的效率也更高</li>
-</ul>
-</li>
-<li>效率<ul>
-<li>批量发送及接收消息，减少网络开销</li>
-<li>sendfile / zero-copy 将pagecache中的数据直接发送到socket，避免了在kernel和user-space之间来回copy，并且数据只需copy到pagecache中一次（即可应对后续多次消费），因此kafka消费速度几乎只受网络带宽限制</li>
-<li>支持消息批量压缩（默认未启用）</li>
-</ul>
-</li>
-<li>生产者<ul>
-<li>负载均衡（hash），无中间路由，直接发到leader</li>
-<li>异步发送（积累消息批量发送）</li>
-</ul>
-</li>
-<li>消费者<ul>
-<li>pull<ul>
-<li>避免对下游造成过大压力，并且可以积累消息批量接收，不过在无消息时需要通过阻塞的long poll避免客户端忙等待</li>
-<li>push的实时性更好，但缺少上述优势</li>
-</ul>
-</li>
-<li>consumer position<ul>
-<li>在客户端维护offset，避免由服务端来判断一个消息是否被消费（sent/ack），减少了服务端的性能开销</li>
-<li>partition中消息顺序存储且只有一个消费者，因此offset管理开销很低</li>
-<li>附带的好处是客户端可以回放消息</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>复制</li>
-<li>日志压缩</li>
-<li>限流</li>
-</ul>
-<h1 id="kafka-command-line"><a href="#kafka-command-line" class="headerlink" title="kafka command-line"></a>kafka command-line</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 列出当前在线的group</div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --list</div><div class="line"></div><div class="line"># 查看指定在线group的offset</div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --describe --group console1</div><div class="line"></div><div class="line"># 查看任意group在指定topic下的offset</div><div class="line"># topic必填，并且topic下不能有无数据的分区，不然会报zk node不存在的错误</div><div class="line">./kafka-consumer-offset-checker.sh --zookeeper localhost --group console1 --topic test123</div></pre></td></tr></table></figure>
-<h1 id="kafka-producer"><a href="#kafka-producer" class="headerlink" title="kafka producer"></a>kafka producer</h1><p><img src=".media/14792840997146.jpg" alt=""></p>
 
           
         
@@ -1843,6 +1098,147 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/07/20/kafka/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/20/kafka/" itemprop="url">
+                  Kafka学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-20T12:00:00+08:00">
+                2016-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="kafka-conception"><a href="#kafka-conception" class="headerlink" title="kafka conception"></a>kafka conception</h1><ul>
+<li><p>multiple consumers on one partition</p>
+<ul>
+<li>like mutliple threads with a synchronize block</li>
+</ul>
+</li>
+<li><p><a href="http://kafka.apache.org/documentation.html#semantics">Message Delivery Semantics</a></p>
+<ul>
+<li>at-least-once<ul>
+<li>Producer 发送重试，ack=all</li>
+<li>Consumer 关闭auto commit，处理完消息后commit</li>
+</ul>
+</li>
+<li>at-most-once<ul>
+<li>无重试，自动提交</li>
+</ul>
+</li>
+<li>exactly-once<ul>
+<li>重试加基于消息主键的幂等发送/消费
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/20/kafka/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/07/19/spark/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1973,7 +1369,7 @@
 <ul>
 <li>Transformations</li>
 <li>Actions</li>
-<li><img src=".media/14690053673763.jpg" alt="-w550"></li>
+<li><img src="http://i.imgur.com/OWbRpkG.jpg" alt="-w550"></li>
 </ul>
 </li>
 </ul>
@@ -1990,8 +1386,8 @@
 </ul>
 </li>
 </ul>
-<h2 id="WordCount"><a href="#WordCount" class="headerlink" title="WordCount"></a>WordCount</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def printfunc (x):</div><div class="line">	print &apos;Word %s occurs %d times&apos; % (x[0], x[1])</div><div class="line"></div><div class="line">infile = sc.textFile(&apos;hdfs://localhost:8020/test.txt&apos;, 4)</div><div class="line">rdd1 = infile.flatMap(lambda x: x.split())</div><div class="line">rdd2 = rdd1.map(lambda x: (x, 1)).reduceByKey(lambda x,y: x+y)</div><div class="line">rdd2.foreach(printfunc)</div></pre></td></tr></table></figure>
-<p><img src=".media/14690057530229.jpg" alt=""></p>
+<h2 id="WordCount"><a href="#WordCount" class="headerlink" title="WordCount"></a>WordCount</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">printfunc</span> </span>(x):</div><div class="line">	print <span class="symbol">'Word</span> %s occurs %d times' % (x[<span class="number">0</span>], x[<span class="number">1</span>])</div><div class="line"></div><div class="line">infile = sc.textFile(<span class="symbol">'hdfs</span>:<span class="comment">//localhost:8020/test.txt', 4)</span></div><div class="line">rdd1 = infile.flatMap(lambda x: x.split())</div><div class="line">rdd2 = rdd1.map(lambda x: (x, <span class="number">1</span>)).reduceByKey(lambda x,y: x+y)</div><div class="line">rdd2.foreach(printfunc)</div></pre></td></tr></table></figure>
+<p><img src="http://i.imgur.com/EDoUBUP.jpg" alt=""></p>
 <h2 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h2>
           
         
@@ -2288,6 +1684,176 @@
 <li><code>pfctl -s state</code> show contents of the STATE table</li>
 <li><code>pfctl -s info</code> show statistics for state tables and packet normalization</li>
 <li><code>pfctl -s all</code> show everything</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/06/14/log4j笔记/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/14/log4j笔记/" itemprop="url">
+                  Log4j笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-14T12:00:00+08:00">
+                2016-06-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Log4j-1-2"><a href="#Log4j-1-2" class="headerlink" title="Log4j 1.2"></a>Log4j 1.2</h1><h2 id="性能注意点"><a href="#性能注意点" class="headerlink" title="性能注意点"></a>性能注意点</h2><ul>
+<li>使用Slf4j</li>
+<li>使用<code>if (logger.isDebugEnabled()) { ... }</code>封装String连接或其他高开销的操作</li>
+<li>避免多次打印Stack trace</li>
+<li>尽量避免使用类名<code>%C</code>, 文件名<code>%F</code>, 方法名<code>%M</code>, 行号<code>%L</code>，性能开销很大<a href="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html" target="_blank" rel="external">official warning</a></li>
+<li>通过缓存减少IO次数<ul>
+<li><code>immediateFlush</code><ul>
+<li>是否每次log event都flush到磁盘，默认为<code>true</code>，设置为<code>false</code>能提高性能，但是在系统崩溃时可能会丢失日志</li>
+</ul>
+</li>
+<li><code>bufferedIO</code> <ul>
+<li>默认为<code>false</code>时使用<code>java.io.Writer</code>，设置为<code>ture</code>则改用<code>BufferedWriter</code>，<code>bufferSize</code>默认8K，可调整</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>使用<code>AsyncAppender</code><ul>
+<li>使用<code>addAppender</code>封装普通Appender为异步</li>
+<li>通过独立的<code>AsyncAppender-Dispatcher</code>线程调用Appender</li>
+<li>通过<code>bufferSize</code>设置缓存的event<strong>数量</strong>，到上限时根据<code>blocking</code>参数（默认为<code>true</code>）决定阻塞还是丢弃后续event</li>
+</ul>
+</li>
+</ul>
+<h2 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h2><ul>
+<li><p>场景：单线程写入20,000条日志到文件</p>
+<blockquote>
+<p>flush on, buffer off<br>  656/602/522<br>  flush on, buffer off, <strong>async</strong><br>  469/454/460</p>
+<p>flush off, buffer off<br>  149/154/153<br>  flush off, buffer off, <strong>async</strong><br>  153/140/134</p>
+<p>flush off, buffer <strong>on</strong><br>  104/104/100</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>Mapped Diagnostic Context (MDC)<ul>
+<li>记录特定信息，用于输出到日志（使用threadlocal存储），如用户等</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//.java</div><div class="line">MDC.put(&quot;user&quot;, session.getUser());</div><div class="line">//log4j.xml</div><div class="line">&lt;param name=&quot;ConversionPattern&quot; value=&quot;%X&#123;user&#125; %-5p - %m%n&quot; /&gt;</div><div class="line">//log</div><div class="line">[user: admin] INFO .......</div></pre></td></tr></table></figure>
+<ul>
+<li>控制日志只输出到一个Appender<ul>
+<li><code>additivity=&quot;false&quot;</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="在程序中控制Appender"><a href="#在程序中控制Appender" class="headerlink" title="在程序中控制Appender"></a>在程序中控制Appender</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Set Level</span></div><div class="line">Logger logger = Logger.getLogger(loggerName);</div><div class="line">logger.setLevel(Level.INFO);</div><div class="line"></div><div class="line"><span class="comment">// Get All Appenders </span></div><div class="line">Enumeration&lt;Appender&gt; appenders = LogManager.getRootLogger().getAllAppenders();</div><div class="line"></div><div class="line"><span class="comment">// Get your Appender from Enumeration, </span></div><div class="line"><span class="keyword">if</span> (appender <span class="keyword">instanceof</span> AsyncAppender) &#123; </div><div class="line"></div><div class="line"><span class="comment">// Get all internal Appenders user by Asyn Appender</span></div><div class="line">Enumeration&lt;Appender&gt; mainAppenders = asyncAppender.getAllAppenders();</div><div class="line"></div><div class="line"><span class="comment">// Get Main Appender, and do your operations</span></div><div class="line">mainFileAppender.setImmediateFlush(<span class="keyword">false</span>);</div><div class="line">mainFileAppender.setBufferedIO(<span class="keyword">false</span>);</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(<span class="keyword">boolean</span> flush, <span class="keyword">boolean</span> buffered, <span class="keyword">boolean</span> async)</span> </span>&#123;</div><div class="line">    FileAppender fileAppender = <span class="keyword">new</span> FileAppender();</div><div class="line">    fileAppender.setName(<span class="string">"FileLogger"</span>);</div><div class="line">    fileAppender.setFile(<span class="string">"benchmark.log"</span>);</div><div class="line">    fileAppender.setLayout(<span class="keyword">new</span> PatternLayout(<span class="string">"%d %-5p [%c&#123;1&#125;] %m%n"</span>));</div><div class="line">    fileAppender.setThreshold(Level.INFO);</div><div class="line">    fileAppender.setAppend(<span class="keyword">false</span>);</div><div class="line">    fileAppender.setImmediateFlush(flush);</div><div class="line">    fileAppender.setBufferedIO(buffered);</div><div class="line">    fileAppender.activateOptions();</div><div class="line"></div><div class="line">    LogManager.getRootLogger().removeAllAppenders();</div><div class="line">    <span class="keyword">if</span> (async) &#123;</div><div class="line">        AsyncAppender asyncAppender = <span class="keyword">new</span> AsyncAppender();</div><div class="line">        asyncAppender.addAppender(fileAppender);</div><div class="line">        LogManager.getRootLogger().addAppender(asyncAppender);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        LogManager.getRootLogger().addAppender(fileAppender);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://arviarya.wordpress.com/2012/11/09/log4j-for-high-performance-application/" target="_blank" rel="external">Log4j for high performance application</a></li>
+<li><a href="http://fredpuls.com/site/softwaredevelopment/java/log4j/log4j_performance_tips.htm" target="_blank" rel="external">Log4j: Performance Tips</a></li>
+<li><a href="http://stackoverflow.com/questions/8965946/configuring-log4j-loggers-programmatically" target="_blank" rel="external">Configuring Log4j Loggers Programmatically</a></li>
 </ul>
 
           
