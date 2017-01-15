@@ -323,13 +323,15 @@
             <h1 id="2017年度目标"><a href="#2017年度目标" class="headerlink" title="2017年度目标"></a>2017年度目标</h1><h2 id="学习篇"><a href="#学习篇" class="headerlink" title="学习篇"></a>学习篇</h2><ul>
 <li>每个月阅读至少<strong>一本</strong>技术书籍</li>
 <li>每个月更新至少<strong>两篇</strong>博客</li>
-<li>阅读学习JDK，Spring，MyBatis源码</li>
-<li>关注性能调优方面的学习积累，包括Linux及JVM</li>
-<li>学习Python并用于日常运维工作中</li>
-<li>英语词汇量到1w5，阅读<strong>六本</strong>以上小说，重刷AAT</li>
+<li>阅读学习<code>JDK</code>，<code>Spring</code>，<code>Dubbo</code>源码</li>
+<li>关注性能监控、性能调优方面的学习和积累</li>
+<li>学习<code>Java8</code>并应用到<strong>一个</strong>以上生产系统中</li>
+<li>学习<code>Python</code>并应用到日常运维工作中</li>
+<li>英语词汇量到1w5，刷完韦小绿，阅读<strong>六本</strong>以上小说，重刷AAT</li>
 <li>学习《みんなの日本語》第一册</li>
 </ul>
 <h2 id="生活篇"><a href="#生活篇" class="headerlink" title="生活篇"></a>生活篇</h2><ul>
+<li>早睡早起，0点到8点    </li>
 <li>两次旅行</li>
 <li>每月至少一次Outing</li>
 <li>拔牙</li>
@@ -846,7 +848,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/1970/01/01/hello-world/">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/12/06/tcp_backlog/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Allen Xu">
@@ -871,8 +873,8 @@
             
               
                 
-                <a class="post-title-link" href="/1970/01/01/hello-world/" itemprop="url">
-                  Hello World
+                <a class="post-title-link" href="/2016/12/06/tcp_backlog/" itemprop="url">
+                  TCP backlog引起的Tomcat客户端connect timeout
                 </a>
               
             
@@ -888,8 +890,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="1970-01-01T00:00:00+08:00">
-                1970-01-01
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-06T10:52:00+08:00">
+                2016-12-06
               </time>
             
 
@@ -926,15 +928,1366 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+            <blockquote>
+<p>生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理</p>
+</blockquote>
+<h1 id="How-TCP-backlog-works-in-Linux"><a href="#How-TCP-backlog-works-in-Linux" class="headerlink" title="How TCP backlog works in Linux"></a>How TCP backlog works in Linux</h1><blockquote>
+<p><a href="http://veithen.github.io/2014/01/01/how-tcp-backlog-works-in-linux.html" target="_blank" rel="external">How TCP backlog works in Linux</a><br><a href="http://man7.org/linux/man-pages/man7/tcp.7.html" target="_blank" rel="external">TCP(7)</a></p>
+</blockquote>
+<ul>
+<li><p>两个队列管理backlog</p>
+<ul>
+<li><p>SYN queue<br>管理三次握手过程中的连接，使用如下参数控制长度，<strong>系统级别</strong></p>
+<blockquote>
+<p><code>/proc/sys/net/ipv4/tcp_max_syn_backlog</code></p>
+</blockquote>
+</li>
+<li><p>accept queue<br>管理ESTABLISHED状态的连接，这个Q中的连接可以被<code>accpet(2)</code>处理，Q长度在<code>listen(2)</code>调用时传入，同时最大值受如下参数限制，<strong>应用级别</strong></p>
+<blockquote>
+<p><code>net.core.somaxconn</code></p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>查看accept queue大小</p>
+<blockquote>
+<p><code>ss -lt</code> #查询结果的<code>Send-Q</code>列</p>
+</blockquote>
+</li>
+<li><p>如果accept queue空间耗尽<br>  服务器默认会<strong>忽略</strong>三次握手最后的<code>ACK</code>包，可以通过将如下参数设置为<code>1</code>将忽略变为发送<code>RST</code>包</p>
+<blockquote>
+<p><code>net.ipv4.tcp_abort_on_overflow</code></p>
+</blockquote>
+<p>  此时服务器仍然处于<code>SYN RECEIVED</code>状态，而客户端已经是<code>ESTABLISHED</code>状态<br>  服务器会继续向客户端发送<code>SYN/ACK</code>包，重试间隔从<code>3s</code>开始，重试次数由如下参数控制</p>
+<blockquote>
+<p><code>net.ipv4.tcp_synack_retries = 5</code></p>
+</blockquote>
+<p>  当客户端收到重发的<code>SYN/ACK</code>包，会重发<code>ACK</code>包，如果queue有空间，即进入<code>ESTABLISHED</code>状态，反之服务端继续忽略<code>ACK</code>包<br>  当重试次数耗尽，queue仍然没有空间，服务器会发送<code>RST</code>包，终止连接</p>
+<p>  从客户端角度来看，发送<code>ACK</code>后连接已经建立，此时客户端如果发送数据，会导致数据重传，由于<a href="http://en.wikipedia.org/wiki/Slow-start" target="_blank" rel="external">TCP Slow-start</a>，重传的数据量会受到限制，如果客户端等待服务器发送数据，即会出现<a href="http://en.wikipedia.org/wiki/Half-open_connection" target="_blank" rel="external">half-open connection</a>问题</p>
+<p>  <strong>SYN queue限流</strong><br>  accept queue空间耗尽时，系统会对SYN queue进行限流，即使SYN queue没满，部分<code>SYN</code>包仍然会被丢弃，由客户端负责重试</p>
+<blockquote>
+<p><code>net.ipv4.tcp_syn_retries = 5</code></p>
+</blockquote>
+<p>  可以通过<code>netstat -s</code>查看丢弃的包</p>
+<blockquote>
+<p>960 times the listen queue of a socket overflowed<br>960 SYNs to LISTEN sockets ignored</p>
+</blockquote>
+<p>或者<code>nstat -a</code></p>
+<blockquote>
+<p>TcpExtListenOverflows 960<br>TcpExtListenDrops 960</p>
+</blockquote>
+</li>
+<li><p>分为两个队列的优势<br>应用根据<strong>处理能力</strong>管理accept queue的大小<br>系统管理员根据流量特征管理SYN queue的大小</p>
+</li>
+<li><p>合理设置accept queue大小<br>设置过大会导致请求堆积，使请求响应变慢<br>设置过小会导致并发高时部分请求被丢弃，引发不合理的connect timeout错误</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"># accept queue空间耗尽情况下的抓包记录</div><div class="line">  0.000  127.0.0.1 -&gt; 127.0.0.1  TCP 74 53302 &gt; 9999 [SYN] Seq=0 Len=0</div><div class="line">  0.000  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line">  0.000  127.0.0.1 -&gt; 127.0.0.1  TCP 66 53302 &gt; 9999 [ACK] Seq=1 Ack=1 Len=0</div><div class="line">  0.000  127.0.0.1 -&gt; 127.0.0.1  TCP 71 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  0.207  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  0.623  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  1.199  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line">  1.199  127.0.0.1 -&gt; 127.0.0.1  TCP 66 [TCP Dup ACK 6#1] 53302 &gt; 9999 [ACK] Seq=6 Ack=1 Len=0</div><div class="line">  1.455  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  3.123  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  3.399  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line">  3.399  127.0.0.1 -&gt; 127.0.0.1  TCP 66 [TCP Dup ACK 10#1] 53302 &gt; 9999 [ACK] Seq=6 Ack=1 Len=0</div><div class="line">  6.459  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">  7.599  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line">  7.599  127.0.0.1 -&gt; 127.0.0.1  TCP 66 [TCP Dup ACK 13#1] 53302 &gt; 9999 [ACK] Seq=6 Ack=1 Len=0</div><div class="line"> 13.131  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line"> 15.599  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line"> 15.599  127.0.0.1 -&gt; 127.0.0.1  TCP 66 [TCP Dup ACK 16#1] 53302 &gt; 9999 [ACK] Seq=6 Ack=1 Len=0</div><div class="line"> 26.491  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line"> 31.599  127.0.0.1 -&gt; 127.0.0.1  TCP 74 9999 &gt; 53302 [SYN, ACK] Seq=0 Ack=1 Len=0</div><div class="line"> 31.599  127.0.0.1 -&gt; 127.0.0.1  TCP 66 [TCP Dup ACK 19#1] 53302 &gt; 9999 [ACK] Seq=6 Ack=1 Len=0</div><div class="line"> 53.179  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">106.491  127.0.0.1 -&gt; 127.0.0.1  TCP 71 [TCP Retransmission] 53302 &gt; 9999 [PSH, ACK] Seq=1 Ack=1 Len=5</div><div class="line">106.491  127.0.0.1 -&gt; 127.0.0.1  TCP 54 9999 &gt; 53302 [RST] Seq=1 Len=0</div></pre></td></tr></table></figure>
+<h1 id="Tomcat"><a href="#Tomcat" class="headerlink" title="Tomcat"></a>Tomcat</h1><p><a href="https://tomcat.apache.org/tomcat-7.0-doc/config/http.html" target="_blank" rel="external">The HTTP Connector</a><br><code>acceptCount</code> 控制accept queue长度，默认值为<code>100</code><br><code>maxThreads</code> 最大处理线程数，默认值为<code>200</code><br><code>maxConnections</code> 最大连接数，NIO下默认值为<code>10000</code>，BIO(8.5版本废弃)下同<code>maxThreads</code></p>
+<p><a href="http://techblog.netflix.com/2015/07/tuning-tomcat-for-high-throughput-fail.html" target="_blank" rel="external">Tuning Tomcat For A High Throughput, Fail Fast System</a><br>计算实际处理能力，当超出处理能力时尽量fail fast，防止影响全局性能</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/11/23/safepoint/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/11/23/safepoint/" itemprop="url">
+                  Safepoint学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-11-23T11:05:00+08:00">
+                2016-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="safepoint"><a href="#safepoint" class="headerlink" title="safepoint"></a>safepoint</h1><p><a href="http://psy-lob-saw.blogspot.com/2015/12/safepoints.html" target="_blank" rel="external">Safepoints: Meaning, Side Effects and Overheads</a><br><a href="http://psy-lob-saw.blogspot.com/2016/02/wait-for-it-counteduncounted-loops.html" target="_blank" rel="external">Counted/Uncounted loops, Safepoints and OSR Compilation</a><br><a href="http://calvin1978.blogcn.com/articles/safepoint.html" target="_blank" rel="external">JVM的Stop The World，安全点，黑暗的地底世界</a></p>
+<h1 id="safepoint日志"><a href="#safepoint日志" class="headerlink" title="safepoint日志"></a>safepoint日志</h1><ul>
+<li><p>打印日志<br>  <code>-XX:+PrintSafepointStatistics -XX:PrintSafepointStatisticsCount=1</code><br>  <code>-XX:+PrintGCApplicationStoppedTime #打印停顿时间</code></p>
+</li>
+<li><p>日志样例</p>
+<blockquote>
+<p>vmop [threads: total initially_running wait_to_block] [time: spin block sync cleanup vmop] page_trap_count<br>  6.763: PrintThreads [ 11  1  1 ]  [ 1  0  1  0  0 ] 1</p>
+</blockquote>
+<ul>
+<li>第一段是时间戳，VM Operation的类型，以及线程概况<ul>
+<li>total: 安全点里的总线程数</li>
+<li>initially_running: 安全点时开始时正在运行状态的线程数</li>
+<li>wait_to_block: 在VM Operation开始前需要等待其暂停的线程数</li>
+</ul>
+</li>
+<li>第二段是到达安全点时的各个阶段以及执行操作所花的时间，其中最重要的是vmop<ul>
+<li>spin: 等待线程响应safepoint号召的时间</li>
+<li>block: 暂停所有线程所用的时间</li>
+<li>sync: 等于 spin+block，这是从开始到进入安全点所耗的时间，可用于判断进入安全点耗时</li>
+<li>cleanup: 清理所用时间</li>
+<li>vmop: 真正执行VM Operation的时间</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="safepoint-poll"><a href="#safepoint-poll" class="headerlink" title="safepoint poll"></a>safepoint poll</h1><ul>
+<li><p>检查方式<br>  JIT方式下直接插入检查代码，解释器执行时监听safepoint请求，有请求时让线程进行safepoint检查</p>
+</li>
+<li><p>safepoint检查点</p>
+<ul>
+<li>between any 2 bytecodes (interpreter)</li>
+<li>‘uncounted’ loops back edge (compiled)</li>
+<li>method exit/enter (compiled)</li>
+</ul>
+</li>
+<li><p>影响进入safepoint的情况</p>
+<ul>
+<li>large methods</li>
+<li>long running ‘counted’ loops</li>
+<li>page faults/thread suspension</li>
+</ul>
+</li>
+<li><p>counted &amp; uncounted loop<br>  <code>counted loop</code> jvm认为比较短的循环，因此编译时不会加入safepoint检查<br>  <code>uncounted loop</code> 编译时会在每次循环中加入safepoint检查</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// counted = reps is int/short/byte</div><div class="line">for (int i = 0; i &lt; reps; i++) &#123;&#125;</div><div class="line"></div><div class="line">// uncounted</div><div class="line">for (long l = 0; l &lt; int_reps; i++) &#123;&#125;</div><div class="line"></div><div class="line">// counted</div><div class="line">while (i &lt; reps) &#123; i++; &#125;</div><div class="line"></div><div class="line">// uncounted</div><div class="line">while (i++ &lt; reps) &#123;&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h1 id="safepoint-operation"><a href="#safepoint-operation" class="headerlink" title="safepoint operation"></a>safepoint operation</h1><ol>
+<li>Garbage collection pauses</li>
+<li>Code deoptimization</li>
+<li>Flushing code cache</li>
+<li>Class redefinition (e.g. hot swap or instrumentation)</li>
+<li>Biased lock revocation</li>
+<li>Various debug operation (e.g. deadlock check or stacktrace dump)</li>
+</ol>
+<h1 id="safe-region"><a href="#safe-region" class="headerlink" title="safe-region"></a>safe-region</h1><p>safepoint处理运行中的thread，safe-region处理等待中的线程，线程block或sleep前标识进入safe-region，唤醒后准备离开safe-region前，先检查是否能离开，例如GC是否完成，如果没有，则继续等待</p>
+<h1 id="safepoint-bias-on-profiling"><a href="#safepoint-bias-on-profiling" class="headerlink" title="safepoint bias on profiling"></a>safepoint bias on profiling</h1><p>热点方法中的safepoint检查点可能被优化掉，导致profile时只能统计到热点方法的外部方法</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>分别考虑Safepoint/Safepoint poll/Safepoint operation的开销和性能影响</li>
+<li>任何一个没有成功进入safepoint的线程都会阻塞整个JVM</li>
+<li>通过日志观察停顿时间，如果有异常，增加明细日志</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/08/24/spring-kafka/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/24/spring-kafka/" itemprop="url">
+                  Spring-kafka学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-08-24T12:00:00+08:00">
+                2016-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Spring-kafka"><a href="#Spring-kafka" class="headerlink" title="Spring-kafka"></a>Spring-kafka</h1><p><img src=".media/14720046268236.jpg" alt="KafkaMessageListenerContainer"></p>
+<ul>
+<li><p>AbstractMessageListenerContainer</p>
+<ul>
+<li>enum AckMode</li>
+<li>ContainerProperties containerProperties<ul>
+<li>topics等kafka相关配置</li>
+<li>messageListener</li>
+<li>consumerTaskExecutor ==拉消息线程 autoCommit模式下同时处理消息==</li>
+<li>listenerTaskExecutor ==处理消息线程 非autoCommit模式==</li>
+<li>errorHandler</li>
+<li>consumerRebalanceListener</li>
+<li>offsetCommitCallback</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>KafkaMessageListenerContainer</p>
+<ul>
+<li>consumerFactory</li>
+<li>listenerConsumer ==在consumerTaskExecutor线程中运行==<ul>
+<li>consumer</li>
+<li>containerProperties,listener,errorHandler等container中设置的属性</li>
+<li>ListenerInvoker invoker ==非autoCommit模式下在listenerTaskExecutor中运行onMessage方法==</li>
+<li>listenerInvokerFuture</li>
+<li>rebalanceListener</li>
+</ul>
+</li>
+<li>listenerConsumerFuture</li>
+<li>listener</li>
+<li>acknowledgingMessageListener</li>
+</ul>
+</li>
+<li><p>Consumer相关参数</p>
+<ul>
+<li><code>enable.auto.commit</code> 自动提交，默认5000ms一次，通过<code>auto.commit.interval.ms</code>设置</li>
+<li><code>session.timeout.ms</code> 客户端超时时间，broker超过该时间未收到客户端心跳，即认为客户端挂了，触发group rebalance。==心跳是在consumer.poll期间发送的，因此消息处理耗时过长也会引起超时==</li>
+<li><code>session.timeout.ms</code> request超时时间，需要大于session超时</li>
+<li><code>heartbeat.interval.ms</code> 心跳间隔，默认3秒，需要小于1/3的session超时，避免丢包导致超时</li>
+<li><code>max.partition.fetch.bytes</code> 每个分区单次获取最大字节，默认1M，==注意必须大于最大消息大小==，不然会导致消费阻塞，单次poll最大字节等于分区数量乘以该值</li>
+</ul>
+</li>
+<li><p>Container相关参数</p>
+<ul>
+<li><code>pollTimeout</code> 单次poll无数据时的block等待时间，有数据则立刻返回</li>
+<li><code>pauseAfter</code> offer到待处理队列的等待时间，默认10秒，超时则pause消费者，避免session超时</li>
+<li><code>shutdownTimeout</code> 默认10秒，consumer和listener线程关闭超时</li>
+</ul>
+</li>
+<li><p>Producer相关参数</p>
+<ul>
+<li><code>retries</code> 发送重试次数，默认0，只有遇到继承<code>RetriableException</code>的异常才会重试</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/07/20/AAT/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/20/AAT/" itemprop="url">
+                  AAT读书笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-20T12:00:00+08:00">
+                2016-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="AAT"><a href="#AAT" class="headerlink" title="AAT"></a>AAT</h1><ul>
+<li>Rule for letter <strong>o</strong><ul>
+<li>In a <strong>one-syllable</strong> word, <strong>o</strong> sounds like <strong>ä</strong> (unless the word ends in <strong>e</strong>)<ul>
+<li>h<strong>o</strong>t, l<strong>o</strong>st, T<strong>o</strong>m, B<strong>o</strong>b, d<strong>o</strong>t c<strong>o</strong>m</li>
+</ul>
+</li>
+<li>In a <strong>stressed syllable</strong>, <strong>o</strong> also sounds like <strong>ä</strong><ul>
+<li>p<strong>o</strong>ssible, H<strong>o</strong>lland, phil<strong>o</strong>sophy</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Rule for letter <strong>a</strong></p>
+<ul>
+<li>In a <strong>one-syllable</strong> word, <strong>a</strong> sounds like <strong>æ</strong> (unless the word ends in <strong>e</strong>)<ul>
+<li>c<strong>a</strong>t, S<strong>a</strong>m, dr<strong>a</strong>b</li>
+</ul>
+</li>
+<li>In a <strong>stressed syllable</strong>, <strong>a</strong> also sounds like <strong>æ</strong><ul>
+<li>r<strong>a</strong>tional, m<strong>a</strong>nager, cat<strong>a</strong>strophe</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Silent <strong>L</strong>s</p>
+<ul>
+<li>would, talk, calm, already, salmon, folk, half</li>
+</ul>
+</li>
+<li><p><strong>T</strong> sounds like a <strong>D</strong> (in the middle of a word)</p>
+<ul>
+<li>metal, medal, mettle, meddle (all sound identical)</li>
+</ul>
+</li>
+<li><p>Four Main Reasons for Intonation</p>
+<ul>
+<li>New Information</li>
+<li>Opinion</li>
+<li>Contrast</li>
+<li>“Can’t”</li>
+</ul>
+</li>
+<li><p>Syllable Rules</p>
+<ul>
+<li>Rule of Thumb<ul>
+<li>Stress <strong>nouns</strong> on the <strong>first</strong> syllable and <strong>verbs</strong> on the <strong>second</strong> syllable</li>
+</ul>
+</li>
+<li>95% Rule<ul>
+<li>When in doubt, stress the <strong>next to last</strong></li>
+</ul>
+</li>
+<li>5% Rule<ul>
+<li>Stress the <strong>last syllable</strong><ul>
+<li>Most <strong>two-syllable verbs</strong>, as well as starting with <strong>a-</strong> and <strong>be-</strong>, and end in <strong>French suffixes</strong> (ee, eer, ele, et, age)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Liaison</p>
+<ul>
+<li>Consonant and Vowel<ul>
+<li>Put it on. -&gt; Pu di dan</li>
+</ul>
+</li>
+<li>Consonant and Consonant<ul>
+<li>race track -&gt; ray strack</li>
+</ul>
+</li>
+<li>Vowel and Vowel<ul>
+<li>No other -&gt; No(w)other</li>
+</ul>
+</li>
+<li>T+Y, D+Y, S+Y, Z+Y<ul>
+<li>Put you, Had you, Yes you, Is your</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Word Phrases</p>
+<ul>
+<li>Descriptive phrase<ul>
+<li>It’s a short <strong>nail</strong>.</li>
+</ul>
+</li>
+<li>Modified descriptive phrase<ul>
+<li>It’s a <strong>really</strong> short <strong>nail</strong>.</li>
+</ul>
+</li>
+<li>Set phrase<ul>
+<li>It’s a <strong>finger</strong>nail.</li>
+<li>It’s a <strong>finger</strong>nail clipper.</li>
+</ul>
+</li>
+<li>Modified set phrase<ul>
+<li>It’s a short <strong>finger</strong>nail.</li>
+<li>It’s a new <strong>finger</strong>nail clipper.</li>
+</ul>
+</li>
+<li><p>Remodified set phrase</p>
+<ul>
+<li>It’s a <strong>relly</strong> short <strong>finger</strong>nail.</li>
+</ul>
+<p>W/I        |    DP    |    MDP | SP | MSP | RMSP<br>——-     | — | —     | —| — | —<br>Two-Word    |    01    |    -     |    10    | -   | -<br>Three-Wrod|    -    |    101 |    210| 010 | -<br>Four-Word| -    | -     | -    | 0210| 1010 </p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Step by step <code>To have a friend, be a friend.</code><ul>
+<li>Intonation</li>
+<li>Word groups</li>
+<li>Liaisons</li>
+<li>æ ä ǝ</li>
+<li>T</li>
+<li>R</li>
+</ul>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/07/20/kafka/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/20/kafka/" itemprop="url">
+                  Kafka学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-20T12:00:00+08:00">
+                2016-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="kafka-conception"><a href="#kafka-conception" class="headerlink" title="kafka conception"></a>kafka conception</h1><ul>
+<li><p>multiple consumers on one partition</p>
+<ul>
+<li>like mutliple threads with a synchronize block</li>
+</ul>
+</li>
+<li><p><a href="http://kafka.apache.org/documentation.html#semantics" target="_blank" rel="external">Message Delivery Semantics</a></p>
+<ul>
+<li>at-least-once<ul>
+<li>Producer 发送重试，ack=all</li>
+<li>Consumer 关闭auto commit，处理完消息后commit</li>
+</ul>
+</li>
+<li>at-most-once<ul>
+<li>无重试，自动提交</li>
+</ul>
+</li>
+<li>exactly-once<ul>
+<li>重试加基于消息主键的幂等发送/消费</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><a href="http://kafka.apache.org/documentation.html#impl_offsettracking" target="_blank" rel="external">Consumer Offset Tracking</a><br><img src=".media/14744540154442.jpg" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>high watermark: message alread copy to all replicas, consumer can only read up to this position</p>
+</blockquote>
+<ul>
+<li><p>Consumer Liveness</p>
+<ul>
+<li>通过心跳机制实现，coordinator超过<code>session.timeout.ms</code>时间没有收到心跳即认为consumer失效，默认30s</li>
+<li>consumer的心跳信息是在调用poll的过程中发送的，并没有使用后台线程，因此只要consumer没有按时执行poll（消息处理太慢，或抛出异常导致线程终止），就会被认为失效，触发group的重平衡，因此需要根据消息处理速度来合理配置timeout</li>
+<li>spring-kafka使用consumer（poll）和listener（process）两个线程来处理消息，当listener处理耗时较长时，consumer线程可以向服务端发送pause，使poll调用不会返回新消息，仅发送心跳，避免了超时</li>
+</ul>
+</li>
+<li><p>Leader Election</p>
+<ul>
+<li>用zk从broker中选出一个controller，负责partition的leader选举，topic增删及rebalance replica</li>
+<li>为什么partition的leader选举不用zk（所有follower watch leader对应的ephemeral node）<ul>
+<li>herd effect，一个broker挂了会触发大量partition选举</li>
+<li>partition过多时需要注册大量watch，有性能压力</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Offset Management</p>
+<ul>
+<li>consumer向controller获取consumer metadata，找到offset manager，向manager提交及查询（有cache）offset</li>
+<li>manager变更时（offset分区leader变更），consumer提交失败，重复上一步骤</li>
+<li>consumer offset默认保存24小时（consumer下线超过24小时删除offset），通过<code>offsets.retention.minutes</code>设置</li>
+</ul>
+</li>
+<li><p>Partition Assignment</p>
+<blockquote>
+<p>目前有两种策略<code>range</code>（默认）及<code>roundrobin</code>，通过<code>partition.assignment.strategy</code>设置</p>
+<ul>
+<li><code>range</code>从单个topic角度对partition进行均分，因此当一个consumer group监听多个分区数不一致的topic时，会导致consumer压力不均</li>
+<li><code>roundrobin</code>会拿所有topic的分区进行均分</li>
+</ul>
+</blockquote>
+</li>
+<li><p>High Availability</p>
+<ul>
+<li>使用ISR机制替代多数派写，容忍更多节点挂掉</li>
+<li>所有replica宕机后的leader选举：等待ISR中的节点活过来，或选择第一个活过来的节点作为leader，由<code>unclean.leader.election.enable</code>控制，默认<code>true</code></li>
+<li><code>ack=all</code>不保证所有replica收到消息，仅保证ISR中存活的replica收到消息，可以通过<code>min.insync.replicas</code>设置需要多少个replica存活才允许ack，默认是<code>1</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="kafka-design"><a href="#kafka-design" class="headerlink" title="kafka design"></a><a href="https://kafka.apache.org/documentation#design" target="_blank" rel="external">kafka design</a></h1><ul>
+<li>持久化 - 依靠文件系统<ul>
+<li>利用操作系统的IO调度（合并排序），pagecache，规避了机械硬盘随机访问的性能弱点</li>
+<li>避免了在内存中维护一份数据带来的数据结构的开销，GC问题，以及内存浪费（同一份持久化数据内存中一份，pagecache中一份）</li>
+<li>使用队列而非Btree，将访问复杂度从O(logN)降为O(1)，节约了存储空间，访问磁盘的效率也更高</li>
+</ul>
+</li>
+<li>效率<ul>
+<li>批量发送及接收消息，减少网络开销</li>
+<li>sendfile / zero-copy 将pagecache中的数据直接发送到socket，避免了在kernel和user-space之间来回copy，并且数据只需copy到pagecache中一次（即可应对后续多次消费），因此kafka消费速度几乎只受网络带宽限制</li>
+<li>支持消息批量压缩（默认未启用）</li>
+</ul>
+</li>
+<li>生产者<ul>
+<li>负载均衡（hash），无中间路由，直接发到leader</li>
+<li>异步发送（积累消息批量发送）</li>
+</ul>
+</li>
+<li>消费者<ul>
+<li>pull<ul>
+<li>避免对下游造成过大压力，并且可以积累消息批量接收，不过在无消息时需要通过阻塞的long poll避免客户端忙等待</li>
+<li>push的实时性更好，但缺少上述优势</li>
+</ul>
+</li>
+<li>consumer position<ul>
+<li>在客户端维护offset，避免由服务端来判断一个消息是否被消费（sent/ack），减少了服务端的性能开销</li>
+<li>partition中消息顺序存储且只有一个消费者，因此offset管理开销很低</li>
+<li>附带的好处是客户端可以回放消息</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>复制</li>
+<li>日志压缩</li>
+<li>限流</li>
+</ul>
+<h1 id="kafka-command-line"><a href="#kafka-command-line" class="headerlink" title="kafka command-line"></a>kafka command-line</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># 列出当前在线的group</div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --list</div><div class="line"></div><div class="line"># 查看指定在线group的offset</div><div class="line">./kafka-consumer-groups.sh --new-consumer --bootstrap-server 10.8.12.139:9092 --describe --group console1</div><div class="line"></div><div class="line"># 查看任意group在指定topic下的offset</div><div class="line"># topic必填，并且topic下不能有无数据的分区，不然会报zk node不存在的错误</div><div class="line">./kafka-consumer-offset-checker.sh --zookeeper localhost --group console1 --topic test123</div></pre></td></tr></table></figure>
+<h1 id="kafka-producer"><a href="#kafka-producer" class="headerlink" title="kafka producer"></a>kafka producer</h1><p><img src=".media/14792840997146.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/07/19/spark/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/19/spark/" itemprop="url">
+                  Spark学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-19T12:00:00+08:00">
+                2016-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h1><h2 id="RDD-Resilient-Distributed-Datasets"><a href="#RDD-Resilient-Distributed-Datasets" class="headerlink" title="RDD (Resilient Distributed Datasets)"></a>RDD (Resilient Distributed Datasets)</h2><ul>
+<li><p>What is RDD</p>
+<blockquote>
+<p>RDDs are immutable, fault tolerant, parallel data structures that let users explicitly persist intermediate results in memory, control their partitioning to optimize data placement, and manipulate them using a rich set of operations. </p>
+</blockquote>
+<p>  In a nutshell RDDs are <strong>a level of abstraction that enable efficient data reuse</strong> in a broad range of applications</p>
+</li>
+<li><p>Motivation behind RDD</p>
+<ul>
+<li>MapReduce provides abstractions for accessing a cluster’s computational resources but <strong>lack abstractions for leveraging the distributed memory</strong></li>
+<li>Avoid the data hitting the HDD<ul>
+<li>Lazy evaluation</li>
+<li>In-memory data caching</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Fault tolerance</p>
+<ul>
+<li><del>fine-grained updates: to replicate the data or log updates across machines</del></li>
+<li>coarse grained transformations: logging the transformations (lineage) and recompute</li>
+<li>checkpoint: for long lineage</li>
+</ul>
+</li>
+<li><p>Goal</p>
+<ul>
+<li>To provide an efficient programming model for batch analytics</li>
+<li><strong>NOT</strong> suitable for applications that make asynchronous fine grained updates to shared state, such as a storage system for a web application or an incremental web crawller.</li>
+</ul>
+</li>
+<li><p>Details</p>
+<ul>
+<li>RDD is an interface for data transformation</li>
+<li>RDD is collection of data items split into partitions and stored in memory on worker nodes of the cluster</li>
+<li>Partitions are recomputed on failure or cache eviction</li>
+</ul>
+</li>
+<li><p>Metadata stored for interface</p>
+<ul>
+<li>Partitions</li>
+<li>Dependencies</li>
+<li>Compute</li>
+<li>Preferred Locations</li>
+<li>Partitioner</li>
+</ul>
+</li>
+<li><p>Operations</p>
+<ul>
+<li>Transformations</li>
+<li>Actions</li>
+<li><img src=".media/14690053673763.jpg" alt="-w550"></li>
+</ul>
+</li>
+</ul>
+<h2 id="DAG-Direct-Acyclic-Graph"><a href="#DAG-Direct-Acyclic-Graph" class="headerlink" title="DAG (Direct Acyclic Graph)"></a>DAG (Direct Acyclic Graph)</h2><ul>
+<li><p>What is DAG</p>
+<blockquote>
+<p>sequence of computations performed on data</p>
+</blockquote>
+<ul>
+<li>Node – RDD partition</li>
+<li>Edge – transformation on top of data</li>
+<li>Acyclic – graph cannot return to the older partition</li>
+<li>Direct – transformation is an action that transitions data partition state (from A to B)</li>
+</ul>
+</li>
+</ul>
+<h2 id="WordCount"><a href="#WordCount" class="headerlink" title="WordCount"></a>WordCount</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def printfunc (x):</div><div class="line">	print &apos;Word %s occurs %d times&apos; % (x[0], x[1])</div><div class="line"></div><div class="line">infile = sc.textFile(&apos;hdfs://localhost:8020/test.txt&apos;, 4)</div><div class="line">rdd1 = infile.flatMap(lambda x: x.split())</div><div class="line">rdd2 = rdd1.map(lambda x: (x, 1)).reduceByKey(lambda x,y: x+y)</div><div class="line">rdd2.foreach(printfunc)</div></pre></td></tr></table></figure>
+<p><img src=".media/14690057530229.jpg" alt=""></p>
+<h2 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h2>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/07/01/launchd/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/01/launchd/" itemprop="url">
+                  Launchd cheatsheet
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-01T12:00:00+08:00">
+                2016-07-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Launchd"><a href="#Launchd" class="headerlink" title="Launchd"></a>Launchd</h1><p><a href="http://launchd.info/" target="_blank" rel="external">launchd.info</a></p>
+<h2 id="LaunchDaemons-启动时运行"><a href="#LaunchDaemons-启动时运行" class="headerlink" title="LaunchDaemons - 启动时运行"></a>LaunchDaemons - 启动时运行</h2><ul>
+<li>脚本位置<ul>
+<li>/System/Library/LaunchDaemons/ 系统专用</li>
+<li>/Library/LaunchDaemons/</li>
+</ul>
+</li>
+<li>脚本权限<ul>
+<li>必须是root/wheel 644</li>
+</ul>
+</li>
+</ul>
+<h2 id="LaunchAgents-登录时运行"><a href="#LaunchAgents-登录时运行" class="headerlink" title="LaunchAgents - 登录时运行"></a>LaunchAgents - 登录时运行</h2><ul>
+<li>脚本位置<ul>
+<li>/System/Library/LaunchAgents/ 系统专用</li>
+<li>/Library/LaunchAgents/  所有用户</li>
+<li>~/Library/LaunchAgents/  当前用户</li>
+</ul>
+</li>
+<li>脚本权限<ul>
+<li>同上，用户目录不需要root</li>
+</ul>
+</li>
+</ul>
+<h2 id="launchctl"><a href="#launchctl" class="headerlink" title="launchctl"></a>launchctl</h2><p>load，unload，remove</p>
+<h2 id="plist格式"><a href="#plist格式" class="headerlink" title="plist格式"></a>plist格式</h2><ul>
+<li>启动时运行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</div><div class="line">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</div><div class="line">&lt;plist version=&quot;1.0&quot;&gt;</div><div class="line">    &lt;dict&gt;</div><div class="line">        &lt;key&gt;Label&lt;/key&gt;</div><div class="line">        &lt;string&gt;com.my.auto_switch_kb&lt;/string&gt;</div><div class="line">        &lt;key&gt;LimitLoadToSessionType&lt;/key&gt;</div><div class="line">        &lt;string&gt;Aqua&lt;/string&gt;</div><div class="line">        &lt;key&gt;ProgramArguments&lt;/key&gt;</div><div class="line">        &lt;array&gt;</div><div class="line">            &lt;string&gt;/usr/local/bin/python&lt;/string&gt;</div><div class="line">            &lt;string&gt;/usr/local/bin/auto_switch_kb.py&lt;/string&gt;</div><div class="line">        &lt;/array&gt;</div><div class="line">        &lt;key&gt;RunAtLoad&lt;/key&gt;</div><div class="line">        &lt;true/&gt;</div><div class="line">        &lt;key&gt;StandardErrorPath&lt;/key&gt;</div><div class="line">        &lt;string&gt;/tmp/auto_switch_kb.error&lt;/string&gt;</div><div class="line">        &lt;key&gt;StandardOutPath&lt;/key&gt;</div><div class="line">        &lt;string&gt;/tmp/auto_switch_kb.log&lt;/string&gt;</div><div class="line">    &lt;/dict&gt;</div><div class="line">&lt;/plist&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>定时运行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;key&gt;StartInterval&lt;/key&gt;</div><div class="line">&lt;integer&gt;60&lt;/integer&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>指定时间运行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;key&gt;StartCalendarInterval&lt;/key&gt;</div><div class="line">    &lt;dict&gt;</div><div class="line">        &lt;key&gt;Minute&lt;/key&gt;</div><div class="line">        &lt;integer&gt;45&lt;/integer&gt;</div><div class="line">        &lt;key&gt;Hour&lt;/key&gt;</div><div class="line">        &lt;integer&gt;13&lt;/integer&gt;</div><div class="line">        &lt;key&gt;Day&lt;/key&gt;</div><div class="line">        &lt;integer&gt;7&lt;/integer&gt;</div><div class="line">    &lt;/dict&gt;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/06/25/pfctl/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/25/pfctl/" itemprop="url">
+                  pfctl cheatsheet
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-25T12:00:00+08:00">
+                2016-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="pfctl-cheatsheet"><a href="#pfctl-cheatsheet" class="headerlink" title="pfctl cheatsheet"></a>pfctl cheatsheet</h1><h2 id="General-PFCTL-Commands"><a href="#General-PFCTL-Commands" class="headerlink" title="General PFCTL Commands"></a>General PFCTL Commands</h2><ul>
+<li><code>pfctl -d</code> disable packet-filtering</li>
+<li><code>pfctl -e</code> enable packet-filtering</li>
+</ul>
+<h2 id="Loading-PF-Rules"><a href="#Loading-PF-Rules" class="headerlink" title="Loading PF Rules"></a>Loading PF Rules</h2><ul>
+<li><code>pfctl -f /etc/pf.conf</code> load /etc/pf.conf</li>
+<li><code>pfctl -n -f /etc/pf.conf</code> parse /etc/pf.conf, but dont load it</li>
+</ul>
+<h2 id="Clearing-PF-Rules-amp-Counters"><a href="#Clearing-PF-Rules-amp-Counters" class="headerlink" title="Clearing PF Rules &amp; Counters"></a>Clearing PF Rules &amp; Counters</h2><ul>
+<li><code>pfctl -F all</code> flush ALL</li>
+<li><code>pfctl -F rules</code> flush only the RULES</li>
+<li><code>pfctl -z clear</code> all counters</li>
+</ul>
+<blockquote>
+<p>note: flushing rules do not touch any existing stateful connections</p>
+</blockquote>
+<h2 id="Output-PF-Information"><a href="#Output-PF-Information" class="headerlink" title="Output PF Information"></a>Output PF Information</h2><ul>
+<li><code>pfctl -s rules</code> show filter information</li>
+<li><code>pfctl -vsr</code> show filter information for what FILTER rules hit..</li>
+<li><code>pfctl -vvsr</code> show filter information as above and prepend rule numbers</li>
+<li><code>pfctl -s state</code> show contents of the STATE table</li>
+<li><code>pfctl -s info</code> show statistics for state tables and packet normalization</li>
+<li><code>pfctl -s all</code> show everything</li>
+</ul>
 
           
         
@@ -967,6 +2320,10 @@
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1007,7 +2364,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -1018,7 +2375,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

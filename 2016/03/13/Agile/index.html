@@ -1,0 +1,725 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="5EvqvsHl_6NBDTtofs3DcsyQkbCwYoi73lzWPjUMajY" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="agile," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Agile
+敏捷开发就是在一个高度协作的环境中，不断地使用反馈进行自我调整和完善。
+
+Differences Between Scrum and XP
+Scrum迭代周期更长，一个sprint通常2周到4周，XP只有1到2周
+Scrum sprint开始后不允许变更backlog items，XP允许将未开始的任务变更为相同工作量的新任务
+Scrum PO决定任务优先级，团队成员决定完成顺序，XP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="敏捷开发与Scrum学习笔记">
+<meta property="og:url" content="http://allenxuyb.github.io/2016/03/13/Agile/index.html">
+<meta property="og:site_name" content="El Psy Congroo">
+<meta property="og:description" content="Agile
+敏捷开发就是在一个高度协作的环境中，不断地使用反馈进行自我调整和完善。
+
+Differences Between Scrum and XP
+Scrum迭代周期更长，一个sprint通常2周到4周，XP只有1到2周
+Scrum sprint开始后不允许变更backlog items，XP允许将未开始的任务变更为相同工作量的新任务
+Scrum PO决定任务优先级，团队成员决定完成顺序，XP">
+<meta property="og:updated_time" content="2017-01-15T04:20:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="敏捷开发与Scrum学习笔记">
+<meta name="twitter:description" content="Agile
+敏捷开发就是在一个高度协作的环境中，不断地使用反馈进行自我调整和完善。
+
+Differences Between Scrum and XP
+Scrum迭代周期更长，一个sprint通常2周到4周，XP只有1到2周
+Scrum sprint开始后不允许变更backlog items，XP允许将未开始的任务变更为相同工作量的新任务
+Scrum PO决定任务优先级，团队成员决定完成顺序，XP">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://allenxuyb.github.io/2016/03/13/Agile/"/>
+
+
+
+
+
+  <title> 敏捷开发与Scrum学习笔记 | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">El Psy Congroo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/03/13/Agile/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                敏捷开发与Scrum学习笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-13T12:00:00+08:00">
+                2016-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Agile"><a href="#Agile" class="headerlink" title="Agile"></a>Agile</h1><blockquote>
+<p>敏捷开发就是在一个高度协作的环境中，不断地使用反馈进行自我调整和完善。</p>
+</blockquote>
+<h2 id="Differences-Between-Scrum-and-XP"><a href="#Differences-Between-Scrum-and-XP" class="headerlink" title="Differences Between Scrum and XP"></a>Differences Between Scrum and XP</h2><ul>
+<li>Scrum迭代周期更长，一个sprint通常2周到4周，XP只有1到2周</li>
+<li>Scrum sprint开始后不允许变更backlog items，XP允许将未开始的任务变更为相同工作量的新任务</li>
+<li>Scrum PO决定任务优先级，团队成员决定完成顺序，XP全部由PO决定</li>
+<li>Scrum不强制引入敏捷工程实践，如TDD，结对，重构等，XP反之。Scrum希望由团队自己来发现这些工程实践的价值并进行应用。</li>
+</ul>
+<blockquote>
+<p>Start with Scrum and then invent your own version of XP</p>
+</blockquote>
+<h2 id="ScrumMaster"><a href="#ScrumMaster" class="headerlink" title="ScrumMaster"></a>ScrumMaster</h2><blockquote>
+<p>引导并支持团队成员实施Scrum，促进协作，清除障碍，最大化团队产出。<br>ScrumMaster仅对流程有控制权，对团队成员没有管辖权。</p>
+</blockquote>
+<p>以促进式和服务式的领导模式，为团队提供指导而非答案</p>
+<h2 id="Product-Owner"><a href="#Product-Owner" class="headerlink" title="Product Owner"></a>Product Owner</h2><blockquote>
+<p>为团队指出目标及边界</p>
+</blockquote>
+<p>PM/客户同团队之间的桥梁，传达产品愿景并落实到Backlog中进行管理，负责解答团队中的业务疑问，并对业务解决方案进行决策</p>
+<h2 id="团队"><a href="#团队" class="headerlink" title="团队"></a>团队</h2><blockquote>
+<p>The best architectures, requirements, and designs emerge from self-organizing teams.</p>
+</blockquote>
+<h3 id="团队结构"><a href="#团队结构" class="headerlink" title="团队结构"></a>团队结构</h3><ul>
+<li>小团队（9人以下）优于大团队</li>
+<li>特性团队优于组件团队</li>
+<li>把正确的人放入团队</li>
+<li>避免多任务</li>
+</ul>
+<h3 id="团队协作"><a href="#团队协作" class="headerlink" title="团队协作"></a>团队协作</h3><ul>
+<li>团队承诺，不预分配任务到个人</li>
+<li>循序渐进的完成工作，避免瀑布式的交接，不要等sprint快结束时才完成所有任务</li>
+<li>一个sprint中承诺不同粒度的backlog</li>
+<li>建立学习型团队，分享，激励，容错</li>
+</ul>
+<h2 id="Backlog"><a href="#Backlog" class="headerlink" title="Backlog"></a>Backlog</h2><ul>
+<li>讨论代替文档，文档记录讨论内容，而非作为交接物，由受益方写文档</li>
+<li>在backlog中使用user story，使用固定格式，并写在纸上（保证足够短小）</li>
+<li>user story point: focus on complexity，not time(man-day)</li>
+<li>接纳涌现的需求</li>
+<li>冰山型的backlog，并持续梳理（占用10% sprint时间）</li>
+<li>Detailed Appropriately, Estimated, Emergent, Prioritized</li>
+<li>定义<strong>完成</strong> </li>
+</ul>
+<h2 id="Sprint"><a href="#Sprint" class="headerlink" title="Sprint"></a>Sprint</h2><ul>
+<li>每个sprint递交可工作（潜在可交付）并且有价值的软件</li>
+<li>对user story有必要（非完整）理解，认为可完成时，才能放入下一个sprint（占用10% sprint时间）</li>
+<li>使用增量方式处理架构问题，每个sprint中发现架构风险，引入架构决策。尽量保持最小架构，过多的细节会使方案一致性难以维持，同时令架构难以调整</li>
+<li>严格保持sprint长度一致，绝不要因为工作未完成延长sprint</li>
+<li>sprint中不要轻易改变团队目标，若有需要则终止当前sprint</li>
+<li>反馈-学习-适应</li>
+</ul>
+<h2 id="计划"><a href="#计划" class="headerlink" title="计划"></a>计划</h2><ul>
+<li>计划是逐步完善的，参考冰山型的backlog</li>
+<li>按可持续步调工作，不要用加班赶计划不要用加班赶计划不要用加班赶计划</li>
+<li>范围-质量-进度-资源，只有进度和范围可以牺牲<ul>
+<li>无论何时，团队都要保证系统<strong>内部质量</strong></li>
+</ul>
+</li>
+<li>分清估算和承诺，用数据来估算，用历史估算作为承诺的基础</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/agile/" rel="tag"># agile</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/05/JVM Internals/" rel="next" title="JVM Internals学习笔记">
+                <i class="fa fa-chevron-left"></i> JVM Internals学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/18/System Design/" rel="prev" title="系统设计学习笔记">
+                系统设计学习笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Allen Xu" />
+          <p class="site-author-name" itemprop="name">Allen Xu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Agile"><span class="nav-number">1.</span> <span class="nav-text">Agile</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Differences-Between-Scrum-and-XP"><span class="nav-number">1.1.</span> <span class="nav-text">Differences Between Scrum and XP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ScrumMaster"><span class="nav-number">1.2.</span> <span class="nav-text">ScrumMaster</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Product-Owner"><span class="nav-number">1.3.</span> <span class="nav-text">Product Owner</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#团队"><span class="nav-number">1.4.</span> <span class="nav-text">团队</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#团队结构"><span class="nav-number">1.4.1.</span> <span class="nav-text">团队结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#团队协作"><span class="nav-number">1.4.2.</span> <span class="nav-text">团队协作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Backlog"><span class="nav-number">1.5.</span> <span class="nav-text">Backlog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sprint"><span class="nav-number">1.6.</span> <span class="nav-text">Sprint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计划"><span class="nav-number">1.7.</span> <span class="nav-text">计划</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Allen Xu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

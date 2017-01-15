@@ -1,0 +1,833 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="5EvqvsHl_6NBDTtofs3DcsyQkbCwYoi73lzWPjUMajY" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="architecture," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="持续更新中……
+
+System DesignBasic Steps
+Clarify and agree on the scope of the system
+User cases
+Who is going to use it
+How are they going to use it
+
+
+Constraints
+traffic
+high availability
+…
+
+
+
+
+High level">
+<meta property="og:type" content="article">
+<meta property="og:title" content="系统设计学习笔记">
+<meta property="og:url" content="http://allenxuyb.github.io/2016/04/18/System Design/index.html">
+<meta property="og:site_name" content="El Psy Congroo">
+<meta property="og:description" content="持续更新中……
+
+System DesignBasic Steps
+Clarify and agree on the scope of the system
+User cases
+Who is going to use it
+How are they going to use it
+
+
+Constraints
+traffic
+high availability
+…
+
+
+
+
+High level">
+<meta property="og:updated_time" content="2017-01-15T04:18:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="系统设计学习笔记">
+<meta name="twitter:description" content="持续更新中……
+
+System DesignBasic Steps
+Clarify and agree on the scope of the system
+User cases
+Who is going to use it
+How are they going to use it
+
+
+Constraints
+traffic
+high availability
+…
+
+
+
+
+High level">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://allenxuyb.github.io/2016/04/18/System Design/"/>
+
+
+
+
+
+  <title> 系统设计学习笔记 | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">El Psy Congroo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://allenxuyb.github.io/2016/04/18/System Design/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                系统设计学习笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-18T12:00:00+08:00">
+                2016-04-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>持续更新中……</p>
+</blockquote>
+<h1 id="System-Design"><a href="#System-Design" class="headerlink" title="System Design"></a>System Design</h1><h2 id="Basic-Steps"><a href="#Basic-Steps" class="headerlink" title="Basic Steps"></a>Basic Steps</h2><ol>
+<li>Clarify and agree on the scope of the system<ul>
+<li>User cases<ul>
+<li>Who is going to use it</li>
+<li>How are they going to use it</li>
+</ul>
+</li>
+<li>Constraints<ul>
+<li>traffic</li>
+<li>high availability</li>
+<li>…</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>High level architecture design (Abstract design)<ul>
+<li>Sketch the important components and connections between them, but <strong>don’t go into some details</strong><ul>
+<li>service layer</li>
+<li>data storage layer</li>
+<li>key components, eg: caching, load balance, database cluster    </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Component Design<ul>
+<li><strong>interface</strong></li>
+<li>OOD for functionalities<ul>
+<li>Map scenario to module</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Understanding Bottlenecks</li>
+<li>Scaling <ul>
+<li>Vertical</li>
+<li>Horizontal</li>
+<li>Caching<ul>
+<li>Application caching</li>
+<li>Database caching</li>
+<li>In-memory caches</li>
+</ul>
+</li>
+<li>Load balancing<ul>
+<li>client-side / hardware / software</li>
+</ul>
+</li>
+<li>Database partitioning<ul>
+<li>vertical / horizontal</li>
+</ul>
+</li>
+<li>Microservices</li>
+</ul>
+</li>
+</ol>
+<h2 id="SNG后台技术分享"><a href="#SNG后台技术分享" class="headerlink" title="SNG后台技术分享"></a>SNG后台技术分享</h2><ul>
+<li>定义可用性<ul>
+<li>考虑成本及损失的用户价值，2个9到4个9，3.65天到52min</li>
+</ul>
+</li>
+<li>估算<ul>
+<li>熟悉常见性能指标，通过估算而非测试得知系统能力</li>
+</ul>
+</li>
+<li><p>设计优化（面向海量用户）</p>
+<blockquote>
+<p>把业务指标抽象为技术细节，10亿访问量/天 =&gt; 高峰并发访问量2~3w/秒 =&gt; 负载均衡到每台服务器</p>
+</blockquote>
+<ul>
+<li>代码级优化<ul>
+<li>熟悉算法，数据结构，外部技术依赖如网络协议</li>
+<li>主动寻找优化空间，如内存开销，瓶颈，漏洞</li>
+</ul>
+</li>
+<li>系统设计级优化 （以存储海量小文件为例）<ul>
+<li>技术要点<ul>
+<li>技术可行性，可扩展性，高并发/低成本/一致性</li>
+</ul>
+</li>
+<li>初步方案<ul>
+<li>kv，hash，bucket</li>
+</ul>
+</li>
+<li>深入设计<ul>
+<li>基于优先级分级控制，冗余存储，同步/异步写，最终一致，hash同步，存储引擎</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>柔性服务思维<ul>
+<li>故障尽量少影响到前端用户体验</li>
+<li>识别关键路径</li>
+<li>服务降级，设置合理超时防止雪崩</li>
+<li>容灾预案，如仅50%流量可用时</li>
+</ul>
+</li>
+<li>负载均衡</li>
+</ul>
+</li>
+<li>运维层<ul>
+<li>监控<ul>
+<li>业务层<ul>
+<li>接口运行状态监控，数据库同步状态监控，自动化测试监控</li>
+</ul>
+</li>
+<li>系统层</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>产品层<ul>
+<li>友好的故障提示</li>
+<li>故障后的用户引导</li>
+<li>前端友好等待策略</li>
+</ul>
+</li>
+</ul>
+<h2 id="饿了么订单系统架构演进"><a href="#饿了么订单系统架构演进" class="headerlink" title="饿了么订单系统架构演进"></a>饿了么订单系统架构演进</h2><ul>
+<li>（微）服务架构演进<ul>
+<li>基于领域认知</li>
+<li>松耦合、单一职责、关注分离</li>
+<li>可验证的结果（系统能力效率的提升）</li>
+</ul>
+</li>
+<li>监控告警演进<ul>
+<li>重视业务指标（而非仅关注系统指标）</li>
+</ul>
+</li>
+<li>Design for failure<ul>
+<li>补偿机制：消息补偿（MQ挂了暂时用内存Q补偿），流程补偿（用同步轮询补偿失败的异步请求）</li>
+<li>随机故障测试（系统层，人为制造IO，CPU，网络压力，应用层，人为增加接口响应时间，对FailOver设计进行验证）</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/architecture/" rel="tag"># architecture</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/13/Agile/" rel="next" title="敏捷开发与Scrum学习笔记">
+                <i class="fa fa-chevron-left"></i> 敏捷开发与Scrum学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/14/log4j笔记/" rel="prev" title="Log4j笔记">
+                Log4j笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Allen Xu" />
+          <p class="site-author-name" itemprop="name">Allen Xu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#System-Design"><span class="nav-number">1.</span> <span class="nav-text">System Design</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-Steps"><span class="nav-number">1.1.</span> <span class="nav-text">Basic Steps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SNG后台技术分享"><span class="nav-number">1.2.</span> <span class="nav-text">SNG后台技术分享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#饿了么订单系统架构演进"><span class="nav-number">1.3.</span> <span class="nav-text">饿了么订单系统架构演进</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Allen Xu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
