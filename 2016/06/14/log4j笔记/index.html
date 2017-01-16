@@ -106,7 +106,7 @@ immediateFlush
 通过缓存减少IO次数
 immediateFlush
 是否每次log event都flush到磁">
-<meta property="og:updated_time" content="2017-01-15T15:13:57.000Z">
+<meta property="og:updated_time" content="2017-01-16T01:13:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Log4j笔记">
 <meta name="twitter:description" content="Log4j 1.2性能注意点
@@ -357,7 +357,8 @@ immediateFlush
 <li>使用<code>AsyncAppender</code><ul>
 <li>使用<code>addAppender</code>封装普通Appender为异步</li>
 <li>通过独立的<code>AsyncAppender-Dispatcher</code>线程调用Appender</li>
-<li>通过<code>bufferSize</code>设置缓存的event<strong>数量</strong>，到上限时根据<code>blocking</code>参数（默认为<code>true</code>）决定阻塞还是丢弃后续event</li>
+<li>通过<code>bufferSize</code>设置缓存的event<strong>数量</strong>，到上限时根据<code>blocking</code>参数（默认为<code>true</code>）决定阻塞还是丢弃后续event<a id="more"></a>
+</li>
 </ul>
 </li>
 </ul>
@@ -422,8 +423,8 @@ immediateFlush
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/04/18/System Design/" rel="next" title="系统设计学习笔记">
-                <i class="fa fa-chevron-left"></i> 系统设计学习笔记
+              <a href="/2016/05/31/Practices-of-an-Agile-Developer-Xmind/" rel="next" title="Practices of an Agile Developer思维导图">
+                <i class="fa fa-chevron-left"></i> Practices of an Agile Developer思维导图
               </a>
             
           </div>
@@ -432,8 +433,8 @@ immediateFlush
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/06/25/pfctl/" rel="prev" title="pfctl cheatsheet">
-                pfctl cheatsheet <i class="fa fa-chevron-right"></i>
+              <a href="/2016/07/01/launchd/" rel="prev" title="Launchd cheatsheet">
+                Launchd cheatsheet <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

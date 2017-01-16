@@ -319,8 +319,7 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 <p>持续更新中……</p>
 </blockquote>
 <h1 id="System-Design"><a href="#System-Design" class="headerlink" title="System Design"></a>System Design</h1><h2 id="Basic-Steps"><a href="#Basic-Steps" class="headerlink" title="Basic Steps"></a>Basic Steps</h2><ol>
@@ -373,91 +372,14 @@
 <li>vertical / horizontal</li>
 </ul>
 </li>
-<li>Microservices</li>
-</ul>
-</li>
-</ol>
-<h2 id="SNG后台技术分享"><a href="#SNG后台技术分享" class="headerlink" title="SNG后台技术分享"></a>SNG后台技术分享</h2><ul>
-<li>定义可用性<ul>
-<li>考虑成本及损失的用户价值，2个9到4个9，3.65天到52min</li>
-</ul>
-</li>
-<li>估算<ul>
-<li>熟悉常见性能指标，通过估算而非测试得知系统能力</li>
-</ul>
-</li>
-<li><p>设计优化（面向海量用户）</p>
-<blockquote>
-<p>把业务指标抽象为技术细节，10亿访问量/天 =&gt; 高峰并发访问量2~3w/秒 =&gt; 负载均衡到每台服务器</p>
-</blockquote>
-<ul>
-<li>代码级优化<ul>
-<li>熟悉算法，数据结构，外部技术依赖如网络协议</li>
-<li>主动寻找优化空间，如内存开销，瓶颈，漏洞</li>
-</ul>
-</li>
-<li>系统设计级优化 （以存储海量小文件为例）<ul>
-<li>技术要点<ul>
-<li>技术可行性，可扩展性，高并发/低成本/一致性</li>
-</ul>
-</li>
-<li>初步方案<ul>
-<li>kv，hash，bucket</li>
-</ul>
-</li>
-<li>深入设计<ul>
-<li>基于优先级分级控制，冗余存储，同步/异步写，最终一致，hash同步，存储引擎</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>柔性服务思维<ul>
-<li>故障尽量少影响到前端用户体验</li>
-<li>识别关键路径</li>
-<li>服务降级，设置合理超时防止雪崩</li>
-<li>容灾预案，如仅50%流量可用时</li>
-</ul>
-</li>
-<li>负载均衡</li>
-</ul>
-</li>
-<li>运维层<ul>
-<li>监控<ul>
-<li>业务层<ul>
-<li>接口运行状态监控，数据库同步状态监控，自动化测试监控</li>
-</ul>
-</li>
-<li>系统层</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>产品层<ul>
-<li>友好的故障提示</li>
-<li>故障后的用户引导</li>
-<li>前端友好等待策略</li>
-</ul>
-</li>
-</ul>
-<h2 id="饿了么订单系统架构演进"><a href="#饿了么订单系统架构演进" class="headerlink" title="饿了么订单系统架构演进"></a>饿了么订单系统架构演进</h2><ul>
-<li>（微）服务架构演进<ul>
-<li>基于领域认知</li>
-<li>松耦合、单一职责、关注分离</li>
-<li>可验证的结果（系统能力效率的提升）</li>
-</ul>
-</li>
-<li>监控告警演进<ul>
-<li>重视业务指标（而非仅关注系统指标）</li>
-</ul>
-</li>
-<li>Design for failure<ul>
-<li>补偿机制：消息补偿（MQ挂了暂时用内存Q补偿），流程补偿（用同步轮询补偿失败的异步请求）</li>
-<li>随机故障测试（系统层，人为制造IO，CPU，网络压力，应用层，人为增加接口响应时间，对FailOver设计进行验证）</li>
-</ul>
-</li>
-</ul>
-
-          
+<li>Microservices
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/18/System Design/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -708,70 +630,15 @@
 
       
         
-          
-            <h1 id="Agile"><a href="#Agile" class="headerlink" title="Agile"></a>Agile</h1><blockquote>
-<p>敏捷开发就是在一个高度协作的环境中，不断地使用反馈进行自我调整和完善。</p>
-</blockquote>
-<h2 id="Differences-Between-Scrum-and-XP"><a href="#Differences-Between-Scrum-and-XP" class="headerlink" title="Differences Between Scrum and XP"></a>Differences Between Scrum and XP</h2><ul>
-<li>Scrum迭代周期更长，一个sprint通常2周到4周，XP只有1到2周</li>
-<li>Scrum sprint开始后不允许变更backlog items，XP允许将未开始的任务变更为相同工作量的新任务</li>
-<li>Scrum PO决定任务优先级，团队成员决定完成顺序，XP全部由PO决定</li>
-<li>Scrum不强制引入敏捷工程实践，如TDD，结对，重构等，XP反之。Scrum希望由团队自己来发现这些工程实践的价值并进行应用。</li>
-</ul>
-<blockquote>
-<p>Start with Scrum and then invent your own version of XP</p>
-</blockquote>
-<h2 id="ScrumMaster"><a href="#ScrumMaster" class="headerlink" title="ScrumMaster"></a>ScrumMaster</h2><blockquote>
-<p>引导并支持团队成员实施Scrum，促进协作，清除障碍，最大化团队产出。<br>ScrumMaster仅对流程有控制权，对团队成员没有管辖权。</p>
-</blockquote>
-<p>以促进式和服务式的领导模式，为团队提供指导而非答案</p>
-<h2 id="Product-Owner"><a href="#Product-Owner" class="headerlink" title="Product Owner"></a>Product Owner</h2><blockquote>
-<p>为团队指出目标及边界</p>
-</blockquote>
-<p>PM/客户同团队之间的桥梁，传达产品愿景并落实到Backlog中进行管理，负责解答团队中的业务疑问，并对业务解决方案进行决策</p>
-<h2 id="团队"><a href="#团队" class="headerlink" title="团队"></a>团队</h2><blockquote>
-<p>The best architectures, requirements, and designs emerge from self-organizing teams.</p>
-</blockquote>
-<h3 id="团队结构"><a href="#团队结构" class="headerlink" title="团队结构"></a>团队结构</h3><ul>
-<li>小团队（9人以下）优于大团队</li>
-<li>特性团队优于组件团队</li>
-<li>把正确的人放入团队</li>
-<li>避免多任务</li>
-</ul>
-<h3 id="团队协作"><a href="#团队协作" class="headerlink" title="团队协作"></a>团队协作</h3><ul>
-<li>团队承诺，不预分配任务到个人</li>
-<li>循序渐进的完成工作，避免瀑布式的交接，不要等sprint快结束时才完成所有任务</li>
-<li>一个sprint中承诺不同粒度的backlog</li>
-<li>建立学习型团队，分享，激励，容错</li>
-</ul>
-<h2 id="Backlog"><a href="#Backlog" class="headerlink" title="Backlog"></a>Backlog</h2><ul>
-<li>讨论代替文档，文档记录讨论内容，而非作为交接物，由受益方写文档</li>
-<li>在backlog中使用user story，使用固定格式，并写在纸上（保证足够短小）</li>
-<li>user story point: focus on complexity，not time(man-day)</li>
-<li>接纳涌现的需求</li>
-<li>冰山型的backlog，并持续梳理（占用10% sprint时间）</li>
-<li>Detailed Appropriately, Estimated, Emergent, Prioritized</li>
-<li>定义<strong>完成</strong> </li>
-</ul>
-<h2 id="Sprint"><a href="#Sprint" class="headerlink" title="Sprint"></a>Sprint</h2><ul>
-<li>每个sprint递交可工作（潜在可交付）并且有价值的软件</li>
-<li>对user story有必要（非完整）理解，认为可完成时，才能放入下一个sprint（占用10% sprint时间）</li>
-<li>使用增量方式处理架构问题，每个sprint中发现架构风险，引入架构决策。尽量保持最小架构，过多的细节会使方案一致性难以维持，同时令架构难以调整</li>
-<li>严格保持sprint长度一致，绝不要因为工作未完成延长sprint</li>
-<li>sprint中不要轻易改变团队目标，若有需要则终止当前sprint</li>
-<li>反馈-学习-适应</li>
-</ul>
-<h2 id="计划"><a href="#计划" class="headerlink" title="计划"></a>计划</h2><ul>
-<li>计划是逐步完善的，参考冰山型的backlog</li>
-<li>按可持续步调工作，不要用加班赶计划不要用加班赶计划不要用加班赶计划</li>
-<li>范围-质量-进度-资源，只有进度和范围可以牺牲<ul>
-<li>无论何时，团队都要保证系统<strong>内部质量</strong></li>
-</ul>
-</li>
-<li>分清估算和承诺，用数据来估算，用历史估算作为承诺的基础</li>
-</ul>
-
-          
+          <h1 id="Agile"><a href="#Agile" class="headerlink" title="Agile"></a>Agile</h1><blockquote>
+<p>敏捷开发就是在一个高度协作的环境中，不断地使用反馈进行自我调整和完善。<br>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/13/Agile/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -887,31 +754,18 @@
 
       
         
-          
-            <blockquote>
+          <blockquote>
 <p><strong>//TODO</strong></p>
 </blockquote>
 <h1 id="JVM-Internals"><a href="#JVM-Internals" class="headerlink" title="JVM Internals"></a>JVM Internals</h1><blockquote>
-<p><a href="http://blog.jamesdbloom.com/JVMInternals.html" target="_blank" rel="external">原文: JVM Interals</a><br><img src="http://i.imgur.com/Hoc7sxg.jpg" alt=""></p>
-</blockquote>
-<h2 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h2><p>Hotspot JVM    将Java线程一对一映射到操作系统原生线程上。</p>
-<ul>
-<li>Java线程状态初始化，如thread-local sotrage, allocation buffers, synchronization objects, stacks, program counter</li>
-<li>原生线程创建，调用run()方法</li>
-<li>run()方法返回，处理未捕获异常</li>
-<li>线程终止，释放Java线程及原生线程资源，并判断JVM是否需要退出（如此线程是最后一个非守护线程）</li>
-</ul>
-<h3 id="JVM-System-Thread"><a href="#JVM-System-Thread" class="headerlink" title="JVM System Thread"></a>JVM System Thread</h3><p>由main方法创建的系统后台线程</p>
-<ul>
-<li>VM thread<br>执行需要JVM在safe-point时才能执行的操作，如GC, thread stack dump, thread suspension, biased locking revocation</li>
-<li>Periodic task thread</li>
-<li>GC threads</li>
-<li>Compiler threads<br>运行时编译字节码到native code</li>
-<li>Signal dispatch thread</li>
-</ul>
-<h3 id="Per-thread"><a href="#Per-thread" class="headerlink" title="Per thread"></a>Per thread</h3><p>每个线程私有的组件</p>
-<h4 id="Program-Counter-PC"><a href="#Program-Counter-PC" class="headerlink" title="Program Counter (PC)"></a>Program Counter (PC)</h4>
-          
+<p><a href="http://blog.jamesdbloom.com/JVMInternals.html">原文: JVM Interals</a><br><img src="http://i.imgur.com/Hoc7sxg.jpg" alt=""><br>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/05/JVM Internals/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
