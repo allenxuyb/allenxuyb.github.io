@@ -247,6 +247,135 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2017/01/31/nio/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/01/31/nio/" itemprop="url">
+                  Scalable IO in Java 学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-31T12:00:00+08:00">
+                2017-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Scalable-IO-in-Java-学习笔记"><a href="#Scalable-IO-in-Java-学习笔记" class="headerlink" title="Scalable IO in Java 学习笔记"></a>Scalable IO in Java 学习笔记</h1><p><a href="http://gee.cs.oswego.edu/dl/cpjslides/nio.pdf">Scalable IO in Java</a><br><a href="http://tech.meituan.com/nio.html">Java NIO浅析 &lt;- 看这个就好了，下面不用看了</a></p>
+<h2 id="网络服务的基本结构"><a href="#网络服务的基本结构" class="headerlink" title="网络服务的基本结构"></a>网络服务的基本结构</h2><ul>
+<li>Read request</li>
+<li>Decode request</li>
+<li>Process service</li>
+<li>Encode reply</li>
+<li>Send reply
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/01/31/nio/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2017/01/23/job_control/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -890,6 +1019,147 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2016/07/20/kafka/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/20/kafka/" itemprop="url">
+                  Kafka学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-20T12:00:00+08:00">
+                2016-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="kafka-conception"><a href="#kafka-conception" class="headerlink" title="kafka conception"></a>kafka conception</h1><ul>
+<li><p>multiple consumers on one partition</p>
+<ul>
+<li>like mutliple threads with a synchronize block</li>
+</ul>
+</li>
+<li><p><a href="http://kafka.apache.org/documentation.html#semantics">Message Delivery Semantics</a></p>
+<ul>
+<li>at-least-once<ul>
+<li>Producer 发送重试，ack=all</li>
+<li>Consumer 关闭auto commit，处理完消息后commit</li>
+</ul>
+</li>
+<li>at-most-once<ul>
+<li>无重试，自动提交</li>
+</ul>
+</li>
+<li>exactly-once<ul>
+<li>重试加基于消息主键的幂等发送/消费
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/07/20/kafka/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2016/07/20/AAT/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -992,147 +1262,6 @@
           <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/07/20/AAT/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2016/07/20/kafka/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/20/kafka/" itemprop="url">
-                  Kafka学习笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-20T12:00:00+08:00">
-                2016-07-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="kafka-conception"><a href="#kafka-conception" class="headerlink" title="kafka conception"></a>kafka conception</h1><ul>
-<li><p>multiple consumers on one partition</p>
-<ul>
-<li>like mutliple threads with a synchronize block</li>
-</ul>
-</li>
-<li><p><a href="http://kafka.apache.org/documentation.html#semantics">Message Delivery Semantics</a></p>
-<ul>
-<li>at-least-once<ul>
-<li>Producer 发送重试，ack=all</li>
-<li>Consumer 关闭auto commit，处理完消息后commit</li>
-</ul>
-</li>
-<li>at-most-once<ul>
-<li>无重试，自动提交</li>
-</ul>
-</li>
-<li>exactly-once<ul>
-<li>重试加基于消息主键的幂等发送/消费
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/20/kafka/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1415,148 +1544,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2016/06/14/log4j笔记/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/14/log4j笔记/" itemprop="url">
-                  Log4j笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-06-14T12:00:00+08:00">
-                2016-06-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Log4j-1-2"><a href="#Log4j-1-2" class="headerlink" title="Log4j 1.2"></a>Log4j 1.2</h1><h2 id="性能注意点"><a href="#性能注意点" class="headerlink" title="性能注意点"></a>性能注意点</h2><ul>
-<li>使用Slf4j</li>
-<li>使用<code>if (logger.isDebugEnabled()) { ... }</code>封装String连接或其他高开销的操作</li>
-<li>避免多次打印Stack trace</li>
-<li>尽量避免使用类名<code>%C</code>, 文件名<code>%F</code>, 方法名<code>%M</code>, 行号<code>%L</code>，性能开销很大<a href="http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/PatternLayout.html">official warning</a></li>
-<li>通过缓存减少IO次数<ul>
-<li><code>immediateFlush</code><ul>
-<li>是否每次log event都flush到磁盘，默认为<code>true</code>，设置为<code>false</code>能提高性能，但是在系统崩溃时可能会丢失日志</li>
-</ul>
-</li>
-<li><code>bufferedIO</code> <ul>
-<li>默认为<code>false</code>时使用<code>java.io.Writer</code>，设置为<code>ture</code>则改用<code>BufferedWriter</code>，<code>bufferSize</code>默认8K，可调整</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>使用<code>AsyncAppender</code><ul>
-<li>使用<code>addAppender</code>封装普通Appender为异步</li>
-<li>通过独立的<code>AsyncAppender-Dispatcher</code>线程调用Appender</li>
-<li>通过<code>bufferSize</code>设置缓存的event<strong>数量</strong>，到上限时根据<code>blocking</code>参数（默认为<code>true</code>）决定阻塞还是丢弃后续event
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/14/log4j笔记/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1604,7 +1591,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -1615,7 +1602,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
