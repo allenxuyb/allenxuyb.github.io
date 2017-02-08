@@ -97,7 +97,7 @@ JVM Internals
 JVM Internals
 原文: JVM Interals">
 <meta property="og:image" content="http://i.imgur.com/Hoc7sxg.jpg">
-<meta property="og:updated_time" content="2017-02-06T08:57:07.000Z">
+<meta property="og:updated_time" content="2017-02-08T04:39:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM Internals学习笔记">
 <meta name="twitter:description" content="//TODO
@@ -364,17 +364,7 @@ JVM Internals
 <li><code>Dynamic Linking (Reference to runtime constant pool)</code><br>  C/C++代码在编译链接阶段会将符号引用(symbolic reference)转化为实际内存地址，对于Java来说，链接是在运行时动态进行的。Java class编译时，所有的变量及方法引用都以符号引用形式保存在class的常量池中，由JVM选择解析时机，eager/static 或者lazy/later resolution。解析只发生一次，同时会触发必要的类加载，解析后的direct reference以相对于方法或变量运行时位置存储结构的偏移量存储</li>
 </ul>
 <h3 id="Shared-Between-Threads"><a href="#Shared-Between-Threads" class="headerlink" title="Shared Between Threads"></a>Shared Between Threads</h3><h4 id="Heap"><a href="#Heap" class="headerlink" title="Heap"></a>Heap</h4><p>存储对象实例及数组，<code>Stack Frame</code>被设计为创建后大小不可变，因此可变对象都存放在堆中</p>
-<h4 id="Non-Heap-Memory"><a href="#Non-Heap-Memory" class="headerlink" title="Non-Heap Memory"></a>Non-Heap Memory</h4><p>Method Area，保存类信息，常量，静态变量，jit代码等，原先用持久代来实现<br>runtime constsant pool 运行时常量池<br>    Interned Strings<br>Code Cache</p>
-<p>new过程<br>从常量池中定位到类的符号引用，检查类是否被加载，如果没有，执行类加载过程<br>类加载完后，为对象分配内存，使用指针碰撞或空闲列表管理空闲内存<br>使用TLAB避免内存分配的并发问题，TLAB使用完需要重新申请时，利用CAS加重试保证内存分配的原子性</p>
-<p>string.intern ？</p>
-<p>gc root<br>vm stack中引用的对象<br>native stack中引用的对象<br>方法区中静态属性引用的对象<br>方法区中常量引用的对象</p>
-<p>类回收条件<br>无实例<br>class loader已回收<br>类的class对象无引用<br>-verbose:class</p>
-<p>安全点，oopmap，枚举gcroot</p>
-<p>g1<br>并发能力<br>保留分代，处理不同存活时间的对象<br>标记－整理，不会产生碎片，gc完提供规整的内存区域，避免cms中无法找到可分配的连续空间提前触发gc<br>可预测的停顿，不需要进行全区域的gc，优先回收垃圾最多的region</p>
-<p>使用remember set记录跨分区，分代之间的引用，避免ygc时扫描全堆</p>
-<p>big-endian little-endian ?</p>
-<p>class loading<br>loading linking initialization using unloading<br>触发initialization的情况 - 对类进行主动引用<br>包括使用new实例化对象，读写类的静态字段（非final的，final的已优化到常量池）。调用静态方法<br>反射调用<br>初始化子类时父类未初始化<br>启动时指定要执行的类（包含main方法）<br>jdk1.7的动态语言支持</p>
-<p>被动引用不会触发初始化，如通过子类引用父类静态字段，只会初始化父类，不会导致子类初始化</p>
+<h4 id="Non-Heap-Memory"><a href="#Non-Heap-Memory" class="headerlink" title="Non-Heap Memory"></a>Non-Heap Memory</h4><p>Method Area，保存类信息，常量，静态变量，JIT代码等，原先用持久代来实现<br>Runtime constsant pool 运行时常量池<br>    Interned Strings<br>Code Cache</p>
 
       
     </div>
