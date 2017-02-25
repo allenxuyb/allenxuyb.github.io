@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.yongbin.me/2017/02/25/ansible/</loc>
+    
+    <lastmod>2017-02-25T15:11:43.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.yongbin.me/2017/02/15/semaphore/</loc>
     
-    <lastmod>2017-02-15T03:04:50.000Z</lastmod>
+    <lastmod>2017-02-15T08:36:47.000Z</lastmod>
     
   </url>
   

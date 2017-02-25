@@ -247,6 +247,132 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2017/02/25/ansible/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/02/25/ansible/" itemprop="url">
+                  Ansible学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-25T12:00:00+08:00">
+                2017-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Why-Ansible"><a href="#Why-Ansible" class="headerlink" title="Why Ansible"></a>Why Ansible</h2><p>Ansible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。</p>
+<p>目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。</p>
+<p>首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabric直接通过SSH运行命令，Ansible先将Module推送到目标服务器，再远程执行。</p>
+<p>两者最大的区别在于抽象层次的不同，Fabric是所见即所得的实现方式，抽象比较少，基本上所有的内容都在一个文件中，容易理解，上手简单，并且得益于Python的强大，可以灵活实现各种功能。但这种扁平的管理方式也有着显著的缺点，随着主机数量，主机间差异，脚本功能不断增加时，整套系统会越来越难以维护。<br>
+          <!--noindex-->
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/02/25/ansible/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2017/02/15/semaphore/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1150,148 +1276,6 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2016/07/20/AAT/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/07/20/AAT/" itemprop="url">
-                  AAT读书笔记
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-20T12:00:00+08:00">
-                2016-07-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="AAT"><a href="#AAT" class="headerlink" title="AAT"></a>AAT</h1><ul>
-<li>Rule for letter <strong>o</strong><ul>
-<li>In a <strong>one-syllable</strong> word, <strong>o</strong> sounds like <strong>ä</strong> (unless the word ends in <strong>e</strong>)<ul>
-<li>h<strong>o</strong>t, l<strong>o</strong>st, T<strong>o</strong>m, B<strong>o</strong>b, d<strong>o</strong>t c<strong>o</strong>m</li>
-</ul>
-</li>
-<li>In a <strong>stressed syllable</strong>, <strong>o</strong> also sounds like <strong>ä</strong><ul>
-<li>p<strong>o</strong>ssible, H<strong>o</strong>lland, phil<strong>o</strong>sophy</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Rule for letter <strong>a</strong></p>
-<ul>
-<li>In a <strong>one-syllable</strong> word, <strong>a</strong> sounds like <strong>æ</strong> (unless the word ends in <strong>e</strong>)<ul>
-<li>c<strong>a</strong>t, S<strong>a</strong>m, dr<strong>a</strong>b</li>
-</ul>
-</li>
-<li>In a <strong>stressed syllable</strong>, <strong>a</strong> also sounds like <strong>æ</strong><ul>
-<li>r<strong>a</strong>tional, m<strong>a</strong>nager, cat<strong>a</strong>strophe
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/20/AAT/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2016/07/20/kafka/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1433,7 +1417,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2016/07/19/spark/">
+  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2016/07/20/AAT/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Allen Xu">
@@ -1458,8 +1442,8 @@
             
               
                 
-                <a class="post-title-link" href="/2016/07/19/spark/" itemprop="url">
-                  Spark学习笔记
+                <a class="post-title-link" href="/2016/07/20/AAT/" itemprop="url">
+                  AAT读书笔记
                 </a>
               
             
@@ -1475,8 +1459,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-19T12:00:00+08:00">
-                2016-07-19
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-20T12:00:00+08:00">
+                2016-07-20
               </time>
             
 
@@ -1512,15 +1496,29 @@
 
       
         
-          <h1 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h1><h2 id="RDD-Resilient-Distributed-Datasets"><a href="#RDD-Resilient-Distributed-Datasets" class="headerlink" title="RDD (Resilient Distributed Datasets)"></a>RDD (Resilient Distributed Datasets)</h2><ul>
-<li><p>What is RDD</p>
-<blockquote>
-<p>RDDs are immutable, fault tolerant, parallel data structures that let users explicitly persist intermediate results in memory, control their partitioning to optimize data placement, and manipulate them using a rich set of operations. </p>
-</blockquote>
-<p>  In a nutshell RDDs are <strong>a level of abstraction that enable efficient data reuse</strong> in a broad range of applications</p>
+          <h1 id="AAT"><a href="#AAT" class="headerlink" title="AAT"></a>AAT</h1><ul>
+<li>Rule for letter <strong>o</strong><ul>
+<li>In a <strong>one-syllable</strong> word, <strong>o</strong> sounds like <strong>ä</strong> (unless the word ends in <strong>e</strong>)<ul>
+<li>h<strong>o</strong>t, l<strong>o</strong>st, T<strong>o</strong>m, B<strong>o</strong>b, d<strong>o</strong>t c<strong>o</strong>m</li>
+</ul>
+</li>
+<li>In a <strong>stressed syllable</strong>, <strong>o</strong> also sounds like <strong>ä</strong><ul>
+<li>p<strong>o</strong>ssible, H<strong>o</strong>lland, phil<strong>o</strong>sophy</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Rule for letter <strong>a</strong></p>
+<ul>
+<li>In a <strong>one-syllable</strong> word, <strong>a</strong> sounds like <strong>æ</strong> (unless the word ends in <strong>e</strong>)<ul>
+<li>c<strong>a</strong>t, S<strong>a</strong>m, dr<strong>a</strong>b</li>
+</ul>
+</li>
+<li>In a <strong>stressed syllable</strong>, <strong>a</strong> also sounds like <strong>æ</strong><ul>
+<li>r<strong>a</strong>tional, m<strong>a</strong>nager, cat<strong>a</strong>strophe
           <!--noindex-->
           <div class="post-more-link text-center">
-            <a class="btn" href="/2016/07/19/spark/#more" rel="contents">
+            <a class="btn" href="/2016/07/20/AAT/#more" rel="contents">
               Read more &raquo;
             </a>
           </div>
@@ -1599,7 +1597,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>

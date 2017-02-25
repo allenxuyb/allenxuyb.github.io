@@ -1,0 +1,756 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="A3i-1Xpg82p4y5iO94S8DtTX0tt6DMqqy81g2VVEylw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ansible,devops," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
+目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。
+首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ansible学习笔记">
+<meta property="og:url" content="http://blog.yongbin.me/2017/02/25/ansible/index.html">
+<meta property="og:site_name" content="El Psy Congroo">
+<meta property="og:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
+目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。
+首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
+<meta property="og:updated_time" content="2017-02-25T15:11:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ansible学习笔记">
+<meta name="twitter:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
+目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。
+首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.yongbin.me/2017/02/25/ansible/"/>
+
+
+
+
+
+  <title> Ansible学习笔记 | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-90810901-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">El Psy Congroo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2017/02/25/ansible/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ansible学习笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-25T12:00:00+08:00">
+                2017-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Why-Ansible"><a href="#Why-Ansible" class="headerlink" title="Why Ansible"></a>Why Ansible</h2><p>Ansible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。</p>
+<p>目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。</p>
+<p>首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabric直接通过SSH运行命令，Ansible先将Module推送到目标服务器，再远程执行。</p>
+<p>两者最大的区别在于抽象层次的不同，Fabric是所见即所得的实现方式，抽象比较少，基本上所有的内容都在一个文件中，容易理解，上手简单，并且得益于Python的强大，可以灵活实现各种功能。但这种扁平的管理方式也有着显著的缺点，随着主机数量，主机间差异，脚本功能不断增加时，整套系统会越来越难以维护。<br><a id="more"></a><br>有句古话说计算机科学领域的任何问题都可以通过增加一个间接的中间层来解决，Ansible就使用这种方式，设计了较厚的抽象层次，显著的降低了使用者需要面对的复杂度。通过Module来封装功能，Task调用Module实现需求，用Role来组织可重用的Task，用Inventory来管理主机，用Playbook将Role和Inventory编排在一起，形成最终需要执行的操作。这里需要强调一点，Playbook的作用不是让主机拥有Role，而是用Role来decorate目标主机。</p>
+<p>相对于Fabric使用Python作为载体，Ansible则是使用YAML创建了一套DSL，并内建了大量Module，因此有一定的学习成本。下面通过一个简单任务：在目标系统中安装Apache，来直观了解下Fabric和Ansible的使用差异。</p>
+<ul>
+<li>使用Fabric</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># fabfile.py</div><div class="line">from fabric.api import *</div><div class="line">	</div><div class="line">env.hosts = [&quot;root@localhost:9022&quot;,]</div><div class="line">	</div><div class="line">def install_apache():</div><div class="line">    run(&apos;yum install httpd -y&apos;)</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ fab install_apache</div></pre></td></tr></table></figure>
+<ul>
+<li>使用Ansible</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># tree</div><div class="line">├── group_vars/</div><div class="line">├── host_vars/</div><div class="line">├── hosts</div><div class="line">├── roles/</div><div class="line">│   └── httpd/</div><div class="line">│       └── tasks/</div><div class="line">│           └── main.yml</div><div class="line">└── site.yml</div></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># hosts</span></div><div class="line"><span class="attr">localhost:</span><span class="number">9022</span> ansible_user=root</div></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># main.yml</span></div><div class="line"><span class="attr">- name:</span> install the latest version of Apache</div><div class="line"><span class="attr">  yum:</span></div><div class="line"><span class="attr">    name:</span> httpd</div><div class="line"><span class="attr">    state:</span> latest</div></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># site.yml</span></div><div class="line"><span class="attr">name:</span> install the latest version of Apache</div><div class="line"><span class="attr">hosts:</span> all</div><div class="line">	</div><div class="line"><span class="attr">roles:</span></div><div class="line"><span class="bullet">  -</span> httpd</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ansible-playbook site.yml</div></pre></td></tr></table></figure>
+<p>看起来Ansible似乎更繁琐，完成一个简单任务需要更多的代码量，但在实际使用时，我们关心的并不是执行的细节，而是需要达成的目标，<code>site.yml</code>明确的描述了这个目标，相对于Fabric，需要阅读的代码量其实更少了。</p>
+<h2 id="Step-by-Step"><a href="#Step-by-Step" class="headerlink" title="Step by Step"></a>Step by Step</h2><p>首先花<a href="https://learnxinyminutes.com/docs/yaml/" target="_blank" rel="external">三分钟</a>学习下YAML，Ansible中的一切都是用YAML来组织的。YAML是一门为可读性设计的配置语言，基本上就是一个用换行和缩进代替了括号的JSON。接着我们来了解一下Ansible的一些基本概念。</p>
+<h3 id="Inventory"><a href="#Inventory" class="headerlink" title="Inventory"></a>Inventory</h3><p>用于配置由Ansible管理的主机，支持分组及分组嵌套。这里也可以直接配置主机和分组对应的变量，但还是推荐使用前面演示的<a href="http://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout" target="_blank" rel="external">目录结构</a>来管理变量。Ansible默认从<code>/etc/ansible/hosts</code>文件读取配置，可以在<code>ansible.cfg</code>中修改默认配置，或运行时使用<code>-i &lt;path&gt;</code>设置。<br>一个典型的Inventory文件如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># hosts</div><div class="line">[web]</div><div class="line">foo.example.com</div><div class="line">bar.example.com</div><div class="line"></div><div class="line">[db]</div><div class="line">mysql.example.com</div><div class="line"></div><div class="line">[all_server:children]</div><div class="line">web</div><div class="line">db</div></pre></td></tr></table></figure>
+<h3 id="How-to-run"><a href="#How-to-run" class="headerlink" title="How to run"></a>How to run</h3><p>有了Inventory以后，我们就可以运行第一条Ansible命令了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对Inventory中所有主机执行ping module，探测是否可达</span></div><div class="line">ansible all -m ping</div></pre></td></tr></table></figure>
+<p>以这种方式运行的命令被Ansible称为ad-hoc命令，适合进行一些简单的一次性操作，基本语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ansible [-i inventory] &lt;pattern&gt; [-m &lt;module&gt;] [<span class="_">-a</span> args]</div><div class="line"><span class="comment"># pattern: 主机匹配模式，常用的是分组名，主机名，或者all，此外还支持一些更复杂的语法，包括集合操作等</span></div><div class="line"><span class="comment"># module不指定时，默认为command</span></div><div class="line"></div><div class="line"><span class="comment"># eg</span></div><div class="line">ansible all <span class="_">-a</span> <span class="string">"hostname"</span></div><div class="line">ansible db -m shell <span class="_">-a</span> <span class="string">"echo <span class="variable">$HOME</span>"</span></div><div class="line">ansible web -m yum <span class="_">-a</span> <span class="string">"name=httpd state=latest"</span></div></pre></td></tr></table></figure>
+<p>但如果要执行一些复杂任务，例如应用部署，ad-hoc命令就不合适了，我们接着来介绍playbook</p>
+<h3 id="Playbook"><a href="#Playbook" class="headerlink" title="Playbook"></a>Playbook</h3><p>官网有首好诗，很好的解释了Playbook中的一些概念，引用过来大家感受下…</p>
+<blockquote>
+<p><strong>Playbooks</strong> contain <strong>plays</strong><br>Plays contain <strong>tasks</strong><br>Tasks call <strong>modules</strong></p>
+<p>Tasks run sequentially</p>
+<p><strong>Handlers</strong> are triggered by tasks,<br>and are run once, at the end of plays</p>
+</blockquote>
+<p>下面通过一个简单的例子来具体看下上述几个概念。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># deploy_tomcat.yml</span></div><div class="line"><span class="meta">---</span></div><div class="line"><span class="attr">- name:</span> deploy tomcat</div><div class="line"><span class="attr">  hosts:</span> all</div><div class="line"><span class="attr">  vars:</span></div><div class="line"><span class="attr">    tomcat_home:</span> ~/tomcat</div><div class="line"><span class="attr">    tomcat_port:</span> <span class="number">9080</span></div><div class="line"></div><div class="line"><span class="attr">  tasks:</span></div><div class="line"><span class="attr">    - name:</span> check whether tomcat is deployed</div><div class="line"><span class="attr">      stat:</span> path=&#123;&#123; tomcat_home &#125;&#125;</div><div class="line"><span class="attr">      register:</span> out_check</div><div class="line"></div><div class="line"><span class="attr">    - name:</span> copy and unpack tomcat</div><div class="line"><span class="attr">      unarchive:</span> src=upload/apache-tomcat<span class="bullet">-8.5</span><span class="number">.9</span>.prod.tar.gz dest=~/</div><div class="line"><span class="attr">      register:</span> out_unpack</div><div class="line"><span class="attr">      when:</span> not out_check.stat.exists</div><div class="line"></div><div class="line"><span class="attr">    - name:</span> rename tomcat</div><div class="line"><span class="attr">      shell:</span> mv ~/apache-tomcat<span class="bullet">-8.5</span><span class="number">.9</span> &#123;&#123; tomcat_home &#125;&#125;</div><div class="line"><span class="attr">      when:</span> out_unpack.changed</div><div class="line"></div><div class="line"><span class="attr">    - name:</span> update server.xml</div><div class="line"><span class="attr">      template:</span></div><div class="line"><span class="attr">        src:</span> upload/server.xml.j2</div><div class="line"><span class="attr">        dest:</span> <span class="string">"<span class="template-variable">&#123;&#123; tomcat_home &#125;&#125;</span>/conf/server.xml"</span></div><div class="line"><span class="attr">        backup:</span> <span class="literal">yes</span></div><div class="line"><span class="attr">      notify:</span> restart tomcat</div><div class="line"></div><div class="line"><span class="attr">    - name:</span> add test html</div><div class="line"><span class="attr">      copy:</span> src=upload/test.html dest=<span class="string">"<span class="template-variable">&#123;&#123; tomcat_home &#125;&#125;</span>/webapps/test/index.html"</span></div><div class="line"><span class="attr">      notify:</span> restart tomcat</div><div class="line"></div><div class="line"><span class="attr">  handlers:</span></div><div class="line"><span class="attr">    - name:</span> shutdown tomcat</div><div class="line"><span class="attr">      command:</span> <span class="string">"/bin/bash -l -c <span class="template-variable">&#123;&#123; tomcat_home &#125;&#125;</span>/bin/shutdown.sh"</span></div><div class="line"><span class="attr">      ignore_errors:</span> <span class="literal">yes</span></div><div class="line"><span class="attr">      listen:</span> <span class="string">"restart tomcat"</span></div><div class="line"></div><div class="line"><span class="attr">    - name:</span> start tomcat</div><div class="line"><span class="attr">      command:</span> <span class="string">"/bin/bash -l -c 'nohup <span class="template-variable">&#123;&#123; tomcat_home &#125;&#125;</span>/bin/startup.sh'"</span></div><div class="line"><span class="attr">      listen:</span> <span class="string">"restart tomcat"</span></div><div class="line"></div><div class="line"><span class="attr">    - name:</span> wait tomcat start</div><div class="line"><span class="attr">      wait_for:</span></div><div class="line"><span class="attr">        port:</span> <span class="string">"<span class="template-variable">&#123;&#123; tomcat_port &#125;&#125;</span>"</span></div><div class="line"><span class="attr">      listen:</span> <span class="string">"restart tomcat"</span></div></pre></td></tr></table></figure>
+<p><code>deploy_tomcat.yml</code>这个文件就是一个<code>playbook</code>，包含了<code>deploy tomcat</code>这个<code>play</code><br><code>play</code>指定了目标主机<code>all</code>，设置了变量<code>vars</code>，并且包含了一系列<code>task</code><br><code>task</code>是顺序执行的，但是可以指定执行条件，例如<code>copy and unpack tomcat</code>这个<code>task</code>只有当<code>tomcat_home</code>目录不存在时才会执行  </p>
+<p>这里要提到Ansible的一个设计理念</p>
+<blockquote>
+<p>If it ain’t broke, don’t fix it</p>
+</blockquote>
+<p>写自动化脚本的目的是让目标主机达到所需的状态，而不仅仅是机械的执行一连串命令，Ansible就是以这样的理念来设计的，大部分<code>module</code>都会由当前状态来判断是否需要执行，因此<code>module</code>的执行是幂等的，此外每一个<code>task</code>都有一个<code>changed</code>状态，来表示这次运行是否对目标主机产生了改变，没有改变就不要去fix，像<code>handler</code>只会在<code>task</code>的<code>changed == true</code>时才会被执行。这也是为什么我们写<code>task</code>时应该尽量使用相应的<code>module</code>，而少用<code>run commands</code>例如<code>shell</code>的原因，因为Ansible无法判断<code>shell</code>运行内容，因此<code>changed</code>永远为<code>true</code>，此外大部分的<code>shell</code>命令都不是幂等性的，重复执行结果无法预期。</p>
+<blockquote>
+<p>PS: 这里为了展示playbook的功能，因此没有按<a href="http://docs.ansible.com/ansible/playbooks_best_practices.html" target="_blank" rel="external">最佳实践</a>来操作，这里的tasks显然属于一个role，这些变量直接定义在playbook中也并不合适。</p>
+</blockquote>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><ul>
+<li>变量名：字母，数字及下划线，必须字母开头</li>
+<li>变量引用：</li>
+<li><p>变量优先级</p>
+<ul>
+<li><p>由于变量可以来自各个地方，<a href="http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable" target="_blank" rel="external">优先级</a>是个坑，因此我们首先要做的是</p>
+<blockquote>
+<p>避免在多个地方设置同一个变量!</p>
+</blockquote>
+</li>
+<li><p>另外一个简单的规律是：运行值覆盖配置值，配置值中child覆盖parent</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Advanced-playbook-capability"><a href="#Advanced-playbook-capability" class="headerlink" title="Advanced playbook capability"></a>Advanced playbook capability</h3><p>// TODO</p>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><ul>
+<li><p>原则</p>
+<ul>
+<li>Complexity <strong>kills</strong> productivity</li>
+<li>Optimize your Ansible content for <strong>readability</strong></li>
+<li>Think declaratively - Ansible is a desired <strong>state engine</strong> by design, do not “write code”</li>
+</ul>
+</li>
+<li><p>合理的命名Plays和Tasks</p>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="attr">- hosts:</span> web</div><div class="line"><span class="attr">  name:</span> installs and starts apache</div><div class="line"><span class="attr">  tasks:</span></div><div class="line"><span class="attr">    - name:</span> install apache packages</div><div class="line"><span class="attr">      yum:</span></div><div class="line"><span class="attr">        name:</span> httpd</div><div class="line"><span class="attr">        state:</span> latest</div><div class="line"><span class="comment"># output</span></div><div class="line"><span class="comment"># PLAY [install and starts apache]</span></div><div class="line"><span class="comment"># TASK [install apache packages]</span></div><div class="line"><span class="comment"># ok: [web1]</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>使用前缀和有助理解的词命名变量，并保持命名的一致性</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">apache_max_keepalive: 25</div><div class="line">apache_port: 80</div><div class="line">tomcat_port: 8080</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用YAML语法，少用KV对，增加可读性（感觉适当使用KV对可读性还是有帮助的）</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- name: configure telegraf</div><div class="line">  template: src=telegraf.conf.j2 dest=/etc/telegraf/telegraf.conf</div><div class="line"></div><div class="line">- name: configure telegraf</div><div class="line">  template:</div><div class="line">    src: telegraf.conf.j2</div><div class="line">    dest: /etc/telegraf/telegraf.conf</div></pre></td></tr></table></figure>
+</li>
+<li><p>尽量使用Modules替代Run Commands</p>
+<p>  包括<code>command</code>,<code>shell</code>,<code>raw</code>,<code>script</code>，这些命令没有state的概念，并且容易出现各种异常状况。以删除文件为例，<code>rm foo</code>当foo不存在时会报错，因此我们还需要额外判断文件是否存在</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">if [ -f foo ];then rm foo;fi</div></pre></td></tr></table></figure>
+<p>  这类异常事先很容易忽略，处理起来的代码也不好看，用ansible file module来处理就简洁多了</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- file:</div><div class="line">	path: foo</div><div class="line">	state: absent</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>设置debug日志级别</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- debug:</div><div class="line">    msg: &quot;This always displays&quot;</div><div class="line"></div><div class="line">- debug:</div><div class="line">    msg: &quot;This only displays with ansible-playbook -vv+&quot;</div><div class="line">    verbosity: 2</div></pre></td></tr></table></figure>
+</li>
+<li><p>待更新</p>
+</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://lanourain.github.io/2017/02/16/ansible_basic/" target="_blank" rel="external">ansible基础教程</a><br><a href="https://insights.sei.cmu.edu/devops/2015/03/devops-technologies-fabric-or-ansible.html" target="_blank" rel="external">DevOps Technologies: Fabric or Ansible</a><br><a href="http://docs.ansible.com/ansible/" target="_blank" rel="external">Ansible Documentation</a><br><a href="https://www.ansible.com/blog/ansible-best-practices-essentials" target="_blank" rel="external">Ansible Best Practices: The Essentials</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ansible/" rel="tag"># ansible</a>
+          
+            <a href="/tags/devops/" rel="tag"># devops</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/15/semaphore/" rel="next" title="利用Docker搭建Semaphore测试环境">
+                <i class="fa fa-chevron-left"></i> 利用Docker搭建Semaphore测试环境
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Allen Xu" />
+          <p class="site-author-name" itemprop="name">Allen Xu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-Ansible"><span class="nav-number">1.</span> <span class="nav-text">Why Ansible</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-by-Step"><span class="nav-number">2.</span> <span class="nav-text">Step by Step</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Inventory"><span class="nav-number">2.1.</span> <span class="nav-text">Inventory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-run"><span class="nav-number">2.2.</span> <span class="nav-text">How to run</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Playbook"><span class="nav-number">2.3.</span> <span class="nav-text">Playbook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量"><span class="nav-number">2.4.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advanced-playbook-capability"><span class="nav-number">2.5.</span> <span class="nav-text">Advanced playbook capability</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最佳实践"><span class="nav-number">3.</span> <span class="nav-text">最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Allen Xu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
