@@ -94,7 +94,7 @@
 <meta property="og:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
 目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。
 首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
-<meta property="og:updated_time" content="2017-02-26T04:04:17.000Z">
+<meta property="og:updated_time" content="2017-02-26T04:07:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible学习笔记">
 <meta name="twitter:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
@@ -385,32 +385,18 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">- hosts: webservers</div><div class="line">  roles:</div><div class="line">     - common</div><div class="line">     - webservers</div></pre></td></tr></table></figure>
 <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><ul>
 <li>变量名：字母，数字及下划线，必须字母开头</li>
-<li><p>变量使用</p>
-<ul>
-<li><p>变量可以使用在playbook及template文件中，基本引用语法如下：</p>
+<li><p>变量使用<br>  变量可以使用在playbook及template文件中，基本引用语法如下：</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; var &#125;&#125;</div><div class="line"># PS: 由于YAML会将&#123;&#125;解释为map，因此当变量位于value行首时，整个value需要加上双引号</div><div class="line">&quot;&#123;&#123; var &#125;&#125; start a value&quot;</div></pre></td></tr></table></figure>
+<p>  Ansible是基于Jinja2来提供变量访问功能的，因此有大量的<a href="http://docs.ansible.com/ansible/playbooks_templating.html" target="_blank" rel="external">表达式</a>可以用来对变量进行动态处理</p>
 </li>
-<li><p>Ansible是基于Jinja2来提供变量访问功能的，因此有大量的<a href="http://docs.ansible.com/ansible/playbooks_templating.html" target="_blank" rel="external">表达式</a>可以用来对变量进行动态处理</p>
-</li>
-</ul>
-</li>
-<li><p>特殊的变量: Facts</p>
-<ul>
-<li><p>既然Ansible是基于状态运行的，那目标主机状态的采集自然也是必不可少的。运行playbook时，Ansible默认会先运行一个<code>setup</code>的task，采集大量目标主机的信息，包括操作系统版本，IP地址，磁盘空间，内存使用，当前登录用户信息等等，供我们在playbook中使用。具体采集的内容可以用如下方式查看：</p>
+<li><p>特殊的变量: Facts<br>  既然Ansible是基于状态运行的，那目标主机状态的采集自然也是必不可少的。运行playbook时，Ansible默认会先运行一个<code>setup</code>的task，采集大量目标主机的信息，包括操作系统版本，IP地址，磁盘空间，内存使用，当前登录用户信息等等，供我们在playbook中使用。具体采集的内容可以用如下方式查看：</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible hostname -m setup</div></pre></td></tr></table></figure>
 </li>
-</ul>
-</li>
-<li><p>变量优先级</p>
-<ul>
-<li><p>由于变量可以来自各个地方，<a href="http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable" target="_blank" rel="external">优先级</a>是个坑，因此我们首先要做的是</p>
+<li><p>变量优先级<br>  由于变量可以来自各个地方，<a href="http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable" target="_blank" rel="external">优先级</a>是个坑，因此我们首先要做的是</p>
 <blockquote>
 <p>避免在多个地方设置同一个变量!</p>
 </blockquote>
-</li>
-<li><p>另外一个简单的规律是：运行值覆盖配置值，配置值中child覆盖parent</p>
-</li>
-</ul>
+<p>  另外一个简单的规律是：运行值覆盖配置值，配置值中child覆盖parent</p>
 </li>
 </ul>
 <h3 id="Advanced-playbook-capability"><a href="#Advanced-playbook-capability" class="headerlink" title="Advanced playbook capability"></a>Advanced playbook capability</h3><p><code>// TODO</code></p>
