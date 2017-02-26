@@ -94,7 +94,7 @@
 <meta property="og:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
 目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。
 首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
-<meta property="og:updated_time" content="2017-02-26T04:07:59.000Z">
+<meta property="og:updated_time" content="2017-02-26T04:14:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible学习笔记">
 <meta name="twitter:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
@@ -376,9 +376,9 @@
 </blockquote>
 <h3 id="Role"><a href="#Role" class="headerlink" title="Role"></a>Role</h3><p>Role只是一个抽象概念，从实现角度来看role就是一种特殊形式的playbook。引入role这个概念主要是为了将实现细节从playbook抽象出来，一方面方便复用，另一方面增加了role这层抽象之后，playbook就不再需要关心实现细节了，需要关心的只有目标主机和目标状态，这样playbook的可读性也大大提高了。同时role通过使用约定的目录结构来存储playbook中的各个元素，更有利于我们管理。</p>
 <ul>
-<li>目录结构</li>
+<li>Role的目录结构</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">roles/</div><div class="line">   webservers/</div><div class="line">     files/</div><div class="line">     templates/</div><div class="line">     tasks/</div><div class="line">     handlers/</div><div class="line">     vars/</div><div class="line">     defaults/</div><div class="line">     meta/</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">roles/</div><div class="line">   webservers/</div><div class="line">     files/</div><div class="line">     templates/</div><div class="line">     tasks/</div><div class="line">     handlers/</div><div class="line">     vars/</div><div class="line">     defaults/</div><div class="line">     meta/</div><div class="line">   common/...</div></pre></td></tr></table></figure>
 <ul>
 <li>使用role之后的playbook</li>
 </ul>
