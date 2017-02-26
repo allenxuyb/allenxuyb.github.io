@@ -94,7 +94,7 @@
 <meta property="og:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
 目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。
 首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
-<meta property="og:updated_time" content="2017-02-26T01:54:25.000Z">
+<meta property="og:updated_time" content="2017-02-26T03:12:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible学习笔记">
 <meta name="twitter:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
@@ -349,14 +349,14 @@
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># site.yml</span></div><div class="line"><span class="attr">name:</span> install the latest version of Apache</div><div class="line"><span class="attr">hosts:</span> all</div><div class="line">	</div><div class="line"><span class="attr">roles:</span></div><div class="line"><span class="bullet">  -</span> httpd</div></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ansible-playbook site.yml</div></pre></td></tr></table></figure>
 <p>看起来Ansible似乎更繁琐，完成一个简单任务需要更多的代码量，但在实际使用时，我们关心的并不是执行的细节，而是需要达成的目标，<code>site.yml</code>明确的描述了这个目标，相对于Fabric，需要阅读的代码量其实更少了。</p>
-<h2 id="Step-by-Step"><a href="#Step-by-Step" class="headerlink" title="Step by Step"></a>Step by Step</h2><p>首先花<a href="https://learnxinyminutes.com/docs/yaml/" target="_blank" rel="external">三分钟</a>学习下YAML，Ansible中的一切都是用YAML来组织的。YAML是专门为可读性设计的配置语言，基本上就是一个用换行分隔属性，用缩进代表嵌套的JSON。接着我们来了解一下Ansible的一些基本概念。</p>
+<h2 id="Step-by-Step"><a href="#Step-by-Step" class="headerlink" title="Step by Step"></a>Step by Step</h2><p>首先花<a href="https://learnxinyminutes.com/docs/yaml/" target="_blank" rel="external">三分钟</a>学习下YAML，Ansible中的一切都是用YAML来组织的。YAML是专门为可读性设计的配置语言，基本上就是一个用换行分隔属性，用缩进代表嵌套的JSON。接下来我们来学习Ansible的一些基本概念。</p>
 <h3 id="Inventory"><a href="#Inventory" class="headerlink" title="Inventory"></a>Inventory</h3><p>用于配置由Ansible管理的主机，支持分组及分组嵌套。这里也可以直接配置主机和分组对应的变量，但还是推荐使用前面演示的<a href="http://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout" target="_blank" rel="external">目录结构</a>来管理变量。Ansible默认从<code>/etc/ansible/hosts</code>文件读取配置，可以在<code>ansible.cfg</code>中修改默认配置，或运行时使用<code>-i &lt;path&gt;</code>设置。<br>一个典型的Inventory文件如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># hosts</div><div class="line">[web]</div><div class="line">foo.example.com</div><div class="line">bar.example.com</div><div class="line"></div><div class="line">[db]</div><div class="line">mysql.example.com</div><div class="line"></div><div class="line">[all_server:children]</div><div class="line">web</div><div class="line">db</div></pre></td></tr></table></figure>
 <h3 id="How-to-run"><a href="#How-to-run" class="headerlink" title="How to run"></a>How to run</h3><p>有了Inventory以后，我们就可以运行第一条Ansible命令了。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对Inventory中所有主机执行ping module，探测是否可达</span></div><div class="line">ansible all -m ping</div></pre></td></tr></table></figure>
 <p>以这种方式运行的命令被Ansible称为ad-hoc命令，适合进行一些简单的一次性操作，基本语法如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ansible [-i inventory] &lt;pattern&gt; [-m &lt;module&gt;] [<span class="_">-a</span> args]</div><div class="line"><span class="comment"># pattern: 主机匹配模式，常用的是分组名，主机名，或者all，此外还支持一些更复杂的语法，包括集合操作等</span></div><div class="line"><span class="comment"># module不指定时，默认为command</span></div><div class="line"></div><div class="line"><span class="comment"># eg</span></div><div class="line">ansible all <span class="_">-a</span> <span class="string">"hostname"</span></div><div class="line">ansible db -m shell <span class="_">-a</span> <span class="string">"echo <span class="variable">$HOME</span>"</span></div><div class="line">ansible web -m yum <span class="_">-a</span> <span class="string">"name=httpd state=latest"</span></div></pre></td></tr></table></figure>
-<p>但如果要执行一些复杂任务，例如应用部署，ad-hoc命令就不合适了，我们接着来介绍playbook</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">ansible [-i inventory] &lt;pattern&gt; [-m &lt;module&gt;] [<span class="_">-a</span> args]</div><div class="line"><span class="comment"># -i: inventory文件路径</span></div><div class="line"><span class="comment"># pattern: 主机匹配模式，常用的是分组名，主机名，或者all，此外还支持一些更复杂的语法，包括集合操作等</span></div><div class="line"><span class="comment"># -m: module名称，不指定时，默认为command</span></div><div class="line"><span class="comment"># -a: module参数，对于一般module，使用KV对形式，对于run commands类例如command、shell，输入需要执行的命令</span></div><div class="line"></div><div class="line"><span class="comment"># e.g.</span></div><div class="line">ansible all <span class="_">-a</span> <span class="string">"hostname -i"</span></div><div class="line">ansible db -m shell <span class="_">-a</span> <span class="string">"echo <span class="variable">$HOME</span>"</span></div><div class="line">ansible web -m yum <span class="_">-a</span> <span class="string">"name=httpd state=latest"</span></div></pre></td></tr></table></figure>
+<p>但如果要执行一些复杂任务，例如应用部署，ad-hoc命令就不合适了，那我们接着来介绍playbook</p>
 <h3 id="Playbook"><a href="#Playbook" class="headerlink" title="Playbook"></a>Playbook</h3><p>官网有首好诗，很好的解释了Playbook中的一些概念，引用过来大家感受下…</p>
 <blockquote>
 <p><strong>Playbooks</strong> contain <strong>plays</strong><br>Plays contain <strong>tasks</strong><br>Tasks call <strong>modules</strong></p>
@@ -370,14 +370,27 @@
 <blockquote>
 <p>If it ain’t broke, don’t fix it</p>
 </blockquote>
-<p>写自动化脚本的目的是让目标主机达到所需的状态，而不仅仅是机械的执行一连串命令，Ansible就是以这样的理念来设计的，大部分<code>module</code>都会由当前状态来判断是否需要执行，因此<code>module</code>的执行是幂等的，此外每一个<code>task</code>都有一个<code>changed</code>状态，来表示这次运行是否对目标主机产生了改变，没有改变就不要去fix，像<code>handler</code>只会在<code>task</code>的<code>changed == true</code>时才会被执行。这也是为什么我们写<code>task</code>时应该尽量使用相应的<code>module</code>，而少用<code>run commands</code>例如<code>shell</code>的原因，因为Ansible无法判断<code>shell</code>运行内容，因此<code>changed</code>永远为<code>true</code>，此外大部分的<code>shell</code>命令都不是幂等性的，重复执行结果无法预期。</p>
+<p>写自动化脚本的目的是让目标主机达到所需的状态，而不仅仅是机械的执行一连串命令，Ansible就是以这样的理念来设计的，大部分<code>module</code>都会由当前状态来判断是否需要执行，因此<code>module</code>的执行是幂等的，此外每一个<code>task</code>都有一个<code>changed</code>状态，来表示这次运行是否对目标主机产生了改变，没有改变就不要去fix，像<code>handler</code>只会在<code>task</code>的<code>changed == true</code>时才会被执行。这也是为什么我们写<code>task</code>时应该尽量使用相应的<code>module</code>，而少用<code>run commands</code>例如<code>shell</code>的原因，因为Ansible无法判断<code>shell</code>运行内容，因此<code>changed</code>永远为<code>true</code>，此外大部分的<code>shell</code>命令都不是幂等的，重复执行结果无法预期。</p>
 <blockquote>
 <p>PS: 这里为了展示playbook的功能，因此没有按<a href="http://docs.ansible.com/ansible/playbooks_best_practices.html" target="_blank" rel="external">最佳实践</a>来操作，这里的tasks显然属于一个role，这些变量直接定义在playbook中也并不合适。</p>
 </blockquote>
 <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><ul>
 <li>变量名：字母，数字及下划线，必须字母开头</li>
-<li><p>变量引用：</p>
+<li><p>变量使用</p>
+<ul>
+<li><p>变量可以使用在playbook及template文件中，基本引用语法如下：</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; var &#125;&#125;</div><div class="line"># PS: 由于YAML会将&#123;&#125;解释为map，因此当变量位于value行首时，整个value需要加上双引号</div><div class="line">&quot;&#123;&#123; var &#125;&#125; start a value&quot;</div></pre></td></tr></table></figure>
+</li>
+<li><p>Ansible是基于Jinja2来提供变量访问功能的，因此有大量的<a href="http://docs.ansible.com/ansible/playbooks_templating.html" target="_blank" rel="external">表达式</a>可以用来对变量进行动态处理</p>
+</li>
+</ul>
+</li>
+<li><p>特殊的变量: Facts</p>
+<ul>
+<li><p>既然Ansible是基于状态运行的，那目标主机状态的采集自然也是必不可少的。运行playbook时，Ansible默认会先运行一个<code>setup</code>的task，采集大量目标主机的信息，包括操作系统版本，IP地址，磁盘空间，内存使用，当前登录用户信息等等，供我们在playbook中使用。具体采集的内容可以用如下方式查看：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible hostname -m setup</div></pre></td></tr></table></figure>
+</li>
+</ul>
 </li>
 <li><p>变量优先级</p>
 <ul>
