@@ -94,7 +94,7 @@
 <meta property="og:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
 目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。
 首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
-<meta property="og:updated_time" content="2017-02-26T01:39:41.000Z">
+<meta property="og:updated_time" content="2017-02-26T01:54:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible学习笔记">
 <meta name="twitter:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
@@ -391,7 +391,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="Advanced-playbook-capability"><a href="#Advanced-playbook-capability" class="headerlink" title="Advanced playbook capability"></a>Advanced playbook capability</h3><p>// TODO</p>
+<h3 id="Advanced-playbook-capability"><a href="#Advanced-playbook-capability" class="headerlink" title="Advanced playbook capability"></a>Advanced playbook capability</h3><p><code>// TODO</code></p>
 <h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><ul>
 <li><p>原则</p>
 <ul>
@@ -410,17 +410,15 @@
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- name: configure telegraf</div><div class="line">  template: src=telegraf.conf.j2 dest=/etc/telegraf/telegraf.conf</div><div class="line"></div><div class="line">- name: configure telegraf</div><div class="line">  template:</div><div class="line">    src: telegraf.conf.j2</div><div class="line">    dest: /etc/telegraf/telegraf.conf</div></pre></td></tr></table></figure>
 </li>
 <li><p>尽量使用Modules替代Run Commands</p>
-<p>  包括<code>command</code>,<code>shell</code>,<code>raw</code>,<code>script</code>，这些命令没有state的概念，并且容易出现各种异常状况。以删除文件为例，<code>rm foo</code>当foo不存在时会报错，因此我们还需要额外判断文件是否存在</p>
+<p>  包括<code>command</code>,<code>shell</code>,<code>raw</code>,<code>script</code>，这类命令没有状态的概念，也不保证幂等性，在ad-hoc命令中使用没有问题，但是在playbook中，无法预期的返回结果以及各种可能出现的异常会使脚本的健壮性大大降低。以删除文件为例，<code>rm foo</code>当foo不存在时会报错，因此我们还需要额外判断文件是否存在</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">if [ -f foo ];then rm foo;fi</div></pre></td></tr></table></figure>
-<p>  这类异常事先很容易忽略，处理起来的代码也不好看，用ansible file module来处理就简洁多了</p>
+<p>  这类异常事先很容易忽略，处理起来的代码也不好看，如果用file module来处理就简洁多了</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- file:</div><div class="line">	path: foo</div><div class="line">	state: absent</div></pre></td></tr></table></figure>
 </li>
 </ul>
 <ul>
 <li><p>设置debug日志级别</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- debug:</div><div class="line">    msg: &quot;This always displays&quot;</div><div class="line"></div><div class="line">- debug:</div><div class="line">    msg: &quot;This only displays with ansible-playbook -vv+&quot;</div><div class="line">    verbosity: 2</div></pre></td></tr></table></figure>
-</li>
-<li><p>待更新</p>
 </li>
 </ul>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://lanourain.github.io/2017/02/16/ansible_basic/" target="_blank" rel="external">ansible基础教程</a><br><a href="https://insights.sei.cmu.edu/devops/2015/03/devops-technologies-fabric-or-ansible.html" target="_blank" rel="external">DevOps Technologies: Fabric or Ansible</a><br><a href="http://docs.ansible.com/ansible/" target="_blank" rel="external">Ansible Documentation</a><br><a href="https://www.ansible.com/blog/ansible-best-practices-essentials" target="_blank" rel="external">Ansible Best Practices: The Essentials</a></p>
