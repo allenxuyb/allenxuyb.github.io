@@ -1,0 +1,738 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="A3i-1Xpg82p4y5iO94S8DtTX0tt6DMqqy81g2VVEylw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="homebridge,qnap," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="前段时间买了一堆小米的ZigBee智能设备回来玩，从硬件来讲，无论性价比还是设计做工都诚意满满，值得安利，虽然硬件本身并没有太多新意，以前也有很多类似产品，但是配合小米不断壮大的智能设备生态圈，可玩性是别的品牌不能比拟的，嗯，我在说贝尔金的Wemo…
+米家App的功能也还不错，但是和以前用的Wemo比起来主要有两个问题
+
+不支持局域网控制，所有操作都是要去服务端绕一圈的，如果服务器挂了或者断网了…">
+<meta property="og:type" content="article">
+<meta property="og:title" content="小米网关接入Homekit">
+<meta property="og:url" content="http://blog.yongbin.me/2017/03/14/homebridge/index.html">
+<meta property="og:site_name" content="El Psy Congroo">
+<meta property="og:description" content="前段时间买了一堆小米的ZigBee智能设备回来玩，从硬件来讲，无论性价比还是设计做工都诚意满满，值得安利，虽然硬件本身并没有太多新意，以前也有很多类似产品，但是配合小米不断壮大的智能设备生态圈，可玩性是别的品牌不能比拟的，嗯，我在说贝尔金的Wemo…
+米家App的功能也还不错，但是和以前用的Wemo比起来主要有两个问题
+
+不支持局域网控制，所有操作都是要去服务端绕一圈的，如果服务器挂了或者断网了…">
+<meta property="og:updated_time" content="2017-03-14T08:04:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="小米网关接入Homekit">
+<meta name="twitter:description" content="前段时间买了一堆小米的ZigBee智能设备回来玩，从硬件来讲，无论性价比还是设计做工都诚意满满，值得安利，虽然硬件本身并没有太多新意，以前也有很多类似产品，但是配合小米不断壮大的智能设备生态圈，可玩性是别的品牌不能比拟的，嗯，我在说贝尔金的Wemo…
+米家App的功能也还不错，但是和以前用的Wemo比起来主要有两个问题
+
+不支持局域网控制，所有操作都是要去服务端绕一圈的，如果服务器挂了或者断网了…">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.yongbin.me/2017/03/14/homebridge/"/>
+
+
+
+
+
+  <title> 小米网关接入Homekit | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-90810901-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">El Psy Congroo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2017/03/14/homebridge/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                小米网关接入Homekit
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-14T12:00:00+08:00">
+                2017-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前段时间买了一堆小米的<a href="http://item.mi.com/1170700027.html" target="_blank" rel="external">ZigBee智能设备</a>回来玩，从硬件来讲，无论性价比还是设计做工都诚意满满，值得安利，虽然硬件本身并没有太多新意，以前也有很多类似产品，但是配合小米不断壮大的智能设备生态圈，可玩性是别的品牌不能比拟的，嗯，我在说贝尔金的Wemo…</p>
+<p>米家App的功能也还不错，但是和以前用的Wemo比起来主要有两个问题</p>
+<ul>
+<li>不支持局域网控制，所有操作都是要去服务端绕一圈的，如果服务器挂了或者断网了…</li>
+<li>不提供API，无法与外部设备或应用联动，例如无法接入IFTTT</li>
+</ul>
+<p>在搜索API的过程中，偶然发现了这篇文章，<a href="http://bbs.xiaomi.cn/t-13198850" target="_blank" rel="external">小米网关接入Homekit完整教程</a>，感觉打开了新世界的大门，教练，我也想<del>打篮球</del>接入Homekit<br><a id="more"></a></p>
+<h2 id="关于HomeKit和homebridge"><a href="#关于HomeKit和homebridge" class="headerlink" title="关于HomeKit和homebridge"></a>关于HomeKit和homebridge</h2><p>HomeKit本身也是个封闭平台，只授权给MFi认证的公司，并且需要在设备中安装专门的ID芯片，这样严格的限制的确有利于提供一致的用户体验（例如AirPlay），但也阻碍了智能设备的普及，参考Apple官网那些HomeKit配件价格，这么贵怎么愉快的玩耍……</p>
+<p>所幸的是，有黑客通过对HomeKit协议的逆向工程，写了<a href="https://github.com/KhaosT/HAP-NodeJS" target="_blank" rel="external">HAP-NodeJS</a>这个项目，可以通过nodejs来模拟HomeKit设备，基于这个项目，最终才有了homebridge。</p>
+<p>Homebridge是一个轻量级的NodeJS server，模拟成一个HomeKit网关，通过插件方式将第三方智能设备的API桥接为HomeKit协议，现在npm上已经有<a href="https://www.npmjs.com/search?q=homebridge-plugin" target="_blank" rel="external">数百个</a>插件了，包括支持小米智能网关的<a href="https://www.npmjs.com/package/homebridge-aqara" target="_blank" rel="external">homebridge-aqara</a>，以及支持Yeelight智能灯的<a href="https://www.npmjs.com/package/homebridge-yeelight" target="_blank" rel="external">homebridge-yeelight</a></p>
+<h2 id="安装homebridge"><a href="#安装homebridge" class="headerlink" title="安装homebridge"></a>安装homebridge</h2><h3 id="在Mac上安装"><a href="#在Mac上安装" class="headerlink" title="在Mac上安装"></a>在Mac上安装</h3><p>在Mac上安装最简单，直接<code>npm install -g homebridge --unsafe-perm</code>就搞定了，可惜并没有壕到可以在家放一台Mac当server，也没有折腾过树莓派，只能考虑装在NAS上了。</p>
+<h3 id="在Linux上安装"><a href="#在Linux上安装" class="headerlink" title="在Linux上安装"></a>在Linux上安装</h3><p>在Linux上安装的话，需要依赖<code>libavahi-compat-libdnssd-dev</code>，先简单介绍下Avahi</p>
+<h4 id="关于Avahi"><a href="#关于Avahi" class="headerlink" title="关于Avahi"></a>关于Avahi</h4><p>Avahi是Linux上Zeroconf规范的开源实现，通过Multicast DNS(mDNS)来实现零配置的服务发现DNS-Based Service Discovery(DNS-SD)，另一个知名实现就是Apple的Bonjour，这个规范其实就是Apple提出的。下面简单介绍下命名和发现部分的基本原理。</p>
+<h5 id="命名"><a href="#命名" class="headerlink" title="命名"></a>命名</h5><p>Bonjour定义了一套<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/NetServices/Articles/domainnames.html#//apple_ref/doc/uid/TP40002460-SW1" target="_blank" rel="external">命名规则</a>，对主机和服务进行命名，本地主机使用<code>local.</code>这个伪域名，例如<code>myserver.local.</code>，服务命名的规则如下</p>
+<blockquote>
+<p><code>_ServiceType._TransportProtocolName.</code></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//例如:</div><div class="line">_airplay._tcp</div><div class="line">_ssh._tcp</div><div class="line">_hap._tcp //HomeKit Accessory Protocol</div></pre></td></tr></table></figure>
+<h5 id="发现"><a href="#发现" class="headerlink" title="发现"></a>发现</h5><p>DNS-SD使用<code>224.0.0.251</code>这个多播地址来注册及发现服务，mDNS并不需要独立的DNS服务器，当需要解析时，直接向<code>224.0.0.251</code>的<code>5353</code>端口发送查询请求，组内收到请求的设备判断自己是否满足查询条件并自行回复</p>
+<p>Mac下可以直接使用<code>dns-sd</code>命令来查询服务，例如列出本地网络中的ssh服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ dns-sd -Z _ssh._tcp</div><div class="line"></div><div class="line">_ssh._tcp                                       PTR     hellfires-mbp._ssh._tcp</div><div class="line">hellfires-mbp._ssh._tcp                         SRV     0 0 22 hellfires-mbp.local. ; Replace with unicast FQDN of target host</div><div class="line">hellfires-mbp._ssh._tcp                         TXT     &quot;&quot;</div><div class="line"></div><div class="line">_ssh._tcp                                       PTR     hai._ssh._tcp</div><div class="line">hai._ssh._tcp                                   SRV     0 0 22 hai.local. ; Replace with unicast FQDN of target host</div><div class="line">hai._ssh._tcp                                   TXT     &quot;&quot;</div></pre></td></tr></table></figure>
+<p>也可以使用dig来查询，不过由于DNS协议规范，dig只会返回第一条查询结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 注册到mDNS上的ptr记录是服务名加上.local.</div><div class="line">$ dig @224.0.0.251 -p 5353 -t ptr _ssh._tcp.local</div></pre></td></tr></table></figure>
+<p>想了解更多可以参考这篇<a href="http://nixwang.com/2017/03/05/airplay-without-bonjour/#more" target="_blank" rel="external">Blog</a>，以及RFC文档<a href="https://tools.ietf.org/html/rfc6762" target="_blank" rel="external">RFC 6762 (mDNS)</a>，<a href="https://tools.ietf.org/html/rfc6763" target="_blank" rel="external">RFC 6763 (DNS-SD)</a></p>
+<h2 id="在QNAP上安装homebridge完整过程"><a href="#在QNAP上安装homebridge完整过程" class="headerlink" title="在QNAP上安装homebridge完整过程"></a>在QNAP上安装homebridge完整过程</h2><p>家里的NAS是QNAP的，当然群晖的也没问题，反正最终是通过docker安装的，可以免去处理一堆依赖的麻烦</p>
+<h3 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h3><p>首先确认Container Station已经安装好<br>在Container Station中下载<a href="https://hub.docker.com/r/marcoraddatz/homebridge/" target="_blank" rel="external">marcoraddatz/homebridge</a>这个镜像，或者直接ssh登录后<code>docker pull marcoraddatz/homebridge</code>，这个镜像已经安装好了homebridge和avahi，只需要mount上配置文件就可以使用了</p>
+<h3 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><p>在NAS上新建一个目录，用于放置homebridge相关配置，这边假设是<code>/path_to_folder/homebridge</code>，在目录中新建两个文件</p>
+<h4 id="config-json"><a href="#config-json" class="headerlink" title="config.json"></a>config.json</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;bridge&quot;: &#123;</div><div class="line">        &quot;name&quot;: &quot;Homebridge&quot;,</div><div class="line">        &quot;username&quot;: &quot;11:22:33:44:55:66&quot;,</div><div class="line">        &quot;port&quot;: 51826,</div><div class="line">        &quot;pin&quot;: &quot;031-45-154&quot;</div><div class="line">    &#125;,</div><div class="line">    &quot;platforms&quot;: [</div><div class="line">        &#123;</div><div class="line">            &quot;platform&quot;: &quot;AqaraPlatform&quot;,</div><div class="line">            &quot;sid&quot;: [&quot;f0b429cc3a65&quot;],</div><div class="line">            &quot;password&quot;: [&quot;F8DF6CD6FA5345C3&quot;]</div><div class="line">        &#125;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>bridge</code> homebridge配置</p>
+<ul>
+<li><code>name</code>，在Home App中显示的设备名称，随意填写，可以重复</li>
+<li><code>username</code>，设备唯一ID，格式如上，内容随意填写，但<strong>不可以</strong>重复，如果Home App中无法找到这个homebridge设备，可以尝试更换username</li>
+<li><code>pin</code>，在Home App中配对用的，格式如上，内容随意设置</li>
+</ul>
+<p><code>platforms</code> 插件配置</p>
+<ul>
+<li><code>AqaraPlatform</code>，适配绿米网关(小米网关生产厂商)的插件</li>
+<li><code>sid</code>，网关mac地址</li>
+<li><code>password</code>，局域网通信协议密码</li>
+</ul>
+<blockquote>
+<p><code>sid</code>/<code>password</code>的获取方式如下</p>
+</blockquote>
+<ul>
+<li>在米家App中进入网关设备页面</li>
+<li>页面右上角菜单进入关于页面</li>
+<li>狂点下方空白处，启用开发者模式</li>
+<li>进入局域网通信协议菜单，打开开关并记录下密码，填入<code>password</code>字段</li>
+<li>进入网关信息菜单，找到<code>mac=</code>开头的mac地址，注意<strong>不是</strong><code>gw_mac</code>，去掉<code>:</code>填入<code>sid</code>字段</li>
+</ul>
+<h4 id="install-sh"><a href="#install-sh" class="headerlink" title="install.sh"></a>install.sh</h4><p>配置需要安装的插件，暂时只添加了小米的，可以按需增加，新建容器时会读取这个配置并安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">npm install -g homebridge-aqara</div></pre></td></tr></table></figure>
+<h3 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h3><blockquote>
+<p>注意替换<code>/path_to_folder/homebridge</code>为实际路径</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -d --name homebridge --net=host -p 5353:5353/udp -p 51826:51826 -v /path_to_folder/homebridge:/root/.homebridge marcoraddatz/homebridge</div></pre></td></tr></table></figure>
+<p>不出意外的话，应该能看到如下日志，表明已经启动成功了，打开Home App添加设备吧~</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[3/14/2017, 2:05:16 PM] Loaded plugin: homebridge-aqara</div><div class="line">[3/14/2017, 2:05:16 PM] Registering platform &apos;homebridge-aqara.AqaraPlatform&apos;</div><div class="line">[3/14/2017, 2:05:16 PM] ---</div><div class="line">[3/14/2017, 2:05:16 PM] Loaded config.json with 0 accessories and 1 platforms.</div><div class="line">[3/14/2017, 2:05:16 PM] ---</div><div class="line">[3/14/2017, 2:05:16 PM] Loading 1 platforms...</div><div class="line">[3/14/2017, 2:05:16 PM] Initializing AqaraPlatform platform...</div><div class="line">Scan this code with your HomeKit App on your iOS device to pair with Homebridge:</div><div class="line"></div><div class="line">    ┌────────────┐</div><div class="line">    │ 031-45-154 │</div><div class="line">    └────────────┘</div><div class="line"></div><div class="line">[3/14/2017, 2:05:16 PM] Homebridge is running on port 51826.</div></pre></td></tr></table></figure>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><p>如果Home App中无法找到homebridge网关的话，一般有两个问题</p>
+<ul>
+<li>Homebridge认为已经配对成功，而iOS那边其实失败了，由于homekit设备只能和一台iOS配对，因此iOS无法发现已经配对过的homebridge，解决方法是删除<code>.homebridge/</code>目录中的<code>persist/</code>目录</li>
+<li>前面提到的<code>username</code>问题，可能是重复了，也可能是iOS设备中有异常，解决方法是随便换一个</li>
+</ul>
+<h2 id="外网访问"><a href="#外网访问" class="headerlink" title="外网访问"></a>外网访问</h2><p>HomeKit默认只能在局域网内使用，如果要在外网访问的话，需要家里有第四代的Apple TV或者任意iPad做中转，如果是iPad的话，在<code>Settings -&gt; Home</code>中开启<code>Use this iPad as a Home Hub</code>即可，不过国内这网络中转速度实在感人…</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>当然不能忘了调戏下Siri</p>
+<blockquote>
+<pre><code>&quot;Turn off the Blueair in the Living Room&quot;
+</code></pre><p>OK, the Blueair is off.</p>
+<pre><code>&quot;Temperature in the Living Room&quot;
+</code></pre><p>The Living Room temperature in My Home is at 17℃.</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/homebridge/" rel="tag"># homebridge</a>
+          
+            <a href="/tags/qnap/" rel="tag"># qnap</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/25/ansible/" rel="next" title="Ansible学习笔记">
+                <i class="fa fa-chevron-left"></i> Ansible学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Allen Xu" />
+          <p class="site-author-name" itemprop="name">Allen Xu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于HomeKit和homebridge"><span class="nav-number">1.</span> <span class="nav-text">关于HomeKit和homebridge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装homebridge"><span class="nav-number">2.</span> <span class="nav-text">安装homebridge</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在Mac上安装"><span class="nav-number">2.1.</span> <span class="nav-text">在Mac上安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在Linux上安装"><span class="nav-number">2.2.</span> <span class="nav-text">在Linux上安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于Avahi"><span class="nav-number">2.2.1.</span> <span class="nav-text">关于Avahi</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#命名"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">命名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#发现"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">发现</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在QNAP上安装homebridge完整过程"><span class="nav-number">3.</span> <span class="nav-text">在QNAP上安装homebridge完整过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载镜像"><span class="nav-number">3.1.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑配置文件"><span class="nav-number">3.2.</span> <span class="nav-text">编辑配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#config-json"><span class="nav-number">3.2.1.</span> <span class="nav-text">config.json</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#install-sh"><span class="nav-number">3.2.2.</span> <span class="nav-text">install.sh</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动容器"><span class="nav-number">3.3.</span> <span class="nav-text">启动容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见问题"><span class="nav-number">4.</span> <span class="nav-text">常见问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#外网访问"><span class="nav-number">5.</span> <span class="nav-text">外网访问</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">6.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Allen Xu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

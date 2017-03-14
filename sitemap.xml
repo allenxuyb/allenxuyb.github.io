@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.yongbin.me/2017/01/12/2017/</loc>
+    
+    <lastmod>2017-03-14T08:04:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.yongbin.me/2017/03/14/homebridge/</loc>
+    
+    <lastmod>2017-03-14T08:04:48.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.yongbin.me/2017/02/25/ansible/</loc>
     
     <lastmod>2017-02-26T04:14:39.000Z</lastmod>
@@ -12,13 +26,6 @@
     <loc>http://blog.yongbin.me/2017/02/15/semaphore/</loc>
     
     <lastmod>2017-02-15T08:36:47.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.yongbin.me/2017/01/12/2017/</loc>
-    
-    <lastmod>2017-02-15T02:54:06.000Z</lastmod>
     
   </url>
   
