@@ -1348,8 +1348,12 @@
 
       
         
-          <h1 id="safepoint"><a href="#safepoint" class="headerlink" title="safepoint"></a>safepoint</h1><p><a href="http://psy-lob-saw.blogspot.com/2015/12/safepoints.html">Safepoints: Meaning, Side Effects and Overheads</a><br><a href="http://psy-lob-saw.blogspot.com/2016/02/wait-for-it-counteduncounted-loops.html">Counted/Uncounted loops, Safepoints and OSR Compilation</a><br><a href="http://calvin1978.blogcn.com/articles/safepoint.html">JVM的Stop The World，安全点，黑暗的地底世界</a></p>
-<h1 id="safepoint日志"><a href="#safepoint日志" class="headerlink" title="safepoint日志"></a>safepoint日志</h1><ul>
+          <h3 id="safepoint"><a href="#safepoint" class="headerlink" title="safepoint"></a>safepoint</h3><p><a href="http://psy-lob-saw.blogspot.com/2015/12/safepoints.html">Safepoints: Meaning, Side Effects and Overheads</a><br><a href="http://psy-lob-saw.blogspot.com/2016/02/wait-for-it-counteduncounted-loops.html">Counted/Uncounted loops, Safepoints and OSR Compilation</a><br><a href="http://calvin1978.blogcn.com/articles/safepoint.html">JVM的Stop The World，安全点，黑暗的地底世界</a></p>
+<blockquote>
+<p>When at a safepoint, the thread’s representation of it’s Java machine state is well described, and can be safely manipulated and observed by other threads in the JVM.</p>
+</blockquote>
+<p>安全点是指线程执行过程中一些特定的位置，在这些位置上线程的JVM状态是确定的（JIT会在safepoint上生成OopMap帮助确定GC Roots），因此可以进行GC等操作</p>
+<h3 id="safepoint日志"><a href="#safepoint日志" class="headerlink" title="safepoint日志"></a>safepoint日志</h3><ul>
 <li><p>打印日志<br>  <code>-XX:+PrintSafepointStatistics -XX:PrintSafepointStatisticsCount=1</code><br>  <code>-XX:+PrintGCApplicationStoppedTime #打印停顿时间</code></p>
           <!--noindex-->
           <div class="post-more-link text-center">

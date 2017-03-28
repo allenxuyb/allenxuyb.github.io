@@ -85,21 +85,21 @@
 
 
 <meta name="description" content="safepointSafepoints: Meaning, Side Effects and OverheadsCounted/Uncounted loops, Safepoints and OSR CompilationJVM的Stop The World，安全点，黑暗的地底世界
-safepoint日志
-打印日志  -XX:+PrintSafepointStatistics -XX:PrintS">
+
+When at a safepoint, the thread’s representation of it’s">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Safepoint学习笔记">
 <meta property="og:url" content="http://blog.yongbin.me/2016/11/23/safepoint/index.html">
 <meta property="og:site_name" content="El Psy Congroo">
 <meta property="og:description" content="safepointSafepoints: Meaning, Side Effects and OverheadsCounted/Uncounted loops, Safepoints and OSR CompilationJVM的Stop The World，安全点，黑暗的地底世界
-safepoint日志
-打印日志  -XX:+PrintSafepointStatistics -XX:PrintS">
-<meta property="og:updated_time" content="2017-01-16T01:11:14.000Z">
+
+When at a safepoint, the thread’s representation of it’s">
+<meta property="og:updated_time" content="2017-03-28T08:51:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Safepoint学习笔记">
 <meta name="twitter:description" content="safepointSafepoints: Meaning, Side Effects and OverheadsCounted/Uncounted loops, Safepoints and OSR CompilationJVM的Stop The World，安全点，黑暗的地底世界
-safepoint日志
-打印日志  -XX:+PrintSafepointStatistics -XX:PrintS">
+
+When at a safepoint, the thread’s representation of it’s">
 
 
 
@@ -330,8 +330,12 @@ safepoint日志
       
 
       
-        <h1 id="safepoint"><a href="#safepoint" class="headerlink" title="safepoint"></a>safepoint</h1><p><a href="http://psy-lob-saw.blogspot.com/2015/12/safepoints.html" target="_blank" rel="external">Safepoints: Meaning, Side Effects and Overheads</a><br><a href="http://psy-lob-saw.blogspot.com/2016/02/wait-for-it-counteduncounted-loops.html" target="_blank" rel="external">Counted/Uncounted loops, Safepoints and OSR Compilation</a><br><a href="http://calvin1978.blogcn.com/articles/safepoint.html" target="_blank" rel="external">JVM的Stop The World，安全点，黑暗的地底世界</a></p>
-<h1 id="safepoint日志"><a href="#safepoint日志" class="headerlink" title="safepoint日志"></a>safepoint日志</h1><ul>
+        <h3 id="safepoint"><a href="#safepoint" class="headerlink" title="safepoint"></a>safepoint</h3><p><a href="http://psy-lob-saw.blogspot.com/2015/12/safepoints.html" target="_blank" rel="external">Safepoints: Meaning, Side Effects and Overheads</a><br><a href="http://psy-lob-saw.blogspot.com/2016/02/wait-for-it-counteduncounted-loops.html" target="_blank" rel="external">Counted/Uncounted loops, Safepoints and OSR Compilation</a><br><a href="http://calvin1978.blogcn.com/articles/safepoint.html" target="_blank" rel="external">JVM的Stop The World，安全点，黑暗的地底世界</a></p>
+<blockquote>
+<p>When at a safepoint, the thread’s representation of it’s Java machine state is well described, and can be safely manipulated and observed by other threads in the JVM.</p>
+</blockquote>
+<p>安全点是指线程执行过程中一些特定的位置，在这些位置上线程的JVM状态是确定的（JIT会在safepoint上生成OopMap帮助确定GC Roots），因此可以进行GC等操作</p>
+<h3 id="safepoint日志"><a href="#safepoint日志" class="headerlink" title="safepoint日志"></a>safepoint日志</h3><ul>
 <li><p>打印日志<br>  <code>-XX:+PrintSafepointStatistics -XX:PrintSafepointStatisticsCount=1</code><br>  <code>-XX:+PrintGCApplicationStoppedTime #打印停顿时间</code></p>
 <a id="more"></a>
 </li>
@@ -357,7 +361,9 @@ safepoint日志
 </ul>
 </li>
 </ul>
-<h1 id="safepoint-poll"><a href="#safepoint-poll" class="headerlink" title="safepoint poll"></a>safepoint poll</h1><ul>
+<h3 id="safepoint-poll"><a href="#safepoint-poll" class="headerlink" title="safepoint poll"></a>safepoint poll</h3><ul>
+<li><p>采用主动式中断（Voluntary Suspension）进入safepoint</p>
+</li>
 <li><p>检查方式<br>  JIT方式下直接插入检查代码，解释器执行时监听safepoint请求，有请求时让线程进行safepoint检查</p>
 </li>
 <li><p>safepoint检查点</p>
@@ -378,7 +384,7 @@ safepoint日志
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// counted = reps is int/short/byte</div><div class="line">for (int i = 0; i &lt; reps; i++) &#123;&#125;</div><div class="line"></div><div class="line">// uncounted</div><div class="line">for (long l = 0; l &lt; int_reps; i++) &#123;&#125;</div><div class="line"></div><div class="line">// counted</div><div class="line">while (i &lt; reps) &#123; i++; &#125;</div><div class="line"></div><div class="line">// uncounted</div><div class="line">while (i++ &lt; reps) &#123;&#125;</div></pre></td></tr></table></figure>
 </li>
 </ul>
-<h1 id="safepoint-operation"><a href="#safepoint-operation" class="headerlink" title="safepoint operation"></a>safepoint operation</h1><ol>
+<h3 id="safepoint-operation"><a href="#safepoint-operation" class="headerlink" title="safepoint operation"></a>safepoint operation</h3><ol>
 <li>Garbage collection pauses</li>
 <li>Code deoptimization</li>
 <li>Flushing code cache</li>
@@ -386,9 +392,10 @@ safepoint日志
 <li>Biased lock revocation</li>
 <li>Various debug operation (e.g. deadlock check or stacktrace dump)</li>
 </ol>
-<h1 id="safe-region"><a href="#safe-region" class="headerlink" title="safe-region"></a>safe-region</h1><p>safepoint处理运行中的thread，safe-region处理等待中的线程，线程block或sleep前标识进入safe-region，唤醒后准备离开safe-region前，先检查是否能离开，例如GC是否完成，如果没有，则继续等待</p>
-<h1 id="safepoint-bias-on-profiling"><a href="#safepoint-bias-on-profiling" class="headerlink" title="safepoint bias on profiling"></a>safepoint bias on profiling</h1><p>热点方法中的safepoint检查点可能被优化掉，导致profile时只能统计到热点方法的外部方法</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<h3 id="safe-region"><a href="#safe-region" class="headerlink" title="safe-region"></a>safe-region</h3><p>safepoint处理运行中的thread，safe-region处理等待中的线程，线程block或sleep前标识进入safe-region，唤醒后准备离开safe-region前，先检查是否能离开，例如GC是否完成，如果没有，则继续等待</p>
+<h3 id="safepoint-bias-on-profiling"><a href="#safepoint-bias-on-profiling" class="headerlink" title="safepoint bias on profiling"></a>safepoint bias on profiling</h3><p>热点方法中的safepoint检查点可能被优化掉，导致profile时只能统计到热点方法的外部方法</p>
+<h3 id="JNI-code"><a href="#JNI-code" class="headerlink" title="JNI code"></a>JNI code</h3><p>JNI code运行时线程处于safepoint，如果需要访问或修改Java state（通过JNI API），则这部分API调用会在离开safepoint时执行，并再次进入safepoint返回给JNI code</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
 <li>分别考虑Safepoint/Safepoint poll/Safepoint operation的开销和性能影响</li>
 <li>任何一个没有成功进入safepoint的线程都会阻塞整个JVM</li>
 <li>通过日志观察停顿时间，如果有异常，增加明细日志</li>
@@ -553,7 +560,7 @@ safepoint日志
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#safepoint"><span class="nav-number">1.</span> <span class="nav-text">safepoint</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#safepoint日志"><span class="nav-number">2.</span> <span class="nav-text">safepoint日志</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#safepoint-poll"><span class="nav-number">3.</span> <span class="nav-text">safepoint poll</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#safepoint-operation"><span class="nav-number">4.</span> <span class="nav-text">safepoint operation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#safe-region"><span class="nav-number">5.</span> <span class="nav-text">safe-region</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#safepoint-bias-on-profiling"><span class="nav-number">6.</span> <span class="nav-text">safepoint bias on profiling</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#safepoint"><span class="nav-number">1.</span> <span class="nav-text">safepoint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#safepoint日志"><span class="nav-number">2.</span> <span class="nav-text">safepoint日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#safepoint-poll"><span class="nav-number">3.</span> <span class="nav-text">safepoint poll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#safepoint-operation"><span class="nav-number">4.</span> <span class="nav-text">safepoint operation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#safe-region"><span class="nav-number">5.</span> <span class="nav-text">safe-region</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#safepoint-bias-on-profiling"><span class="nav-number">6.</span> <span class="nav-text">safepoint bias on profiling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JNI-code"><span class="nav-number">7.</span> <span class="nav-text">JNI code</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
