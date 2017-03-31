@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://blog.yongbin.me/2017/03/26/rwp_hangzhou/index.html">
 <meta property="og:site_name" content="El Psy Congroo">
 <meta property="og:description" content="周末参加了CN’SOUG组织的ORACLE RWP性能之旅杭州站活动，演讲嘉宾是Oracle RWP的VP Andrew Holdsworth以及架构师Graham Wood，两位都是有30年Oracle从业经验的大牛，讲的内容虽然不深，但是听大师从宏观层面过一遍性能优化的方法论，还是挺有收获的，凭印象简单做个笔记。">
-<meta property="og:updated_time" content="2017-03-31T12:51:54.000Z">
+<meta property="og:updated_time" content="2017-03-31T13:16:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ORACLE RWP性能之旅杭州站活动记录">
 <meta name="twitter:description" content="周末参加了CN’SOUG组织的ORACLE RWP性能之旅杭州站活动，演讲嘉宾是Oracle RWP的VP Andrew Holdsworth以及架构师Graham Wood，两位都是有30年Oracle从业经验的大牛，讲的内容虽然不深，但是听大师从宏观层面过一遍性能优化的方法论，还是挺有收获的，凭印象简单做个笔记。">
@@ -337,16 +337,25 @@
 <h4 id="Case-4-Leaking"><a href="#Case-4-Leaking" class="headerlink" title="Case 4 Leaking"></a>Case 4 Leaking</h4><p><strong>Cursor Leaking</strong><br><code>ORA-010000 maximum open cursors exceeded</code><br>这个坑很多开发都踩过，一般都是statement没有及时关闭。我们以前在MyBatis3.1中也遇到过这个问题，SelectKeyGenerator中存在bug，导致insert前selectKey打开的statement没有关闭，在大批量insert的事务中就会出现这个报错</p>
 <p><strong>Connection Leaking</strong><br>由于程序异常导致的连接没有关闭/归还连接池，除了资源占用外，还可能导致部分被锁定的资源没有释放，阻塞了其他sql的执行，需要dba干预kill连接。不过连接池的removeAbandon功能应该可以避免这类问题吧。</p>
 <h3 id="PM"><a href="#PM" class="headerlink" title="PM"></a>PM</h3><p>下午的演讲主要关注AWR，数据库参数，以及执行计划</p>
-<h3 id="AWR案例分析"><a href="#AWR案例分析" class="headerlink" title="AWR案例分析"></a>AWR案例分析</h3><p>过了一份AWR报告，分析出几个问题。AWR了解不多，而且投影字太小完全看不清=.=<br>从session数量看貌似有泄露？这个没看清也不是很理解=.=<br>大量的<code>select 1 from dual</code>，连接池testOnXXX产生的。貌似这个在我们生产环境中虽然调用次数很多，但是没什么开销<br><code>select for update</code>产生的大量行锁<br><code>in</code>不定长参数列表产生大量相似的SQL解析。这个生产环境很常见，感觉1000以下的都能接受，最多硬解析1000次… 再多我们就考虑临时表join了</p>
+<h3 id="AWR案例分析"><a href="#AWR案例分析" class="headerlink" title="AWR案例分析"></a>AWR案例分析</h3><p>过了一份AWR报告，分析出几个问题。AWR了解不多，而且投影字太小完全看不清=.=<br>从session数量看貌似有泄露？这个不是很理解=.=<br>大量的<code>select 1 from dual</code>，连接池testOnXXX产生的。貌似这个在我们生产环境中虽然调用次数很多，但是没什么开销<br><code>select for update</code>产生的大量行锁<br><code>in</code>不定长参数列表产生大量相似的SQL解析。这个生产环境很常见，感觉1000以下的都能接受，最多硬解析1000次… 再多我们就考虑临时表join了</p>
 <h3 id="在init-ora中使用默认值"><a href="#在init-ora中使用默认值" class="headerlink" title="在init.ora中使用默认值"></a>在init.ora中使用默认值</h3><p>尽量使用默认参数，没有特别的理由以及数据支持不要修改。默认参数是Oracle包括优化器开发及测试时使用的参数，在大部分情况下能得到最优的性能，出现问题时，也最容易得到支持。</p>
 <h3 id="统计信息"><a href="#统计信息" class="headerlink" title="统计信息"></a>统计信息</h3><p>采集例如表中记录数，列最大最小值，唯一值数量，直方图（histogram）等，作为CBO选择最优执行计划的依据</p>
-<h3 id="执行计划优化案例"><a href="#执行计划优化案例" class="headerlink" title="执行计划优化案例"></a>执行计划优化案例</h3><p>通过EM中的SQL Monitor找到开销最大的地方进行优化，即前面提到的<code>leverage</code></p>
-<h4 id="Case-1"><a href="#Case-1" class="headerlink" title="Case 1"></a>Case 1</h4><p>parallel hash join时，驱动表被broadcast到所有工作线程，实际上驱动表非常大，并不适合broadcast<br>问题原因是低估了驱动表的cardinality，过滤驱动表的查询条件存在数据关联，如<code>prov=&#39;ZJ&#39; and city=&#39;HZ&#39; and county=&#39;XIHU&#39;</code>，优化器会将三个字段的选择度相乘，认为结果数据集很小，实际上结果数据主要是由最后一个字段决定的<br>从这里我们可以看出领域知识（Domain knowledge）在优化过程中的重要性。解决方式也很简单，将存在关联的字段一并采集统计信息</p>
-<h4 id="Case-2"><a href="#Case-2" class="headerlink" title="Case 2"></a>Case 2</h4><p>选择了错误的join方式<br>问题原因仍然是错误估算了cardinality，查询条件中对字段使用了函数，因此无法使用统计信息，优化器猜测的值实际是低估了，导致走了nested loop。解决方式是尽量避免查询时使用函数，像是将多个值编码到一个字段中，查询时通过substr拆分这种模式尤其要避免。无法避免时，对字段带函数收集统计信息。</p>
-<h4 id="Case-3"><a href="#Case-3" class="headerlink" title="Case 3"></a>Case 3</h4><p>parallel hash join时，任务分布不均，近半任务落在一个工作线程上<br>这次的cardinality估算是正确的，问题原因在数据上，这里的hash key是会员卡号，但是当用户没有会员卡时，这个字段的值为<code>-1</code>，大部分用户没有会员卡，导致大量数据hash到了同一个工作线程上。解决方式是将有会员卡和没有会员卡的拆分为两个查询。这里又一次强调了领域知识的重要性。</p>
+<h3 id="执行计划优化案例"><a href="#执行计划优化案例" class="headerlink" title="执行计划优化案例"></a>执行计划优化案例</h3><p>通过EM中的SQL Monitor找到开销最大的位置进行优化，下面几个案例甚至都不需要看完整的SQL，直接分析问题点就能找到原因</p>
+<h4 id="Case-1"><a href="#Case-1" class="headerlink" title="Case 1"></a>Case 1</h4><blockquote>
+<p>parallel hash join时，驱动表被broadcast到所有工作线程，实际上驱动表非常大，并不适合broadcast</p>
+</blockquote>
+<p>问题原因是低估了驱动表的cardinality，过滤驱动表的查询条件存在数据关联，如<code>prov=&#39;ZJ&#39; and city=&#39;HZ&#39; and county=&#39;XIHU&#39;</code>，优化器会将三个字段的选择度相乘，认为结果数据集很小，实际上结果数据主要是由最后一个字段决定的<br>从这里我们可以看出<strong>领域知识（Domain knowledge）</strong>在优化过程中的重要性。解决方式也很简单，将存在关联的字段一并采集统计信息</p>
+<h4 id="Case-2"><a href="#Case-2" class="headerlink" title="Case 2"></a>Case 2</h4><blockquote>
+<p>选择了错误的join方式</p>
+</blockquote>
+<p>问题原因仍然是错误估算了cardinality，查询条件中对字段使用了函数，因此无法使用统计信息，优化器猜测的值实际是低估了，导致走了nested loop。解决方式是尽量避免查询时使用函数，像是将多个值编码到一个字段中，查询时通过substr拆分这种模式尤其要避免。无法避免时，对字段带函数收集统计信息。</p>
+<h4 id="Case-3"><a href="#Case-3" class="headerlink" title="Case 3"></a>Case 3</h4><blockquote>
+<p>parallel hash join时，任务分布不均，近半任务落在一个工作线程上</p>
+</blockquote>
+<p>这次的cardinality估算是正确的，问题原因在数据上，这里的hash key是会员卡号，但是当用户没有会员卡时，这个字段的值为<code>-1</code>，大部分用户没有会员卡，导致大量数据hash到了同一个工作线程上。解决方式是将有会员卡和没有会员卡的拆分为两个查询。这里又一次强调了领域知识的重要性。</p>
 <h3 id="Important-idea"><a href="#Important-idea" class="headerlink" title="Important idea"></a>Important idea</h3><p>演讲的最后，Andrew分享了一个idea</p>
 <blockquote>
-<p>当别人给你性能解决方案但没有给你理由时，要敢于追问为什么，要求数据支持，直到你完全理解为止。<br>当你做性能调优决策时，不能仅靠猜测，必须要有数据证明。<br><del>Location, Location, Location</del> Data, Data, Data</p>
+<p>当别人给你性能解决方案但没有给你理由时，要敢于追问为什么，要求数据支持，直到你完全理解为止。<br>当你做性能调优决策时，不能仅靠猜测，必须要有数据证明。<br><del>Location, Location, Location</del> <strong>Data, Data, Data</strong></p>
 </blockquote>
 
       
