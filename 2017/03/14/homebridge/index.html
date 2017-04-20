@@ -96,7 +96,7 @@
 米家App的功能也还不错，但是和以前用的Wemo比起来主要有两个问题
 
 不支持局域网控制，所有操作都是要去服务端绕一圈的，如果服务器挂了或者断网了…">
-<meta property="og:updated_time" content="2017-03-14T08:04:48.000Z">
+<meta property="og:updated_time" content="2017-04-20T13:35:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="小米网关接入Homekit">
 <meta name="twitter:description" content="前段时间买了一堆小米的ZigBee智能设备回来玩，从硬件来讲，无论性价比还是设计做工都诚意满满，值得安利，虽然硬件本身并没有太多新意，以前也有很多类似产品，但是配合小米不断壮大的智能设备生态圈，可玩性是别的品牌不能比拟的，嗯，我在说贝尔金的Wemo…
@@ -360,7 +360,7 @@
 <h2 id="在QNAP上安装homebridge完整过程"><a href="#在QNAP上安装homebridge完整过程" class="headerlink" title="在QNAP上安装homebridge完整过程"></a>在QNAP上安装homebridge完整过程</h2><p>家里的NAS是QNAP的，当然群晖的也没问题，反正最终是通过docker安装的，可以免去处理一堆依赖的麻烦</p>
 <h3 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h3><p>首先确认Container Station已经安装好<br>在Container Station中下载<a href="https://hub.docker.com/r/marcoraddatz/homebridge/" target="_blank" rel="external">marcoraddatz/homebridge</a>这个镜像，或者直接ssh登录后<code>docker pull marcoraddatz/homebridge</code>，这个镜像已经安装好了homebridge和avahi，只需要mount上配置文件就可以使用了</p>
 <h3 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h3><p>在NAS上新建一个目录，用于放置homebridge相关配置，这边假设是<code>/path_to_folder/homebridge</code>，在目录中新建两个文件</p>
-<h4 id="config-json"><a href="#config-json" class="headerlink" title="config.json"></a>config.json</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;bridge&quot;: &#123;</div><div class="line">        &quot;name&quot;: &quot;Homebridge&quot;,</div><div class="line">        &quot;username&quot;: &quot;11:22:33:44:55:66&quot;,</div><div class="line">        &quot;port&quot;: 51826,</div><div class="line">        &quot;pin&quot;: &quot;031-45-154&quot;</div><div class="line">    &#125;,</div><div class="line">    &quot;platforms&quot;: [</div><div class="line">        &#123;</div><div class="line">            &quot;platform&quot;: &quot;AqaraPlatform&quot;,</div><div class="line">            &quot;sid&quot;: [&quot;f0b429cc3a65&quot;],</div><div class="line">            &quot;password&quot;: [&quot;F8DF6CD6FA5345C3&quot;]</div><div class="line">        &#125;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="config-json"><a href="#config-json" class="headerlink" title="config.json"></a>config.json</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;bridge&quot;: &#123;</div><div class="line">        &quot;name&quot;: &quot;Homebridge&quot;,</div><div class="line">        &quot;username&quot;: &quot;11:22:33:44:55:66&quot;,</div><div class="line">        &quot;port&quot;: 51826,</div><div class="line">        &quot;pin&quot;: &quot;031-45-154&quot;</div><div class="line">    &#125;,</div><div class="line">    &quot;platforms&quot;: [</div><div class="line">        &#123;</div><div class="line">            &quot;platform&quot; : &quot;yeelight&quot;,</div><div class="line">            &quot;name&quot; : &quot;yeelight&quot;</div><div class="line">        &#125;,</div><div class="line">        &#123;</div><div class="line">            &quot;platform&quot;: &quot;AqaraPlatform&quot;,</div><div class="line">            &quot;sid&quot;: [&quot;f0b429cc3a65&quot;],</div><div class="line">            &quot;password&quot;: [&quot;F8DF6CD6FA5345C3&quot;]</div><div class="line">        &#125;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p><code>bridge</code> homebridge配置</p>
 <ul>
 <li><code>name</code>，在Home App中显示的设备名称，随意填写，可以重复</li>
@@ -369,22 +369,18 @@
 </ul>
 <p><code>platforms</code> 插件配置</p>
 <ul>
-<li><code>AqaraPlatform</code>，适配绿米网关(小米网关生产厂商)的插件</li>
+<li><code>yeelight</code>，适配Yeelight灯具的插件，包括小米台灯（需要最新固件）</li>
+<li><code>AqaraPlatform</code>，适配绿米网关(小米网关生产厂商)的插件<ul>
 <li><code>sid</code>，网关mac地址</li>
 <li><code>password</code>，局域网通信协议密码</li>
 </ul>
-<blockquote>
-<p><code>sid</code>/<code>password</code>的获取方式如下</p>
-</blockquote>
-<ul>
-<li>在米家App中进入网关设备页面</li>
-<li>页面右上角菜单进入关于页面</li>
-<li>狂点下方空白处，启用开发者模式</li>
-<li>进入局域网通信协议菜单，打开开关并记录下密码，填入<code>password</code>字段</li>
-<li>进入网关信息菜单，找到<code>mac=</code>开头的mac地址，注意<strong>不是</strong><code>gw_mac</code>，去掉<code>:</code>填入<code>sid</code>字段</li>
+</li>
 </ul>
-<h4 id="install-sh"><a href="#install-sh" class="headerlink" title="install.sh"></a>install.sh</h4><p>配置需要安装的插件，暂时只添加了小米的，可以按需增加，新建容器时会读取这个配置并安装</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">npm install -g homebridge-aqara</div></pre></td></tr></table></figure>
+<blockquote>
+<p>sid与password的获取方式：<br>a. 在米家App中进入网关设备页面<br>b. 页面右上角菜单进入关于页面<br>c. 连续点击下方空白处，启用开发者模式<br>d. 进入局域网通信协议菜单，打开开关并记录下密码，填入<code>password</code>字段<br>e. 进入网关信息菜单，找到<code>mac=</code>开头的mac地址，注意<strong>不是</strong><code>gw_mac</code>，去掉<code>:</code>填入<code>sid</code>字段</p>
+</blockquote>
+<h4 id="install-sh"><a href="#install-sh" class="headerlink" title="install.sh"></a>install.sh</h4><p>配置需要安装的插件，暂时只添加了小米和Yeelight的，可以按需增加，新建容器时会读取这个配置并安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line"></div><div class="line">npm install -g homebridge-yeelight</div><div class="line">npm install -g homebridge-aqara</div></pre></td></tr></table></figure>
 <h3 id="启动容器"><a href="#启动容器" class="headerlink" title="启动容器"></a>启动容器</h3><blockquote>
 <p>注意替换<code>/path_to_folder/homebridge</code>为实际路径</p>
 </blockquote>
@@ -542,6 +538,26 @@
         
 
         <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/allenxuyb" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/allenxuyb" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
           
         </div>
 
