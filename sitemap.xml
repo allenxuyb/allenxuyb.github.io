@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.yongbin.me/2017/01/12/2017/</loc>
+    
+    <lastmod>2017-05-21T04:31:50.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.yongbin.me/2016/10/10/zhuyili/</loc>
     
     <lastmod>2017-05-16T07:54:06.000Z</lastmod>
@@ -54,13 +61,6 @@
     <loc>http://blog.yongbin.me/2017/03/20/jaxb_metaspace_oom/</loc>
     
     <lastmod>2017-03-20T08:37:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.yongbin.me/2017/01/12/2017/</loc>
-    
-    <lastmod>2017-03-14T08:04:56.000Z</lastmod>
     
   </url>
   
