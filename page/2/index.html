@@ -962,25 +962,7 @@
 
       
         
-          <h1 id="kafka-conception"><a href="#kafka-conception" class="headerlink" title="kafka conception"></a>kafka conception</h1><ul>
-<li><p>multiple consumers on one partition</p>
-<ul>
-<li>like mutliple threads with a synchronize block</li>
-</ul>
-</li>
-<li><p><a href="http://kafka.apache.org/documentation.html#semantics">Message Delivery Semantics</a></p>
-<ul>
-<li>at-least-once<ul>
-<li>Producer 发送重试，ack=all</li>
-<li>Consumer 关闭auto commit，处理完消息后commit</li>
-</ul>
-</li>
-<li>at-most-once<ul>
-<li>无重试，自动提交</li>
-</ul>
-</li>
-<li>exactly-once<ul>
-<li>重试加基于消息主键的幂等发送/消费
+          <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>Kafka本质上是一个<strong>append-only的日志系统</strong>，消息就是日志，按顺序追加到log文件中。为了能快速定位到消息，每个log文件还对应一个index文件，稀疏记录log文件中消息的offset，因此单个log文件也不能太大，log文件对应segment这个概念。为了提高<strong>并发性能</strong>，那就需要同时提供多组log文件以供写入，这就是topic中的partition概念，消息会hash到固定的partition中。为了保证<strong>高可用</strong>，每个partition都需要有备份，根据配置会复制1至N份到其他broker，保持同步的节点群共同组成ISR，当leader失效时从ISR中选出新leader。<strong>消息写入</strong>时，可以按对可靠性的要求，选择仅写入leader就返回，还是需要等待写入至少N个或全部replica。<strong>消息消费</strong>时，kafka使用pull的模式，同时服务端不负责记录消费者offset（但是提供了用于记录的基础设施，以前是zk，现在是特殊的topic），并且一个partition只允许一个消费者，这保证了消息是partition有序的。新版本kafka<strong>对zk的依赖</strong>很少，仅用于节点发现，集群协调工作都是由选举出的一台broker（controller）来负责的。kafka<strong>依赖操作系统</strong>中的基础设施来保证高性能，例如利用顺序读取的log文件来规避磁盘性能问题，pagecache做缓存，zero-copy提高发送性能，因此<strong>部署时</strong>也要考虑这些特性，避免使用raid（将顺序读写分散了），保留足够内存用于pagecache，选择合适的replica份数在空间和可靠性中取得均衡，规划带宽时不要忘了节点间同步的开销等。<br>
           <!--noindex-->
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/07/20/kafka/#more" rel="contents">

@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.yongbin.me/2016/07/20/kafka/</loc>
+    
+    <lastmod>2017-05-21T07:04:46.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.yongbin.me/2017/01/12/2017/</loc>
     
     <lastmod>2017-05-21T04:31:50.000Z</lastmod>
@@ -152,13 +159,6 @@
     <loc>http://blog.yongbin.me/2016/04/10/MIT-6-001-SICP-Notes/</loc>
     
     <lastmod>2017-01-15T15:24:24.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.yongbin.me/2016/07/20/kafka/</loc>
-    
-    <lastmod>2017-01-15T15:23:29.000Z</lastmod>
     
   </url>
   
