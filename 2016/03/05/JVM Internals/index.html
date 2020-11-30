@@ -91,7 +91,7 @@
 <meta property="og:site_name" content="El Psy Congroo">
 <meta property="og:description" content="原文: JVM Interals">
 <meta property="og:image" content="http://i.imgur.com/Hoc7sxg.jpg">
-<meta property="og:updated_time" content="2017-03-24T09:28:24.000Z">
+<meta property="og:updated_time" content="2017-05-31T00:42:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM Internals学习笔记">
 <meta name="twitter:description" content="原文: JVM Interals">
@@ -355,7 +355,7 @@
 </ul>
 <h3 id="Shared-Between-Threads"><a href="#Shared-Between-Threads" class="headerlink" title="Shared Between Threads"></a>Shared Between Threads</h3><p>线程间共享的资源</p>
 <h4 id="Heap"><a href="#Heap" class="headerlink" title="Heap"></a>Heap</h4><p>存储对象实例及数组，栈帧被设计为创建后大小不可变，因此可变对象都存放在堆中，栈帧中仅保存基础类型及引用</p>
-<h5 id="Interned-Strings"><a href="#Interned-Strings" class="headerlink" title="Interned Strings"></a>Interned Strings</h5><p>String常量池，在类加载时，所有的String常量都会被保存到常量池中。运行时也可以显式调用<code>String.intern()</code>，如果常量池中已经存在该string，则直接返回引用，否则将该string加入常量池中并返回引用。<br>Java 6中String常量池放在Permgen中，容易引发OOM问题，Java 7开始已经将String常量池放到堆中，详细信息参考<a href="http://java-performance.info/string-intern-in-java-6-7-8/" target="_blank" rel="external">String.intern in Java 6, 7 and 8</a></p>
+<h5 id="Interned-Strings"><a href="#Interned-Strings" class="headerlink" title="Interned Strings"></a>Interned Strings</h5><p>String常量池，在类加载时，所有的String常量都会被保存到常量池中。运行时也可以显式调用<code>String.intern()</code>，如果常量池中已经存在该string，则直接返回引用，否则将该string加入常量池中并返回引用。<br>Java 6中String常量池放在Permgen中，容易引发OOM问题，Java 7开始已经将String常量池放到堆中，默认大小为60013，如果重度使用intern的话需要配置的更大避免hash冲突导致性能下降，详细信息参考<a href="http://java-performance.info/string-intern-in-java-6-7-8/" target="_blank" rel="external">String.intern in Java 6, 7 and 8</a></p>
 <h4 id="Non-Heap-Memory"><a href="#Non-Heap-Memory" class="headerlink" title="Non-Heap Memory"></a>Non-Heap Memory</h4><h5 id="Method-Area"><a href="#Method-Area" class="headerlink" title="Method Area"></a>Method Area</h5><p>方法区，保存每个类的结构信息，如运行时常量池，字段和方法数据，构造函数和普通方法的字节码等等，包括：</p>
 <ul>
 <li>Classloader Reference<ul>
@@ -491,7 +491,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -600,7 +600,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

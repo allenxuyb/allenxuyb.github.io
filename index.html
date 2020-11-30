@@ -247,6 +247,159 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2019/12/31/class_not_found/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2019/12/31/class_not_found/" itemprop="url">
+                  ClassNotFoundException & NoClassDefFoundError
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-31T12:00:00+08:00">
+                2019-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>两个异常都和找不到类有关，但引发这两个异常的原因有所不同。</p>
+<ul>
+<li><p><code>ClassNotFoundException</code>是在我们<strong>主动</strong>使用类名加载类时找不到对应类文件抛出的异常，这是一个<code>Exception</code>，需要我们显式捕获处理。参考<code>ClassNotFoundException</code>的JavaDoc：</p>
+<blockquote>
+<p>Thrown when an application tries to load in a class through its string name using:</p>
+<ul>
+<li>The <strong>forName</strong> method in class Class.</li>
+<li>The <strong>findSystemClass</strong> method in class ClassLoader .</li>
+<li>The <strong>loadClass</strong> method in class ClassLoader.</li>
+</ul>
+<p>but no definition for the class with the specified name could be found.</p>
+</blockquote>
+</li>
+<li><p><code>NoClassDefFoundError</code>是系统<strong>被动</strong>加载类时（例如使用<code>new</code>关键字），找不到对应类文件而抛出的异常，这是一个<code>Error</code>，继承自<code>LinkageError</code>，即编译期使用的类定义在运行期无法找到，或者不兼容。参考<code>NoClassDefFoundError</code>的JavaDoc：</p>
+<blockquote>
+<p>Thrown if the Java Virtual Machine or a ClassLoader instance tries to load in the definition of a class (as part of a normal method call or as part of creating a new instance using the new expression) and no definition of the class could be found.</p>
+<p>The searched-for class definition existed when the currently executing class was compiled, but the definition can no longer be found.</p>
+</blockquote>
+</li>
+</ul>
+<p>引起类找不到的主要原因如下</p>
+<ul>
+<li>类不在classpath中<ul>
+<li>运行时指定的classpath错误</li>
+<li>jar manifest文件中设置classpath错误<ul>
+<li>例如maven-jar-plugin的这个<a href="https://stackoverflow.com/questions/41982167/maven-jar-plugin-wrong-class-path-entry-for-snapshot-dependency" target="_blank" rel="external">bug</a>会导致snapshot包在lib目录中和mf文件中的文件名不一致</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>依赖冲突导致加载的类和编译的类不同</li>
+<li>类加载时，静态块或静态变量初始化失败，这种情况日志中会有<code>ExceptionInInitializerError</code></li>
+<li>classloader可见性问题，例如在tomcat容器中使用common loader无法加载到webapp中的类</li>
+</ul>
+<p>参考：<br><a href="https://javarevisited.blogspot.com/2011/06/noclassdeffounderror-exception-in.html" target="_blank" rel="external">https://javarevisited.blogspot.com/2011/06/noclassdeffounderror-exception-in.html</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2017/04/26/czech_drone/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1384,137 +1537,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2017/01/12/2017/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/01/12/2017/" itemprop="url">
-                  2017年度目标
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-12T13:45:56+08:00">
-                2017-01-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="2017年度目标"><a href="#2017年度目标" class="headerlink" title="2017年度目标"></a>2017年度目标</h1><h2 id="学习篇"><a href="#学习篇" class="headerlink" title="学习篇"></a>学习篇</h2><ul>
-<li>每个月阅读至少<strong>一本</strong>技术书籍</li>
-<li>每个月更新至少<strong>两篇</strong>博客</li>
-<li>关注领域建模、架构设计方面的学习和积累</li>
-<li>关注性能监控、性能调优方面的学习和积累</li>
-<li>阅读学习<code>Cat</code>，<code>Dubbo</code>源码并产出文档</li>
-<li>学习<code>Java8</code>并应用到<strong>一个</strong>以上生产系统中</li>
-<li>英语词汇量到1w5，刷完韦小绿，阅读<strong>六本</strong>以上原版书，重刷AAT</li>
-<li>学习《みんなの日本語》第一册
-          <!--noindex-->
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/01/12/2017/#more" rel="contents">
-              Read more &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1562,7 +1584,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -1655,7 +1677,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

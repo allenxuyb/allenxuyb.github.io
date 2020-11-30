@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="spark," />
+  <meta name="keywords" content="java," />
 
 
 
@@ -84,28 +84,28 @@
 
 
 
-<meta name="description" content="SparkRDD (Resilient Distributed Datasets)
-What is RDD
+<meta name="description" content="两个异常都和找不到类有关，但引发这两个异常的原因有所不同。
 
-RDDs are immutable, fault tolerant, parallel data structures that let users explicitly persist intermediate results in memory, control their part">
+ClassNotFoundException是在我们主动使用类名加载类时找不到对应类文件抛出的异常，这是一个Exception，需要我们显式捕获处理。参考ClassNotFoundException的JavaDoc：
+
+Thrown when an application tries to load in a class through">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spark学习笔记">
-<meta property="og:url" content="http://blog.yongbin.me/2016/07/19/spark/index.html">
+<meta property="og:title" content="ClassNotFoundException & NoClassDefFoundError">
+<meta property="og:url" content="http://blog.yongbin.me/2019/12/31/class_not_found/index.html">
 <meta property="og:site_name" content="El Psy Congroo">
-<meta property="og:description" content="SparkRDD (Resilient Distributed Datasets)
-What is RDD
+<meta property="og:description" content="两个异常都和找不到类有关，但引发这两个异常的原因有所不同。
 
-RDDs are immutable, fault tolerant, parallel data structures that let users explicitly persist intermediate results in memory, control their part">
-<meta property="og:image" content="http://i.imgur.com/OWbRpkG.jpg">
-<meta property="og:image" content="http://i.imgur.com/EDoUBUP.jpg">
-<meta property="og:updated_time" content="2017-01-16T01:11:57.000Z">
+ClassNotFoundException是在我们主动使用类名加载类时找不到对应类文件抛出的异常，这是一个Exception，需要我们显式捕获处理。参考ClassNotFoundException的JavaDoc：
+
+Thrown when an application tries to load in a class through">
+<meta property="og:updated_time" content="2020-11-30T12:43:11.467Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spark学习笔记">
-<meta name="twitter:description" content="SparkRDD (Resilient Distributed Datasets)
-What is RDD
+<meta name="twitter:title" content="ClassNotFoundException & NoClassDefFoundError">
+<meta name="twitter:description" content="两个异常都和找不到类有关，但引发这两个异常的原因有所不同。
 
-RDDs are immutable, fault tolerant, parallel data structures that let users explicitly persist intermediate results in memory, control their part">
-<meta name="twitter:image" content="http://i.imgur.com/OWbRpkG.jpg">
+ClassNotFoundException是在我们主动使用类名加载类时找不到对应类文件抛出的异常，这是一个Exception，需要我们显式捕获处理。参考ClassNotFoundException的JavaDoc：
+
+Thrown when an application tries to load in a class through">
 
 
 
@@ -133,13 +133,13 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
 
 
 
-  <link rel="canonical" href="http://blog.yongbin.me/2016/07/19/spark/"/>
+  <link rel="canonical" href="http://blog.yongbin.me/2019/12/31/class_not_found/"/>
 
 
 
 
 
-  <title> Spark学习笔记 | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title> ClassNotFoundException & NoClassDefFoundError | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="en">
@@ -261,7 +261,7 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2016/07/19/spark/">
+  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2019/12/31/class_not_found/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Allen Xu">
@@ -285,7 +285,7 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
             
             
               
-                Spark学习笔记
+                ClassNotFoundException & NoClassDefFoundError
               
             
           </h1>
@@ -300,8 +300,8 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-19T12:00:00+08:00">
-                2016-07-19
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-31T12:00:00+08:00">
+                2019-12-31
               </time>
             
 
@@ -336,77 +336,42 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
       
 
       
-        <h1 id="Spark"><a href="#Spark" class="headerlink" title="Spark"></a>Spark</h1><h2 id="RDD-Resilient-Distributed-Datasets"><a href="#RDD-Resilient-Distributed-Datasets" class="headerlink" title="RDD (Resilient Distributed Datasets)"></a>RDD (Resilient Distributed Datasets)</h2><ul>
-<li><p>What is RDD</p>
+        <p>两个异常都和找不到类有关，但引发这两个异常的原因有所不同。</p>
+<ul>
+<li><p><code>ClassNotFoundException</code>是在我们<strong>主动</strong>使用类名加载类时找不到对应类文件抛出的异常，这是一个<code>Exception</code>，需要我们显式捕获处理。参考<code>ClassNotFoundException</code>的JavaDoc：</p>
 <blockquote>
-<p>RDDs are immutable, fault tolerant, parallel data structures that let users explicitly persist intermediate results in memory, control their partitioning to optimize data placement, and manipulate them using a rich set of operations. </p>
+<p>Thrown when an application tries to load in a class through its string name using:</p>
+<ul>
+<li>The <strong>forName</strong> method in class Class.</li>
+<li>The <strong>findSystemClass</strong> method in class ClassLoader .</li>
+<li>The <strong>loadClass</strong> method in class ClassLoader.</li>
+</ul>
+<p>but no definition for the class with the specified name could be found.</p>
 </blockquote>
-<p>  In a nutshell RDDs are <strong>a level of abstraction that enable efficient data reuse</strong> in a broad range of applications</p>
-<a id="more"></a>
 </li>
-<li><p>Motivation behind RDD</p>
-<ul>
-<li>MapReduce provides abstractions for accessing a cluster’s computational resources but <strong>lack abstractions for leveraging the distributed memory</strong></li>
-<li>Avoid the data hitting the HDD<ul>
-<li>Lazy evaluation</li>
-<li>In-memory data caching</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Fault tolerance</p>
-<ul>
-<li><del>fine-grained updates: to replicate the data or log updates across machines</del></li>
-<li>coarse grained transformations: logging the transformations (lineage) and recompute</li>
-<li>checkpoint: for long lineage</li>
-</ul>
-</li>
-<li><p>Goal</p>
-<ul>
-<li>To provide an efficient programming model for batch analytics</li>
-<li><strong>NOT</strong> suitable for applications that make asynchronous fine grained updates to shared state, such as a storage system for a web application or an incremental web crawller.</li>
-</ul>
-</li>
-<li><p>Details</p>
-<ul>
-<li>RDD is an interface for data transformation</li>
-<li>RDD is collection of data items split into partitions and stored in memory on worker nodes of the cluster</li>
-<li>Partitions are recomputed on failure or cache eviction</li>
-</ul>
-</li>
-<li><p>Metadata stored for interface</p>
-<ul>
-<li>Partitions</li>
-<li>Dependencies</li>
-<li>Compute</li>
-<li>Preferred Locations</li>
-<li>Partitioner</li>
-</ul>
-</li>
-<li><p>Operations</p>
-<ul>
-<li>Transformations</li>
-<li>Actions</li>
-<li><img src="http://i.imgur.com/OWbRpkG.jpg" alt="-w550"></li>
-</ul>
-</li>
-</ul>
-<h2 id="DAG-Direct-Acyclic-Graph"><a href="#DAG-Direct-Acyclic-Graph" class="headerlink" title="DAG (Direct Acyclic Graph)"></a>DAG (Direct Acyclic Graph)</h2><ul>
-<li><p>What is DAG</p>
+<li><p><code>NoClassDefFoundError</code>是系统<strong>被动</strong>加载类时（例如使用<code>new</code>关键字），找不到对应类文件而抛出的异常，这是一个<code>Error</code>，继承自<code>LinkageError</code>，即编译期使用的类定义在运行期无法找到，或者不兼容。参考<code>NoClassDefFoundError</code>的JavaDoc：</p>
 <blockquote>
-<p>sequence of computations performed on data</p>
+<p>Thrown if the Java Virtual Machine or a ClassLoader instance tries to load in the definition of a class (as part of a normal method call or as part of creating a new instance using the new expression) and no definition of the class could be found.</p>
+<p>The searched-for class definition existed when the currently executing class was compiled, but the definition can no longer be found.</p>
 </blockquote>
+</li>
+</ul>
+<p>引起类找不到的主要原因如下</p>
 <ul>
-<li>Node – RDD partition</li>
-<li>Edge – transformation on top of data</li>
-<li>Acyclic – graph cannot return to the older partition</li>
-<li>Direct – transformation is an action that transitions data partition state (from A to B)</li>
+<li>类不在classpath中<ul>
+<li>运行时指定的classpath错误</li>
+<li>jar manifest文件中设置classpath错误<ul>
+<li>例如maven-jar-plugin的这个<a href="https://stackoverflow.com/questions/41982167/maven-jar-plugin-wrong-class-path-entry-for-snapshot-dependency" target="_blank" rel="external">bug</a>会导致snapshot包在lib目录中和mf文件中的文件名不一致</li>
 </ul>
 </li>
 </ul>
-<h2 id="WordCount"><a href="#WordCount" class="headerlink" title="WordCount"></a>WordCount</h2><figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">printfunc</span> </span>(x):</div><div class="line">	print <span class="symbol">'Word</span> %s occurs %d times' % (x[<span class="number">0</span>], x[<span class="number">1</span>])</div><div class="line"></div><div class="line">infile = sc.textFile(<span class="symbol">'hdfs</span>:<span class="comment">//localhost:8020/test.txt', 4)</span></div><div class="line">rdd1 = infile.flatMap(lambda x: x.split())</div><div class="line">rdd2 = rdd1.map(lambda x: (x, <span class="number">1</span>)).reduceByKey(lambda x,y: x+y)</div><div class="line">rdd2.foreach(printfunc)</div></pre></td></tr></table></figure>
-<p><img src="http://i.imgur.com/EDoUBUP.jpg" alt=""></p>
-<h2 id="Spark-Streaming"><a href="#Spark-Streaming" class="headerlink" title="Spark Streaming"></a>Spark Streaming</h2>
+</li>
+<li>依赖冲突导致加载的类和编译的类不同</li>
+<li>类加载时，静态块或静态变量初始化失败，这种情况日志中会有<code>ExceptionInInitializerError</code></li>
+<li>classloader可见性问题，例如在tomcat容器中使用common loader无法加载到webapp中的类</li>
+</ul>
+<p>参考：<br><a href="https://javarevisited.blogspot.com/2011/06/noclassdeffounderror-exception-in.html" target="_blank" rel="external">https://javarevisited.blogspot.com/2011/06/noclassdeffounderror-exception-in.html</a></p>
+
       
     </div>
 
@@ -429,7 +394,7 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
       
         <div class="post-tags">
           
-            <a href="/tags/spark/" rel="tag"># spark</a>
+            <a href="/tags/java/" rel="tag"># java</a>
           
         </div>
       
@@ -438,8 +403,8 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/07/01/launchd/" rel="next" title="Launchd cheatsheet">
-                <i class="fa fa-chevron-left"></i> Launchd cheatsheet
+              <a href="/2017/04/26/czech_drone/" rel="next" title="捷克无人机法规">
+                <i class="fa fa-chevron-left"></i> 捷克无人机法规
               </a>
             
           </div>
@@ -447,10 +412,6 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/07/20/kafka/" rel="prev" title="Kafka学习笔记">
-                Kafka学习笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -497,17 +458,8 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.jpg"
@@ -598,22 +550,6 @@ RDDs are immutable, fault tolerant, parallel data structures that let users expl
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spark"><span class="nav-number">1.</span> <span class="nav-text">Spark</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RDD-Resilient-Distributed-Datasets"><span class="nav-number">1.1.</span> <span class="nav-text">RDD (Resilient Distributed Datasets)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DAG-Direct-Acyclic-Graph"><span class="nav-number">1.2.</span> <span class="nav-text">DAG (Direct Acyclic Graph)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WordCount"><span class="nav-number">1.3.</span> <span class="nav-text">WordCount</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spark-Streaming"><span class="nav-number">1.4.</span> <span class="nav-text">Spark Streaming</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
     </div>
