@@ -1,0 +1,756 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces" lang="en">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="A3i-1Xpg82p4y5iO94S8DtTX0tt6DMqqy81g2VVEylw" />
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="java," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="物理内存占用RSS
+Resident set size, the non-swapped physical memory that a task has used (in kiloBytes
+
+RSS != JVM committed
+
+Committed: Address ranges that have been mapped with something other than PROT_NO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="查看JAVA应用内存占用">
+<meta property="og:url" content="http://blog.yongbin.me/2019/05/09/jvm_rss/index.html">
+<meta property="og:site_name" content="El Psy Congroo">
+<meta property="og:description" content="物理内存占用RSS
+Resident set size, the non-swapped physical memory that a task has used (in kiloBytes
+
+RSS != JVM committed
+
+Committed: Address ranges that have been mapped with something other than PROT_NO">
+<meta property="og:updated_time" content="2020-11-30T13:34:35.515Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="查看JAVA应用内存占用">
+<meta name="twitter:description" content="物理内存占用RSS
+Resident set size, the non-swapped physical memory that a task has used (in kiloBytes
+
+RSS != JVM committed
+
+Committed: Address ranges that have been mapped with something other than PROT_NO">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.yongbin.me/2019/05/09/jvm_rss/"/>
+
+
+
+
+
+  <title> 查看JAVA应用内存占用 | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-90810901-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">El Psy Congroo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2019/05/09/jvm_rss/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Allen Xu">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="El Psy Congroo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                查看JAVA应用内存占用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-09T12:00:00+08:00">
+                2019-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="物理内存占用"><a href="#物理内存占用" class="headerlink" title="物理内存占用"></a>物理内存占用</h4><h5 id="RSS"><a href="#RSS" class="headerlink" title="RSS"></a>RSS</h5><blockquote>
+<p>Resident set size, the non-swapped physical memory that a task has used (in kiloBytes</p>
+</blockquote>
+<p><a href="https://stackoverflow.com/questions/31173374/why-does-a-jvm-report-more-committed-memory-than-the-linux-process-resident-set" target="_blank" rel="external">RSS != JVM committed</a></p>
+<blockquote>
+<p><strong>Committed</strong>: Address ranges that have been mapped with something other than PROT_NONE. They may or may not be backed by physical or swap due to lazy allocation and paging.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ps axo pid,rss | grep 25921 | cut -d&apos; &apos; -f2</div><div class="line">1039472</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="内存占用分解"><a href="#内存占用分解" class="headerlink" title="内存占用分解"></a>内存占用分解</h4><h5 id="Heap-Metaspace"><a href="#Heap-Metaspace" class="headerlink" title="Heap/Metaspace"></a>Heap/Metaspace</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$jstat -gc 25921</div><div class="line">S0C    S1C    S0U    S1U      EC       EU        OC         OU       MC     MU    CCSC   CCSU   YGC     YGCT    FGC    FGCT     GCT   </div><div class="line">0.0   16384.0  0.0   16384.0 262144.0 196608.0  245760.0   210365.6  155596.0 147302.3 19660.0 18220.8    185    7.066   0      0.000    7.066</div></pre></td></tr></table></figure>
+<p>实际占用</p>
+<blockquote>
+<p>Heap = SC + EC + OC = 16384 + 262144 + 245760 = 524288<br>Metaspace = 155596</p>
+</blockquote>
+<h5 id="栈空间"><a href="#栈空间" class="headerlink" title="栈空间"></a>栈空间</h5><ul>
+<li><p>默认 ThreadStackSize</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$java -XX:+PrintFlagsFinal -version | grep ThreadStackSize</div><div class="line">     intx ThreadStackSize                           = 1024                                &#123;pd product&#125;</div><div class="line">     intx VMThreadStackSize                         = 1024                                &#123;pd product&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>线程数量</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$jstack 25921 | grep -oP &apos;(?&lt;=java.lang.Thread.State: )\w+&apos; | wc -l</div><div class="line">423</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>实际占用</p>
+<blockquote>
+<p>ThreadStackSize <em> 线程数量 = 1024 </em> 423 = 433152</p>
+</blockquote>
+</li>
+<li><p>其他</p>
+<ul>
+<li>直接申请的堆外内存，如DirectBuffer</li>
+<li>Codecache</li>
+</ul>
+</li>
+</ul>
+<h4 id="Native-Memory-Tracking"><a href="#Native-Memory-Tracking" class="headerlink" title="Native Memory Tracking"></a><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr007.html" target="_blank" rel="external">Native Memory Tracking</a></h4><p>JDK1.8自带的内存统计工具，通过<code>-XX:NativeMemoryTracking=summary</code>启用，启用会带来5~10%的性能开销</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">$ jcmd 25921 VM.native_memory summary</div><div class="line">Native Memory Tracking:</div><div class="line"></div><div class="line">Total: reserved=2739368KB, committed=1534736KB</div><div class="line">-                 Java Heap (reserved=524288KB, committed=524288KB) &lt;-- 启用了-XX:+AlwaysPreTouch，因此reserved和committed相同</div><div class="line">                            (mmap: reserved=524288KB, committed=524288KB) </div><div class="line"> </div><div class="line">-                     Class (reserved=1190115KB, committed=159535KB)</div><div class="line">                            (classes #26978)</div><div class="line">                            (malloc=4323KB #47915) </div><div class="line">                            (mmap: reserved=1185792KB, committed=155212KB) </div><div class="line"> </div><div class="line">-                    Thread (reserved=457839KB, committed=457839KB)</div><div class="line">                            (thread #445)</div><div class="line">                            (stack: reserved=456324KB, committed=456324KB)</div><div class="line">                            (malloc=578KB #2232) </div><div class="line">                            (arena=937KB #889)</div><div class="line"> </div><div class="line">-                      Code (reserved=265179KB, committed=92151KB)</div><div class="line">                            (malloc=15579KB #21963) </div><div class="line">                            (mmap: reserved=249600KB, committed=76572KB) </div><div class="line"> </div><div class="line">-                        GC (reserved=70422KB, committed=70422KB)</div><div class="line">                            (malloc=18198KB #22462) </div><div class="line">                            (mmap: reserved=52224KB, committed=52224KB) </div><div class="line"> </div><div class="line">-                  Compiler (reserved=895KB, committed=895KB)</div><div class="line">                            (malloc=764KB #1353) </div><div class="line">                            (arena=131KB #3)</div><div class="line"> </div><div class="line">-                  Internal (reserved=188191KB, committed=188191KB)</div><div class="line">                            (malloc=188159KB #40270) </div><div class="line">                            (mmap: reserved=32KB, committed=32KB) </div><div class="line"> </div><div class="line">-                    Symbol (reserved=34117KB, committed=34117KB)</div><div class="line">                            (malloc=30944KB #312557) </div><div class="line">                            (arena=3173KB #1)</div><div class="line"> </div><div class="line">-    Native Memory Tracking (reserved=7090KB, committed=7090KB)</div><div class="line">                            (malloc=53KB #595) </div><div class="line">                            (tracking overhead=7037KB)</div><div class="line"> </div><div class="line">-               Arena Chunk (reserved=209KB, committed=209KB)</div><div class="line">                            (malloc=209KB) </div><div class="line"> </div><div class="line">-                   Unknown (reserved=1024KB, committed=0KB)</div><div class="line">                            (mmap: reserved=1024KB, committed=0KB)</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java/" rel="tag"># java</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/08/mysql_lock/" rel="next" title="MySQL锁机制分析">
+                <i class="fa fa-chevron-left"></i> MySQL锁机制分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/02/management/" rel="prev" title="管理成就生活 读书笔记">
+                管理成就生活 读书笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Allen Xu" />
+          <p class="site-author-name" itemprop="name">Allen Xu</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/allenxuyb" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://twitter.com/allenxuyb" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Friends
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://lanourain.github.io" title="Lanourain's blog" target="_blank">Lanourain's blog</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://czmonster.com" title="Day Day Up" target="_blank">Day Day Up</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://majiahui.github.io" title="Jiahui's Blog" target="_blank">Jiahui's Blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#物理内存占用"><span class="nav-number">1.</span> <span class="nav-text">物理内存占用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RSS"><span class="nav-number">1.1.</span> <span class="nav-text">RSS</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存占用分解"><span class="nav-number">2.</span> <span class="nav-text">内存占用分解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Heap-Metaspace"><span class="nav-number">2.1.</span> <span class="nav-text">Heap/Metaspace</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#栈空间"><span class="nav-number">2.2.</span> <span class="nav-text">栈空间</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Native-Memory-Tracking"><span class="nav-number">3.</span> <span class="nav-text">Native Memory Tracking</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Allen Xu</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

@@ -2,9 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.yongbin.me/2018/10/08/mysql_lock/</loc>
+    
+    <lastmod>2020-11-30T13:38:40.207Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.yongbin.me/2019/07/02/management/</loc>
+    
+    <lastmod>2020-11-30T13:36:53.061Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.yongbin.me/2017/06/04/unit_test/</loc>
+    
+    <lastmod>2020-11-30T13:34:51.158Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.yongbin.me/2019/05/09/jvm_rss/</loc>
+    
+    <lastmod>2020-11-30T13:34:35.515Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.yongbin.me/2019/12/31/class_not_found/</loc>
     
-    <lastmod>2020-11-30T12:43:11.467Z</lastmod>
+    <lastmod>2020-11-30T13:33:45.237Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.yongbin.me/2019/07/28/regex/</loc>
+    
+    <lastmod>2020-11-30T13:05:32.917Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://blog.yongbin.me/2020/04/30/metric/</loc>
+    
+    <lastmod>2020-11-30T12:58:46.290Z</lastmod>
     
   </url>
   
