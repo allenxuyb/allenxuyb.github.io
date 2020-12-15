@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.yongbin.me/2019/07/02/management/</loc>
+    
+    <lastmod>2020-12-15T05:23:30.510Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://blog.yongbin.me/2017/06/04/code_review/</loc>
     
     <lastmod>2020-12-08T01:56:27.298Z</lastmod>
@@ -33,13 +40,6 @@
     <loc>http://blog.yongbin.me/2018/10/08/mysql_lock/</loc>
     
     <lastmod>2020-11-30T13:38:40.207Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://blog.yongbin.me/2019/07/02/management/</loc>
-    
-    <lastmod>2020-11-30T13:36:53.061Z</lastmod>
     
   </url>
   
