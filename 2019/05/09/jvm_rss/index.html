@@ -84,31 +84,22 @@
 
 
 
-<meta name="description" content="物理内存占用RSS
-Resident set size, the non-swapped physical memory that a task has used (in kiloBytes
+<meta name="description" content="物理内存占用Committed &amp;amp; Reserved &amp;amp; RSSCommitted
 
-RSS != JVM committed
-
-Committed: Address ranges that have been mapped with something other than PROT_NO">
+Address ranges that have been mapped with something other than PROT_NONE. They may or may not be backed by physical or swap due to lazy allocation an">
 <meta property="og:type" content="article">
 <meta property="og:title" content="查看JAVA应用内存占用">
 <meta property="og:url" content="http://blog.yongbin.me/2019/05/09/jvm_rss/index.html">
 <meta property="og:site_name" content="El Psy Congroo">
-<meta property="og:description" content="物理内存占用RSS
-Resident set size, the non-swapped physical memory that a task has used (in kiloBytes
+<meta property="og:description" content="物理内存占用Committed &amp;amp; Reserved &amp;amp; RSSCommitted
 
-RSS != JVM committed
-
-Committed: Address ranges that have been mapped with something other than PROT_NO">
-<meta property="og:updated_time" content="2020-11-30T13:34:35.515Z">
+Address ranges that have been mapped with something other than PROT_NONE. They may or may not be backed by physical or swap due to lazy allocation an">
+<meta property="og:updated_time" content="2021-02-05T10:24:39.620Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="查看JAVA应用内存占用">
-<meta name="twitter:description" content="物理内存占用RSS
-Resident set size, the non-swapped physical memory that a task has used (in kiloBytes
+<meta name="twitter:description" content="物理内存占用Committed &amp;amp; Reserved &amp;amp; RSSCommitted
 
-RSS != JVM committed
-
-Committed: Address ranges that have been mapped with something other than PROT_NO">
+Address ranges that have been mapped with something other than PROT_NONE. They may or may not be backed by physical or swap due to lazy allocation an">
 
 
 
@@ -339,12 +330,17 @@ Committed: Address ranges that have been mapped with something other than PROT_N
       
 
       
-        <h4 id="物理内存占用"><a href="#物理内存占用" class="headerlink" title="物理内存占用"></a>物理内存占用</h4><h5 id="RSS"><a href="#RSS" class="headerlink" title="RSS"></a>RSS</h5><blockquote>
-<p>Resident set size, the non-swapped physical memory that a task has used (in kiloBytes</p>
-</blockquote>
-<p><a href="https://stackoverflow.com/questions/31173374/why-does-a-jvm-report-more-committed-memory-than-the-linux-process-resident-set" target="_blank" rel="external">RSS != JVM committed</a></p>
+        <h4 id="物理内存占用"><a href="#物理内存占用" class="headerlink" title="物理内存占用"></a>物理内存占用</h4><h5 id="Committed-amp-Reserved-amp-RSS"><a href="#Committed-amp-Reserved-amp-RSS" class="headerlink" title="Committed &amp; Reserved &amp; RSS"></a>Committed &amp; Reserved &amp; RSS</h5><p><code>Committed</code></p>
 <blockquote>
-<p><strong>Committed</strong>: Address ranges that have been mapped with something other than PROT_NONE. They may or may not be backed by physical or swap due to lazy allocation and paging.</p>
+<p>Address ranges that have been mapped with something other than <code>PROT_NONE</code>. They may or may not be backed by physical or swap due to lazy allocation and paging.<br>已分配的内存，但<strong>不一定</strong>占用物理内存或swap</p>
+</blockquote>
+<p><code>Reserved</code></p>
+<blockquote>
+<p>The total address range that has been pre-mapped via <code>mmap</code> for a particular memory pool.<br>和<code>Committed</code>的区别在于<code>Reserved</code>包含<code>PROT_NONE</code>（<strong>一定不</strong>占用物理内存）的映射</p>
+</blockquote>
+<p><code>RSS</code></p>
+<blockquote>
+<p>Resident set size, the non-swapped physical memory that a task has used (in kiloBytes)<br>实际占用的物理内存（不包括已Committed但未分配的，以及swap-out的）<br>参考：<a href="https://stackoverflow.com/questions/31173374/why-does-a-jvm-report-more-committed-memory-than-the-linux-process-resident-set" target="_blank" rel="external">RSS != JVM committed</a></p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ps axo pid,rss | grep 25921 | cut -d&apos; &apos; -f2</div><div class="line">1039472</div></pre></td></tr></table></figure>
 <a id="more"></a>
@@ -366,7 +362,7 @@ Committed: Address ranges that have been mapped with something other than PROT_N
 <ul>
 <li><p>实际占用</p>
 <blockquote>
-<p>ThreadStackSize <em> 线程数量 = 1024 </em> 423 = 433152</p>
+<p>ThreadStackSize <em> 线程数量 = 1024 </em> 423 = 433152<br>注意：这个实际上是<code>Reserved</code>内存，NMT报告为了<code>Committed</code>，<a href="https://bugs.openjdk.java.net/browse/JDK-8191369" target="_blank" rel="external">JDK-8191369</a></p>
 </blockquote>
 </li>
 <li><p>其他</p>
@@ -580,7 +576,7 @@ Committed: Address ranges that have been mapped with something other than PROT_N
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#物理内存占用"><span class="nav-number">1.</span> <span class="nav-text">物理内存占用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RSS"><span class="nav-number">1.1.</span> <span class="nav-text">RSS</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存占用分解"><span class="nav-number">2.</span> <span class="nav-text">内存占用分解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Heap-Metaspace"><span class="nav-number">2.1.</span> <span class="nav-text">Heap/Metaspace</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#栈空间"><span class="nav-number">2.2.</span> <span class="nav-text">栈空间</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Native-Memory-Tracking"><span class="nav-number">3.</span> <span class="nav-text">Native Memory Tracking</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#物理内存占用"><span class="nav-number">1.</span> <span class="nav-text">物理内存占用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Committed-amp-Reserved-amp-RSS"><span class="nav-number">1.1.</span> <span class="nav-text">Committed & Reserved & RSS</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内存占用分解"><span class="nav-number">2.</span> <span class="nav-text">内存占用分解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Heap-Metaspace"><span class="nav-number">2.1.</span> <span class="nav-text">Heap/Metaspace</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#栈空间"><span class="nav-number">2.2.</span> <span class="nav-text">栈空间</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Native-Memory-Tracking"><span class="nav-number">3.</span> <span class="nav-text">Native Memory Tracking</span></a></li></ol></div>
             
 
           </div>
@@ -601,7 +597,7 @@ Committed: Address ranges that have been mapped with something other than PROT_N
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

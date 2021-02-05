@@ -832,12 +832,17 @@
 
       
         
-          <h4 id="物理内存占用"><a href="#物理内存占用" class="headerlink" title="物理内存占用"></a>物理内存占用</h4><h5 id="RSS"><a href="#RSS" class="headerlink" title="RSS"></a>RSS</h5><blockquote>
-<p>Resident set size, the non-swapped physical memory that a task has used (in kiloBytes</p>
-</blockquote>
-<p><a href="https://stackoverflow.com/questions/31173374/why-does-a-jvm-report-more-committed-memory-than-the-linux-process-resident-set">RSS != JVM committed</a></p>
+          <h4 id="物理内存占用"><a href="#物理内存占用" class="headerlink" title="物理内存占用"></a>物理内存占用</h4><h5 id="Committed-amp-Reserved-amp-RSS"><a href="#Committed-amp-Reserved-amp-RSS" class="headerlink" title="Committed &amp; Reserved &amp; RSS"></a>Committed &amp; Reserved &amp; RSS</h5><p><code>Committed</code></p>
 <blockquote>
-<p><strong>Committed</strong>: Address ranges that have been mapped with something other than PROT_NONE. They may or may not be backed by physical or swap due to lazy allocation and paging.</p>
+<p>Address ranges that have been mapped with something other than <code>PROT_NONE</code>. They may or may not be backed by physical or swap due to lazy allocation and paging.<br>已分配的内存，但<strong>不一定</strong>占用物理内存或swap</p>
+</blockquote>
+<p><code>Reserved</code></p>
+<blockquote>
+<p>The total address range that has been pre-mapped via <code>mmap</code> for a particular memory pool.<br>和<code>Committed</code>的区别在于<code>Reserved</code>包含<code>PROT_NONE</code>（<strong>一定不</strong>占用物理内存）的映射</p>
+</blockquote>
+<p><code>RSS</code></p>
+<blockquote>
+<p>Resident set size, the non-swapped physical memory that a task has used (in kiloBytes)<br>实际占用的物理内存（不包括已Committed但未分配的，以及swap-out的）<br>参考：<a href="https://stackoverflow.com/questions/31173374/why-does-a-jvm-report-more-committed-memory-than-the-linux-process-resident-set">RSS != JVM committed</a></p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ps axo pid,rss | grep 25921 | cut -d&apos; &apos; -f2</div><div class="line">1039472</div></pre></td></tr></table></figure>
           <!--noindex-->
@@ -1682,7 +1687,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

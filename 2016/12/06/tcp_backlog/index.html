@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://blog.yongbin.me/2016/12/06/tcp_backlog/index.html">
 <meta property="og:site_name" content="El Psy Congroo">
 <meta property="og:description" content="生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理">
-<meta property="og:updated_time" content="2017-01-15T15:22:21.000Z">
+<meta property="og:updated_time" content="2020-12-18T03:39:18.891Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TCP backlog引起的Tomcat客户端connect timeout">
 <meta name="twitter:description" content="生产环境的Tomcat在Full GC时，部分客户端请求会有connect timeout报错，然而我们客户端设置的连接超时是10s，FullGC最长不过2s，一番搜索后发现是backlog的锅，在此记录一下backlog的工作原理">
@@ -347,7 +347,7 @@
 </li>
 <li><p>查看accept queue大小</p>
 <blockquote>
-<p><code>ss -lt</code> #查询结果的<code>Send-Q</code>列</p>
+<p><code>ss -lt</code> （查询结果的<code>Send-Q</code>列）</p>
 </blockquote>
 </li>
 <li><p>如果accept queue空间耗尽<br>  服务器默认会<strong>忽略</strong>三次握手最后的<code>ACK</code>包，可以通过将如下参数设置为<code>1</code>将忽略变为发送<code>RST</code>包</p>
@@ -604,7 +604,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
