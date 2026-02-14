@@ -1,332 +1,260 @@
-<!doctype html>
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
 
 
 
-
-<html class="theme-next pisces" lang="en">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-  <meta name="google-site-verification" content="A3i-1Xpg82p4y5iO94S8DtTX0tt6DMqqy81g2VVEylw" />
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
+  <link rel="apple-touch-icon" sizes="76x76" href="/uploads/avatar.jpg">
+  <link rel="icon" href="/uploads/avatar.jpg">
   
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-    
-    
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Allen Xu">
+  <meta name="keywords" content="undefined">
   
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="jvm," />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
-
-
-
-
-
-
-<meta name="description" content="原文: JVM Interals">
+    <meta name="description" content="原文: JVM Interals">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM Internals学习笔记">
-<meta property="og:url" content="http://blog.yongbin.me/2016/03/05/JVM Internals/index.html">
+<meta property="og:url" content="http://blog.yongbin.me/2016/03/05/JVM%20Internals/index.html">
 <meta property="og:site_name" content="El Psy Congroo">
 <meta property="og:description" content="原文: JVM Interals">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://i.imgur.com/Hoc7sxg.jpg">
-<meta property="og:updated_time" content="2020-12-07T03:34:18.566Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JVM Internals学习笔记">
-<meta name="twitter:description" content="原文: JVM Interals">
+<meta property="article:published_time" content="2016-03-05T04:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-07T03:34:18.566Z">
+<meta property="article:author" content="Allen Xu">
+<meta property="article:tag" content="jvm">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://i.imgur.com/Hoc7sxg.jpg">
+  
+  
+  
+  <title>JVM Internals学习笔记 - El Psy Congroo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: false,
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.yongbin.me","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home","tag"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
     }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://blog.yongbin.me/2016/03/05/JVM Internals/"/>
-
-
-
-
-
-  <title> JVM Internals学习笔记 | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
   
 
 
-<!-- hexo-inject:begin --><!-- hexo-inject:end --><script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-90810901-1', 'auto');
-  ga('send', 'pageview');
-</script>
-
-
-
-
-
-
-
-
-
   
+<meta name="generator" content="Hexo 8.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
   
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
     
-  
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">El Psy Congroo</span>
-      <span class="logo-line-after"><i></i></span>
+<div class="header-inner" style="height: 25vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>El Psy Congroo</strong>
     </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
   </div>
-    
-      <p class="site-subtitle"></p>
-    
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
 </nav>
 
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
   
 
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2016/03/05/JVM Internals/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                JVM Internals学习笔记
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-03-05T12:00:00+08:00">
-                2016-03-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/uploads/kaguya01.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
           
-
+            <span id="subtitle">JVM Internals学习笔记</span>
           
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
         </div>
-      </header>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2016-03-05 12:00" pubdate>
+          March 5, 2016 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.3k words
+        
+      </span>
     
 
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          53 mins
+        
+      </span>
+    
 
-    <div class="post-body" itemprop="articleBody">
+    
+    
+  </div>
+
+
+        
+      </div>
 
       
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
       
 
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
       
-        <p><a href="http://blog.jamesdbloom.com/JVMInternals.html" target="_blank" rel="external">原文: JVM Interals</a><br><img src="http://i.imgur.com/Hoc7sxg.jpg" alt=""><br><a id="more"></a></p>
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">JVM Internals学习笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p><a href="http://blog.jamesdbloom.com/JVMInternals.html">原文: JVM Interals</a><br><img src="http://i.imgur.com/Hoc7sxg.jpg" srcset="/img/loading.gif" lazyload alt=""><br><span id="more"></span></p>
 <h3 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h3><p>Hotspot JVM    将Java线程一对一映射到操作系统原生线程上</p>
 <ul>
 <li>Java线程状态初始化，如thread-local sotrage, allocation buffers, synchronization objects, stacks, program counter</li>
@@ -355,7 +283,7 @@
 </ul>
 <h3 id="Shared-Between-Threads"><a href="#Shared-Between-Threads" class="headerlink" title="Shared Between Threads"></a>Shared Between Threads</h3><p>线程间共享的资源</p>
 <h4 id="Heap"><a href="#Heap" class="headerlink" title="Heap"></a>Heap</h4><p>存储对象实例及数组，栈帧被设计为创建后大小不可变，因此可变对象都存放在堆中，栈帧中仅保存基础类型及引用</p>
-<h5 id="Interned-Strings"><a href="#Interned-Strings" class="headerlink" title="Interned Strings"></a>Interned Strings</h5><p>String常量池，在类加载时，所有的String常量都会被保存到常量池中。运行时也可以显式调用<code>String.intern()</code>，如果常量池中已经存在该string，则直接返回引用，否则将该string加入常量池中并返回引用。<br>Java 6中String常量池放在Permgen中，容易引发OOM问题，Java 7开始已经将String常量池放到堆中，默认大小为60013，如果重度使用intern的话需要配置的更大避免hash冲突导致性能下降，详细信息参考<a href="http://java-performance.info/string-intern-in-java-6-7-8/" target="_blank" rel="external">String.intern in Java 6, 7 and 8</a></p>
+<h5 id="Interned-Strings"><a href="#Interned-Strings" class="headerlink" title="Interned Strings"></a>Interned Strings</h5><p>String常量池，在类加载时，所有的String常量都会被保存到常量池中。运行时也可以显式调用<code>String.intern()</code>，如果常量池中已经存在该string，则直接返回引用，否则将该string加入常量池中并返回引用。<br>Java 6中String常量池放在Permgen中，容易引发OOM问题，Java 7开始已经将String常量池放到堆中，默认大小为60013，如果重度使用intern的话需要配置的更大避免hash冲突导致性能下降，详细信息参考<a href="http://java-performance.info/string-intern-in-java-6-7-8/">String.intern in Java 6, 7 and 8</a></p>
 <h4 id="Non-Heap-Memory"><a href="#Non-Heap-Memory" class="headerlink" title="Non-Heap Memory"></a>Non-Heap Memory</h4><h5 id="Method-Area"><a href="#Method-Area" class="headerlink" title="Method Area"></a>Method Area</h5><p>方法区，保存每个类的结构信息，如运行时常量池，字段和方法数据，构造函数和普通方法的字节码等等，包括：</p>
 <ul>
 <li>Classloader Reference<ul>
@@ -376,272 +304,120 @@
 <li>method references</li>
 </ul>
 <p>字节码操作时会直接引用常量池中的数据，例如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 源码</div><div class="line"># Object foo = new Object();</div><div class="line"></div><div class="line"># 字节码</div><div class="line"> 0: new #2 		    // Class java/lang/Object</div><div class="line"> 1: dup</div><div class="line"> 2: invokespecial #3    // Method java/lang/Object.&quot;&lt;init&gt;&quot;()V</div></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"># 源码<br># <span class="hljs-keyword">Object</span> foo = <span class="hljs-built_in">new</span> <span class="hljs-keyword">Object</span>();<br><br># 字节码<br> <span class="hljs-number">0</span>: <span class="hljs-built_in">new</span> #<span class="hljs-number">2</span> 		    // <span class="hljs-keyword">Class</span> java/lang/<span class="hljs-keyword">Object</span><br> <span class="hljs-number">1</span>: dup<br> <span class="hljs-number">2</span>: invokespecial #<span class="hljs-number">3</span>    // <span class="hljs-keyword">Method</span> java/lang/<span class="hljs-keyword">Object</span>.&quot;&lt;init&gt;&quot;()V<br></code></pre></td></tr></table></figure>
 <h4 id="Code-Cache"><a href="#Code-Cache" class="headerlink" title="Code Cache"></a>Code Cache</h4><p>保存JIT编译后的本地代码，以前遇到过JDK的bug，Code Cache占用过高触发回收后JIT失效，因此可以考虑相对设置的大一些避免触发回收<code>-XX:ReservedCodeCacheSize=256m</code></p>
-<h3 id="Class-File-Structure"><a href="#Class-File-Structure" class="headerlink" title="Class File Structure"></a>Class File Structure</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">ClassFile &#123;</div><div class="line">    u4			magic;</div><div class="line">    u2			minor_version;</div><div class="line">    u2			major_version;</div><div class="line">    u2			constant_pool_count;</div><div class="line">    cp_info		contant_pool[constant_pool_count – 1];</div><div class="line">    u2			access_flags;</div><div class="line">    u2			this_class;</div><div class="line">    u2			super_class;</div><div class="line">    u2			interfaces_count;</div><div class="line">    u2			interfaces[interfaces_count];</div><div class="line">    u2			fields_count;</div><div class="line">    field_info		fields[fields_count];</div><div class="line">    u2			methods_count;</div><div class="line">    method_info		methods[methods_count];</div><div class="line">    u2			attributes_count;</div><div class="line">    attribute_info	attributes[attributes_count];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// TestClass.java</span></div><div class="line"><span class="keyword">package</span> com.test;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestClass</span> </span>&#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String HELLO = <span class="string">"Hello"</span>;</div><div class="line">    </div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> m;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">inc</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> m + x;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">inc_r</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (x &lt;= <span class="number">0</span>) <span class="keyword">return</span> m;</div><div class="line">        <span class="keyword">return</span> <span class="number">1</span> + inc_r(x - <span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">inc_one</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> ++x;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="编译结果"><a href="#编译结果" class="headerlink" title="编译结果"></a>编译结果</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div></pre></td><td class="code"><pre><div class="line">$ javap -v -p TestClass</div><div class="line"></div><div class="line">public class com.test.TestClass</div><div class="line">  minor version: 0</div><div class="line">  ## 版本号，1.1为45，后续每个版本加1，52为1.8</div><div class="line">  major version: 52</div><div class="line">  ## JDK 1.0.2之后编译出的Class文件都带有ACC_SUPER标志，用于兼容invokespecial的语义变更</div><div class="line">  flags: ACC_PUBLIC, ACC_SUPER</div><div class="line">## 常量池，包含Class中所有字符串常量，类或接口名，字段名，方法名和其他常量</div><div class="line">Constant pool:</div><div class="line">   ## 方法和字段表示方式类似，由class_index和name_and_type_index组成</div><div class="line">   #1 = Methodref          #5.#23         // java/lang/Object.&quot;&lt;init&gt;&quot;:()V</div><div class="line">   #2 = Fieldref           #4.#24         // com/test/TestClass.m:I</div><div class="line">   #3 = Methodref          #4.#25         // com/test/TestClass.inc_r:(I)I</div><div class="line">   ## 类和接口，值为name_index</div><div class="line">   #4 = Class              #26            // com/test/TestClass</div><div class="line">   #5 = Class              #27            // java/lang/Object</div><div class="line">   #6 = Utf8               HELLO</div><div class="line">   #7 = Utf8               Ljava/lang/String;</div><div class="line">   #8 = Utf8               ConstantValue</div><div class="line">   #9 = String             #28            // Hello</div><div class="line">  #10 = Utf8               m</div><div class="line">  #11 = Utf8               I</div><div class="line">  #12 = Utf8               &lt;init&gt;</div><div class="line">  #13 = Utf8               ()V</div><div class="line">  #14 = Utf8               Code</div><div class="line">  #15 = Utf8               LineNumberTable</div><div class="line">  #16 = Utf8               inc</div><div class="line">  #17 = Utf8               (I)I</div><div class="line">  #18 = Utf8               inc_r</div><div class="line">  #19 = Utf8               StackMapTable</div><div class="line">  #20 = Utf8               inc_one</div><div class="line">  #21 = Utf8               SourceFile</div><div class="line">  #22 = Utf8               TestClass.java</div><div class="line">  ## 用于表示字段和方法，由name_index和descriptor_index组成</div><div class="line">  #23 = NameAndType        #12:#13        // &quot;&lt;init&gt;&quot;:()V</div><div class="line">  #24 = NameAndType        #10:#11        // m:I</div><div class="line">  #25 = NameAndType        #18:#17        // inc_r:(I)I</div><div class="line">  #26 = Utf8               com/test/TestClass</div><div class="line">  #27 = Utf8               java/lang/Object</div><div class="line">  #28 = Utf8               Hello</div><div class="line">&#123;</div><div class="line">  ## field_info表，字段信息</div><div class="line">  ## 字段名，name_index，引用自常量池</div><div class="line">  public static final java.lang.String HELLO;</div><div class="line">    ## 字段描述，descriptor_index，引用自常量池</div><div class="line">    descriptor: Ljavabiao/lang/String;</div><div class="line">    ## 定义字段被访问权限和基础属性的掩码标志</div><div class="line">    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL</div><div class="line">    ## 属性，attribute_info表，ConstantValue属性表示一个常量字段的值</div><div class="line">    ## 只有ACC_STATIC, ACC_FINAL的基本类型和String才会使用ConstantValue方式赋值，其他字段都在执行构造函数时赋值</div><div class="line">    ConstantValue: String Hello</div><div class="line"></div><div class="line">  private int m;</div><div class="line">    ## int类型</div><div class="line">    descriptor: I</div><div class="line">    flags: ACC_PRIVATE</div><div class="line"></div><div class="line">  ## method_info表，方法信息，包括字节码</div><div class="line">  ## 初始化函数</div><div class="line">  public com.test.TestClass();</div><div class="line">    ## 返回值为void，无参数</div><div class="line">    descriptor: ()V</div><div class="line">    flags: ACC_PUBLIC</div><div class="line">    ## 属性，attribute_info表，Code属性保存字节码</div><div class="line">    Code:</div><div class="line">      ## 栈最大深度，本地变量数量，参数数量（实例方法第一个参数默认为this，因此size为1）</div><div class="line">      stack=1, locals=1, args_size=1</div><div class="line">      	 ## 推送this到栈顶（将第一个引用类型局部变量推送至栈顶）</div><div class="line">         0: aload_0</div><div class="line">         ## 调用初始化方法（调用特殊的实例方法，例如私有方法，父类方法和初始化方法）</div><div class="line">         1: invokespecial #1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</div><div class="line">         ## 返回void</div><div class="line">         4: return</div><div class="line">      ## 对应源代码行号，用于调试</div><div class="line">      LineNumberTable:</div><div class="line">        line 3: 0</div><div class="line"></div><div class="line">  public int inc(int);</div><div class="line">    ## 参数为int，返回值为int</div><div class="line">    descriptor: (I)I</div><div class="line">    flags: ACC_PUBLIC</div><div class="line">    Code:</div><div class="line">      stack=2, locals=2, args_size=2</div><div class="line">         ## this入栈</div><div class="line">         0: aload_0</div><div class="line">         ## m入栈（获取指定类的实例域,并将其值压入栈顶）</div><div class="line">         1: getfield      #2                  // Field m:I</div><div class="line">         ## int参数入栈</div><div class="line">         4: iload_1</div><div class="line">         ## 将栈顶2个int相加并将结果入栈</div><div class="line">         5: iadd</div><div class="line">         ## 返回栈顶int</div><div class="line">         6: ireturn</div><div class="line">      LineNumberTable:</div><div class="line">        line 15: 0</div><div class="line"></div><div class="line">  public int inc_r(int);</div><div class="line">    descriptor: (I)I</div><div class="line">    flags: ACC_PUBLIC</div><div class="line">    Code:</div><div class="line">      ## stack记录单次调用的最大栈深度</div><div class="line">      stack=4, locals=2, args_size=2</div><div class="line">         0: iload_1</div><div class="line">         1: ifgt          9</div><div class="line">         4: aload_0</div><div class="line">         5: getfield      #2                  // Field m:I</div><div class="line">         8: ireturn</div><div class="line">         9: iconst_1</div><div class="line">        10: aload_0</div><div class="line">        11: iload_1</div><div class="line">        12: iconst_1</div><div class="line">        13: isub</div><div class="line">        ## 调用对象的实例方法</div><div class="line">        14: invokevirtual #3                  // Method inc_r:(I)I</div><div class="line">        17: iadd</div><div class="line">        18: ireturn</div><div class="line">      LineNumberTable:</div><div class="line">        line 18: 0</div><div class="line">        line 19: 9</div><div class="line">      ## 帮助在编译期进行字节码验证，代替加载阶段性能开销较高的基于数据流的类型推导验证器</div><div class="line">      ## 按照控制流（if/goto）将代码分为多个frame</div><div class="line">      ## StackMapTable记录每个frame的字节码偏移量及局部变量和操作数栈的变化</div><div class="line">      ## 每个方法的第一个frame都是隐式生成的，这边显示的从第二个开始</div><div class="line">      ## 参考：http://hllvm.group.iteye.com/group/topic/26545</div><div class="line">      StackMapTable: number_of_entries = 1</div><div class="line">        ## 偏移量为9（if结束后），局部变量和操作数栈没有变化（same）</div><div class="line">        frame_type = 9 /* same */</div><div class="line"></div><div class="line">  public static int inc_one(int);</div><div class="line">    descriptor: (I)I</div><div class="line">    flags: ACC_PUBLIC, ACC_STATIC</div><div class="line">    Code:</div><div class="line">      ## static方法，因此没有this参数</div><div class="line">      stack=1, locals=1, args_size=1</div><div class="line">         0: iinc          0, 1</div><div class="line">         3: iload_0</div><div class="line">         4: ireturn</div><div class="line">      LineNumberTable:</div><div class="line">        line 22: 0</div><div class="line">&#125;</div><div class="line">SourceFile: &quot;TestClass.java&quot;</div></pre></td></tr></table></figure>
+<h3 id="Class-File-Structure"><a href="#Class-File-Structure" class="headerlink" title="Class File Structure"></a>Class File Structure</h3><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs abnf">ClassFile &#123;<br>    u4			magic<span class="hljs-comment">;</span><br>    u2			minor_version<span class="hljs-comment">;</span><br>    u2			major_version<span class="hljs-comment">;</span><br>    u2			constant_pool_count<span class="hljs-comment">;</span><br>    cp_info		contant_pool[constant_pool_count – <span class="hljs-number">1</span>]<span class="hljs-comment">;</span><br>    u2			access_flags<span class="hljs-comment">;</span><br>    u2			this_class<span class="hljs-comment">;</span><br>    u2			super_class<span class="hljs-comment">;</span><br>    u2			interfaces_count<span class="hljs-comment">;</span><br>    u2			interfaces[interfaces_count]<span class="hljs-comment">;</span><br>    u2			fields_count<span class="hljs-comment">;</span><br>    field_info		fields[fields_count]<span class="hljs-comment">;</span><br>    u2			methods_count<span class="hljs-comment">;</span><br>    method_info		methods[methods_count]<span class="hljs-comment">;</span><br>    u2			attributes_count<span class="hljs-comment">;</span><br>    attribute_info	attributes[attributes_count]<span class="hljs-comment">;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// TestClass.java</span><br><span class="hljs-keyword">package</span> com.test;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TestClass</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">HELLO</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Hello&quot;</span>;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> m;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">inc</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> &#123;<br>        <span class="hljs-keyword">return</span> m + x;<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">inc_r</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> &#123;<br>        <span class="hljs-keyword">if</span> (x &lt;= <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> m;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + inc_r(x - <span class="hljs-number">1</span>);<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span> <span class="hljs-title function_">inc_one</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> &#123;<br>        <span class="hljs-keyword">return</span> ++x;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="编译结果"><a href="#编译结果" class="headerlink" title="编译结果"></a>编译结果</h4><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br></pre></td><td class="code"><pre><code class="hljs clean">$ javap -v -p TestClass<br><br>public <span class="hljs-keyword">class</span> com.test.TestClass<br>  minor version: <span class="hljs-number">0</span><br>  ## 版本号，<span class="hljs-number">1.1</span>为<span class="hljs-number">45</span>，后续每个版本加<span class="hljs-number">1</span>，<span class="hljs-number">52</span>为<span class="hljs-number">1.8</span><br>  major version: <span class="hljs-number">52</span><br>  ## JDK <span class="hljs-number">1.0</span><span class="hljs-number">.2</span>之后编译出的Class文件都带有ACC_SUPER标志，用于兼容invokespecial的语义变更<br>  flags: ACC_PUBLIC, ACC_SUPER<br>## 常量池，包含Class中所有字符串常量，类或接口名，字段名，方法名和其他常量<br>Constant pool:<br>   ## 方法和字段表示方式类似，由class_index和name_and_type_index组成<br>   #<span class="hljs-number">1</span> = Methodref          #<span class="hljs-number">5.</span>#<span class="hljs-number">23</span>         <span class="hljs-comment">// java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br>   #<span class="hljs-number">2</span> = Fieldref           #<span class="hljs-number">4.</span>#<span class="hljs-number">24</span>         <span class="hljs-comment">// com/test/TestClass.m:I</span><br>   #<span class="hljs-number">3</span> = Methodref          #<span class="hljs-number">4.</span>#<span class="hljs-number">25</span>         <span class="hljs-comment">// com/test/TestClass.inc_r:(I)I</span><br>   ## 类和接口，值为name_index<br>   #<span class="hljs-number">4</span> = Class              #<span class="hljs-number">26</span>            <span class="hljs-comment">// com/test/TestClass</span><br>   #<span class="hljs-number">5</span> = Class              #<span class="hljs-number">27</span>            <span class="hljs-comment">// java/lang/Object</span><br>   #<span class="hljs-number">6</span> = Utf8               HELLO<br>   #<span class="hljs-number">7</span> = Utf8               Ljava/lang/String;<br>   #<span class="hljs-number">8</span> = Utf8               ConstantValue<br>   #<span class="hljs-number">9</span> = String             #<span class="hljs-number">28</span>            <span class="hljs-comment">// Hello</span><br>  #<span class="hljs-number">10</span> = Utf8               m<br>  #<span class="hljs-number">11</span> = Utf8               I<br>  #<span class="hljs-number">12</span> = Utf8               &lt;init&gt;<br>  #<span class="hljs-number">13</span> = Utf8               ()V<br>  #<span class="hljs-number">14</span> = Utf8               Code<br>  #<span class="hljs-number">15</span> = Utf8               LineNumberTable<br>  #<span class="hljs-number">16</span> = Utf8               inc<br>  #<span class="hljs-number">17</span> = Utf8               (I)I<br>  #<span class="hljs-number">18</span> = Utf8               inc_r<br>  #<span class="hljs-number">19</span> = Utf8               StackMapTable<br>  #<span class="hljs-number">20</span> = Utf8               inc_one<br>  #<span class="hljs-number">21</span> = Utf8               SourceFile<br>  #<span class="hljs-number">22</span> = Utf8               TestClass.java<br>  ## 用于表示字段和方法，由name_index和descriptor_index组成<br>  #<span class="hljs-number">23</span> = NameAndType        #<span class="hljs-number">12</span>:#<span class="hljs-number">13</span>        <span class="hljs-comment">// &quot;&lt;init&gt;&quot;:()V</span><br>  #<span class="hljs-number">24</span> = NameAndType        #<span class="hljs-number">10</span>:#<span class="hljs-number">11</span>        <span class="hljs-comment">// m:I</span><br>  #<span class="hljs-number">25</span> = NameAndType        #<span class="hljs-number">18</span>:#<span class="hljs-number">17</span>        <span class="hljs-comment">// inc_r:(I)I</span><br>  #<span class="hljs-number">26</span> = Utf8               com/test/TestClass<br>  #<span class="hljs-number">27</span> = Utf8               java/lang/Object<br>  #<span class="hljs-number">28</span> = Utf8               Hello<br>&#123;<br>  ## field_info表，字段信息<br>  ## 字段名，name_index，引用自常量池<br>  public static final java.lang.String HELLO;<br>    ## 字段描述，descriptor_index，引用自常量池<br>    descriptor: Ljavabiao/lang/String;<br>    ## 定义字段被访问权限和基础属性的掩码标志<br>    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL<br>    ## 属性，attribute_info表，ConstantValue属性表示一个常量字段的值<br>    ## 只有ACC_STATIC, ACC_FINAL的基本类型和String才会使用ConstantValue方式赋值，其他字段都在执行构造函数时赋值<br>    ConstantValue: String Hello<br><br>  private int m;<br>    ## int类型<br>    descriptor: I<br>    flags: ACC_PRIVATE<br><br>  ## method_info表，方法信息，包括字节码<br>  ## 初始化函数<br>  public com.test.TestClass();<br>    ## 返回值为void，无参数<br>    descriptor: ()V<br>    flags: ACC_PUBLIC<br>    ## 属性，attribute_info表，Code属性保存字节码<br>    Code:<br>      ## 栈最大深度，本地变量数量，参数数量（实例方法第一个参数默认为this，因此size为<span class="hljs-number">1</span>）<br>      stack=<span class="hljs-number">1</span>, locals=<span class="hljs-number">1</span>, args_size=<span class="hljs-number">1</span><br>      	 ## 推送this到栈顶（将第一个引用类型局部变量推送至栈顶）<br>         <span class="hljs-number">0</span>: aload_0<br>         ## 调用初始化方法（调用特殊的实例方法，例如私有方法，父类方法和初始化方法）<br>         <span class="hljs-number">1</span>: invokespecial #<span class="hljs-number">1</span>                  <span class="hljs-comment">// Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span><br>         ## 返回void<br>         <span class="hljs-number">4</span>: return<br>      ## 对应源代码行号，用于调试<br>      LineNumberTable:<br>        line <span class="hljs-number">3</span>: <span class="hljs-number">0</span><br><br>  public int inc(int);<br>    ## 参数为int，返回值为int<br>    descriptor: (I)I<br>    flags: ACC_PUBLIC<br>    Code:<br>      stack=<span class="hljs-number">2</span>, locals=<span class="hljs-number">2</span>, args_size=<span class="hljs-number">2</span><br>         ## this入栈<br>         <span class="hljs-number">0</span>: aload_0<br>         ## m入栈（获取指定类的实例域,并将其值压入栈顶）<br>         <span class="hljs-number">1</span>: getfield      #<span class="hljs-number">2</span>                  <span class="hljs-comment">// Field m:I</span><br>         ## int参数入栈<br>         <span class="hljs-number">4</span>: iload_1<br>         ## 将栈顶<span class="hljs-number">2</span>个int相加并将结果入栈<br>         <span class="hljs-number">5</span>: iadd<br>         ## 返回栈顶int<br>         <span class="hljs-number">6</span>: ireturn<br>      LineNumberTable:<br>        line <span class="hljs-number">15</span>: <span class="hljs-number">0</span><br><br>  public int inc_r(int);<br>    descriptor: (I)I<br>    flags: ACC_PUBLIC<br>    Code:<br>      ## stack记录单次调用的最大栈深度<br>      stack=<span class="hljs-number">4</span>, locals=<span class="hljs-number">2</span>, args_size=<span class="hljs-number">2</span><br>         <span class="hljs-number">0</span>: iload_1<br>         <span class="hljs-number">1</span>: ifgt          <span class="hljs-number">9</span><br>         <span class="hljs-number">4</span>: aload_0<br>         <span class="hljs-number">5</span>: getfield      #<span class="hljs-number">2</span>                  <span class="hljs-comment">// Field m:I</span><br>         <span class="hljs-number">8</span>: ireturn<br>         <span class="hljs-number">9</span>: iconst_1<br>        <span class="hljs-number">10</span>: aload_0<br>        <span class="hljs-number">11</span>: iload_1<br>        <span class="hljs-number">12</span>: iconst_1<br>        <span class="hljs-number">13</span>: isub<br>        ## 调用对象的实例方法<br>        <span class="hljs-number">14</span>: invokevirtual #<span class="hljs-number">3</span>                  <span class="hljs-comment">// Method inc_r:(I)I</span><br>        <span class="hljs-number">17</span>: iadd<br>        <span class="hljs-number">18</span>: ireturn<br>      LineNumberTable:<br>        line <span class="hljs-number">18</span>: <span class="hljs-number">0</span><br>        line <span class="hljs-number">19</span>: <span class="hljs-number">9</span><br>      ## 帮助在编译期进行字节码验证，代替加载阶段性能开销较高的基于数据流的类型推导验证器<br>      ## 按照控制流（<span class="hljs-keyword">if</span>/goto）将代码分为多个frame<br>      ## StackMapTable记录每个frame的字节码偏移量及局部变量和操作数栈的变化<br>      ## 每个方法的第一个frame都是隐式生成的，这边显示的从第二个开始<br>      ## 参考：http:<span class="hljs-comment">//hllvm.group.iteye.com/group/topic/26545</span><br>      StackMapTable: number_of_entries = <span class="hljs-number">1</span><br>        ## 偏移量为<span class="hljs-number">9</span>（<span class="hljs-keyword">if</span>结束后），局部变量和操作数栈没有变化（same）<br>        frame_type = <span class="hljs-number">9</span> <span class="hljs-comment">/* same */</span><br><br>  public static int inc_one(int);<br>    descriptor: (I)I<br>    flags: ACC_PUBLIC, ACC_STATIC<br>    Code:<br>      ## static方法，因此没有this参数<br>      stack=<span class="hljs-number">1</span>, locals=<span class="hljs-number">1</span>, args_size=<span class="hljs-number">1</span><br>         <span class="hljs-number">0</span>: iinc          <span class="hljs-number">0</span>, <span class="hljs-number">1</span><br>         <span class="hljs-number">3</span>: iload_0<br>         <span class="hljs-number">4</span>: ireturn<br>      LineNumberTable:<br>        line <span class="hljs-number">22</span>: <span class="hljs-number">0</span><br>&#125;<br>SourceFile: <span class="hljs-string">&quot;TestClass.java&quot;</span><br></code></pre></td></tr></table></figure>
 <h3 id="Classloader"><a href="#Classloader" class="headerlink" title="Classloader"></a>Classloader</h3>
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/jvm/" rel="tag"># jvm</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
+                
+              </div>
             
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/13/Agile/" rel="prev" title="敏捷开发与Scrum学习笔记">
-                敏捷开发与Scrum学习笔记 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-  </div>
-
-
-        </div>
-        
-          
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/jvm/" class="print-no-link">#jvm</a>
+      
     </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>JVM Internals学习笔记</div>
+      <div>http://blog.yongbin.me/2016/03/05/JVM Internals/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Allen Xu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 5, 2016</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
   </div>
 
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
 
-      
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2016/03/13/Agile/" title="敏捷开发与Scrum学习笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">敏捷开发与Scrum学习笔记</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
 
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpg"
-               alt="Allen Xu" />
-          <p class="site-author-name" itemprop="name">Allen Xu</p>
-          <p class="site-description motion-element" itemprop="description"></p>
+            
+          </article>
         </div>
-        <nav class="site-state motion-element">
-        
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">33</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">18</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/allenxuyb" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="https://twitter.com/allenxuyb" target="_blank" title="Twitter">
-                  
-                    <i class="fa fa-fw fa-twitter"></i>
-                  
-                  Twitter
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              Friends
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://lanourain.github.io" title="Lanourain's blog" target="_blank">Lanourain's blog</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://czmonster.com" title="Day Day Up" target="_blank">Day Day Up</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://majiahui.github.io" title="Jiahui's Blog" target="_blank">Jiahui's Blog</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Thread"><span class="nav-number">1.</span> <span class="nav-text">Thread</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM-System-Thread"><span class="nav-number">1.1.</span> <span class="nav-text">JVM System Thread</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Per-thread"><span class="nav-number">2.</span> <span class="nav-text">Per thread</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Program-Counter-PC"><span class="nav-number">2.1.</span> <span class="nav-text">Program Counter (PC)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VM-Stack"><span class="nav-number">2.2.</span> <span class="nav-text">VM Stack</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Native-Method-Stack"><span class="nav-number">2.3.</span> <span class="nav-text">Native Method Stack</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Stack-Frame"><span class="nav-number">2.4.</span> <span class="nav-text">Stack Frame</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shared-Between-Threads"><span class="nav-number">3.</span> <span class="nav-text">Shared Between Threads</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Heap"><span class="nav-number">3.1.</span> <span class="nav-text">Heap</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Interned-Strings"><span class="nav-number">3.1.1.</span> <span class="nav-text">Interned Strings</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Non-Heap-Memory"><span class="nav-number">3.2.</span> <span class="nav-text">Non-Heap Memory</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Method-Area"><span class="nav-number">3.2.1.</span> <span class="nav-text">Method Area</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Code-Cache"><span class="nav-number">3.3.</span> <span class="nav-text">Code Cache</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-File-Structure"><span class="nav-number">4.</span> <span class="nav-text">Class File Structure</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#测试代码"><span class="nav-number">4.1.</span> <span class="nav-text">测试代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译结果"><span class="nav-number">4.2.</span> <span class="nav-text">编译结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Classloader"><span class="nav-number">5.</span> <span class="nav-text">Classloader</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
+      </div>
     </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
   </aside>
 
 
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Allen Xu</span>
-</div>
-
-
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
     </div>
   </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
+</div>
 
 
 
@@ -652,104 +428,211 @@
 
 
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
 
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
 </script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
 
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
   
 
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

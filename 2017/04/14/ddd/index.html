@@ -1,103 +1,31 @@
-<!doctype html>
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
 
 
 
-
-<html class="theme-next pisces" lang="en">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-  <meta name="google-site-verification" content="A3i-1Xpg82p4y5iO94S8DtTX0tt6DMqqy81g2VVEylw" />
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
+  <link rel="apple-touch-icon" sizes="76x76" href="/uploads/avatar.jpg">
+  <link rel="icon" href="/uploads/avatar.jpg">
   
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-    
-    
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Allen Xu">
+  <meta name="keywords" content="undefined">
   
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="architecture," />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
-
-
-
-
-
-
-<meta name="description" content="Part 1 运用领域模型模型定义对现实的简化，忽略无关的细节，把与解决问题密切相关的方面抽象出来。概括而非模拟。作用模型和设计的核心相互影响，对模型的分析转化为产品，相反可以基于对模型的理解来解释代码模型是团队所有成员使用的通用语言的中枢（ubiquitous language）模型是浓缩的知识
-软件的核心
-为用户解决领域相关的问题的能力
-
-不要试图仅通过技术来解决领域问题，学习领域知识和领域建">
+    <meta name="description" content="Part 1 运用领域模型模型定义对现实的简化，忽略无关的细节，把与解决问题密切相关的方面抽象出来。概括而非模拟。作用模型和设计的核心相互影响，对模型的分析转化为产品，相反可以基于对模型的理解来解释代码模型是团队所有成员使用的通用语言的中枢（ubiquitous language）模型是浓缩的知识 软件的核心 为用户解决领域相关的问题的能力  不要试图仅通过技术来解决领域问题，学习领域知识和领域建">
 <meta property="og:type" content="article">
-<meta property="og:title" content="领域驱动设计读书笔记 PART I & II">
+<meta property="og:title" content="领域驱动设计读书笔记 PART I &amp; II">
 <meta property="og:url" content="http://blog.yongbin.me/2017/04/14/ddd/index.html">
 <meta property="og:site_name" content="El Psy Congroo">
-<meta property="og:description" content="Part 1 运用领域模型模型定义对现实的简化，忽略无关的细节，把与解决问题密切相关的方面抽象出来。概括而非模拟。作用模型和设计的核心相互影响，对模型的分析转化为产品，相反可以基于对模型的理解来解释代码模型是团队所有成员使用的通用语言的中枢（ubiquitous language）模型是浓缩的知识
-软件的核心
-为用户解决领域相关的问题的能力
-
-不要试图仅通过技术来解决领域问题，学习领域知识和领域建">
+<meta property="og:description" content="Part 1 运用领域模型模型定义对现实的简化，忽略无关的细节，把与解决问题密切相关的方面抽象出来。概括而非模拟。作用模型和设计的核心相互影响，对模型的分析转化为产品，相反可以基于对模型的理解来解释代码模型是团队所有成员使用的通用语言的中枢（ubiquitous language）模型是浓缩的知识 软件的核心 为用户解决领域相关的问题的能力  不要试图仅通过技术来解决领域问题，学习领域知识和领域建">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://i.imgur.com/L2X7BiJ.jpg">
 <meta property="og:image" content="http://i.imgur.com/WF7LSrD.jpg">
 <meta property="og:image" content="http://i.imgur.com/DM2sRUz.jpg">
@@ -105,250 +33,238 @@
 <meta property="og:image" content="http://i.imgur.com/Er6PNm2.jpg">
 <meta property="og:image" content="http://i.imgur.com/dhcKkg4.jpg">
 <meta property="og:image" content="http://i.imgur.com/AZOq1KX.jpg">
-<meta property="og:updated_time" content="2017-05-16T07:45:33.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="领域驱动设计读书笔记 PART I & II">
-<meta name="twitter:description" content="Part 1 运用领域模型模型定义对现实的简化，忽略无关的细节，把与解决问题密切相关的方面抽象出来。概括而非模拟。作用模型和设计的核心相互影响，对模型的分析转化为产品，相反可以基于对模型的理解来解释代码模型是团队所有成员使用的通用语言的中枢（ubiquitous language）模型是浓缩的知识
-软件的核心
-为用户解决领域相关的问题的能力
-
-不要试图仅通过技术来解决领域问题，学习领域知识和领域建">
+<meta property="article:published_time" content="2017-04-14T04:00:00.000Z">
+<meta property="article:modified_time" content="2017-05-16T07:45:24.000Z">
+<meta property="article:author" content="Allen Xu">
+<meta property="article:tag" content="architecture">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://i.imgur.com/L2X7BiJ.jpg">
+  
+  
+  
+  <title>领域驱动设计读书笔记 PART I &amp; II - El Psy Congroo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: false,
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.yongbin.me","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home","tag"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
     }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://blog.yongbin.me/2017/04/14/ddd/"/>
-
-
-
-
-
-  <title> 领域驱动设计读书笔记 PART I & II | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
   
 
 
-<!-- hexo-inject:begin --><!-- hexo-inject:end --><script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-90810901-1', 'auto');
-  ga('send', 'pageview');
-</script>
-
-
-
-
-
-
-
-
-
   
+<meta name="generator" content="Hexo 8.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
   
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
     
-  
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">El Psy Congroo</span>
-      <span class="logo-line-after"><i></i></span>
+<div class="header-inner" style="height: 25vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>El Psy Congroo</strong>
     </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
   </div>
-    
-      <p class="site-subtitle"></p>
-    
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
 </nav>
 
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
   
 
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2017/04/14/ddd/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                领域驱动设计读书笔记 PART I & II
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-14T12:00:00+08:00">
-                2017-04-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/uploads/kaguya01.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
           
-
+            <span id="subtitle">领域驱动设计读书笔记 PART I & II</span>
           
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
         </div>
-      </header>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-04-14 12:00" pubdate>
+          April 14, 2017 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.7k words
+        
+      </span>
     
 
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          64 mins
+        
+      </span>
+    
 
-    <div class="post-body" itemprop="articleBody">
+    
+    
+  </div>
+
+
+        
+      </div>
 
       
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
       
 
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
       
-        <h2 id="Part-1-运用领域模型"><a href="#Part-1-运用领域模型" class="headerlink" title="Part 1 运用领域模型"></a>Part 1 运用领域模型</h2><h4 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h4><p><strong>定义</strong><br>对现实的简化，忽略无关的细节，把与解决问题密切相关的方面抽象出来。概括而非模拟。<br><strong>作用</strong><br>模型和设计的核心相互影响，对模型的分析转化为产品，相反可以基于对模型的理解来解释代码<br>模型是团队所有成员使用的通用语言的中枢（ubiquitous language）<br>模型是浓缩的知识</p>
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">领域驱动设计读书笔记 PART I &amp; II</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Part-1-运用领域模型"><a href="#Part-1-运用领域模型" class="headerlink" title="Part 1 运用领域模型"></a>Part 1 运用领域模型</h2><h4 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h4><p><strong>定义</strong><br>对现实的简化，忽略无关的细节，把与解决问题密切相关的方面抽象出来。概括而非模拟。<br><strong>作用</strong><br>模型和设计的核心相互影响，对模型的分析转化为产品，相反可以基于对模型的理解来解释代码<br>模型是团队所有成员使用的通用语言的中枢（ubiquitous language）<br>模型是浓缩的知识</p>
 <h4 id="软件的核心"><a href="#软件的核心" class="headerlink" title="软件的核心"></a>软件的核心</h4><blockquote>
 <p>为用户解决领域相关的问题的能力</p>
 </blockquote>
-<p>不要试图仅通过技术来解决领域问题，学习领域知识和领域建模是解决复杂性的必经之路<br><a id="more"></a></p>
+<p>不要试图仅通过技术来解决领域问题，学习领域知识和领域建模是解决复杂性的必经之路<br><span id="more"></span></p>
 <h4 id="有效建模的要素"><a href="#有效建模的要素" class="headerlink" title="有效建模的要素"></a>有效建模的要素</h4><ul>
 <li>模型和实现绑定，在后续迭代中持续维护这个绑定关系</li>
 <li>建立通用语言</li>
@@ -382,7 +298,7 @@
 <li>Case：制定货运路线<br>不使用领域模型<br>用户：那么，当更改清关地点时，需要重新制定整个路线计划啰。<br>开发人员：是的。我们将从货运表（shipment table）中删除所有与该货物id相关联的行，然后将出发地、目的地和新的清关地点传递给Routing Service，它会重新填充货运表。Cargo中必须设立一个布尔值，用于指示货运表中是否有数据。<br>使用领域模型<br>开发人员：是的。当更改Route Specification（路线说明）的任意属性时，都将删除原有的Itinerary（航线），并要求Routing Service（路线服务）基于新的Route Specification生成一个新的Itinerary。</li>
 </ul>
 <p>讨论系统时要结合模型。使用模型元素及其交互来大声描述场景，并且按照模型允许的方式将各种概念结合到一起。找到更简单的表达方式来讲出你要讲的话，然后将这些新的想法应用到图和代码中。</p>
-<h4 id="一个团队，一种语言"><a href="#一个团队，一种语言" class="headerlink" title="一个团队，一种语言"></a>一个团队，一种语言</h4><p><img src="http://i.imgur.com/L2X7BiJ.jpg" alt=""></p>
+<h4 id="一个团队，一种语言"><a href="#一个团队，一种语言" class="headerlink" title="一个团队，一种语言"></a>一个团队，一种语言</h4><p><img src="http://i.imgur.com/L2X7BiJ.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
 <h4 id="文档和图"><a href="#文档和图" class="headerlink" title="文档和图"></a>文档和图</h4><h5 id="图"><a href="#图" class="headerlink" title="图"></a>图</h5><p>图作为一种沟通和解释手段，可以促进头脑风暴。UML图善于表达对象的关系和属性，以及交互，但不善于传达模型中的两个重要部分，模型所表示的概念的意义，以及对象该做那些事（行为的职责和约束），因此作者建议以文本为主，用简化图（只包含对象模型的重要概念-对于理解设计至关重要的部分）作为说明，帮助集中注意力，并起到指导作用。相反涵盖整个模型的大图会让人淹没在细节中，缺乏目的性。</p>
 <p>注意：务必要记住<strong>模型不是图</strong>。图的目的是帮助表达和解释模型。模型设计的重要细节应该在代码中体现出来，良好的实现应该是透明的，清楚展示其背后的模型。用代码充当设计细节的存储库，书写良好的Java代码与UML具有同样的表达能力。</p>
 <h5 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h5><p>代码作为设计文档会将读代码的人淹没在细节中。代码的行为是非常明确的，但不意味着其行为是显而易见的，行为背后的意义也难以表达。良好的代码具有很强的表达能力，但它所传递的信息不能确保是准确的。例如方法名称可能会有歧义、会产生误导或者因为已经过时而无法表示方法的本质含义。测试中的断言是严格的，但变量和代码组织方式所表达出来的意思未必严格。好的编程风格会尽力使这种联系直接化，但其仍然主要靠开发人员的自律。编码时需要一丝不苟的态度，只有这样才能编写出“言行全部正确”的代码。</p>
@@ -407,8 +323,8 @@
 <p>因此：<strong>任何参与建模的技术人员，不管在项目中的主要职责是什么，都必须花时间了解代码。任何负责修改代码的人员则必须学会用代码来表达模型。每一个开发人员都必须不同程度地参与模型讨论并且与领域专家保持联系。参与不同工作的人都必须有意识地通过UBIQUITOUS LANGUAGE与接触代码的人及时交换关于模型的想法。</strong></p>
 <p>注意：大型项目仍然需要技术负责人来协调高层次的设计和建模，并作出关键决策（见Part 4 战略设计）</p>
 <p>项目组通过知识消化将信息提炼成模型，MODEL-DRIVEN DESIGN将模型和程序实现绑定，UBIQUITOUS LANGUAGE则成为开发人员、领域专家和软件产品之间传递信息的渠道。最终的软件产品能在完全理解核心领域的基础上提供丰富的功能。</p>
-<h2 id="Part-2-模型驱动设计的构造块"><a href="#Part-2-模型驱动设计的构造块" class="headerlink" title="Part 2 模型驱动设计的构造块"></a>Part 2 模型驱动设计的构造块</h2><p><img src="http://i.imgur.com/WF7LSrD.jpg" alt=""></p>
-<p>本书采用的软件设计风格：<br><a href="http://blog.csdn.net/hdh4638/article/details/7613042" target="_blank" rel="external">职责驱动设计</a><br>契约式设计</p>
+<h2 id="Part-2-模型驱动设计的构造块"><a href="#Part-2-模型驱动设计的构造块" class="headerlink" title="Part 2 模型驱动设计的构造块"></a>Part 2 模型驱动设计的构造块</h2><p><img src="http://i.imgur.com/WF7LSrD.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>本书采用的软件设计风格：<br><a href="http://blog.csdn.net/hdh4638/article/details/7613042">职责驱动设计</a><br>契约式设计</p>
 <h3 id="Chapter-4-分离领域"><a href="#Chapter-4-分离领域" class="headerlink" title="Chapter 4 分离领域"></a>Chapter 4 分离领域</h3><blockquote>
 <p>将用于解决领域问题的部分（通常只占一小部分）与系统其他功能分离，避免将领域概念和其他技术相关的概念混淆在一起</p>
 </blockquote>
@@ -420,7 +336,7 @@
 </ul>
 <p>通过给复杂应用划分层次，在每层分别进行设计，使其具有内聚性并只依赖下层，与上层松耦合。重点在于将领域模型相关的代码放在一个层中，专注于表达领域模型，而不用关心界面、应用以及持久化等。</p>
 <ul>
-<li>Case：银行转账<br><img src="http://i.imgur.com/DM2sRUz.jpg" alt=""></li>
+<li>Case：银行转账<br><img src="http://i.imgur.com/DM2sRUz.jpg" srcset="/img/loading.gif" lazyload alt=""></li>
 </ul>
 <p>层与层的依赖是单向的，上层通过接口调用下层元素，如果下层元素需要与上层进行主动通信，则需要采用架构模式来连接上下层，如回调或观察者模式，一个典型的例子是MVC（70年代为Smalltalk发明的设计模式）。层与层之间连接的原则是保持领域层的独立性，在选择架构框架时也要考虑这一点，避免过多的侵入性。</p>
 <h3 id="Chapter-5-软件中表示的模型"><a href="#Chapter-5-软件中表示的模型" class="headerlink" title="Chapter 5 软件中表示的模型"></a>Chapter 5 软件中表示的模型</h3><h4 id="关联"><a href="#关联" class="headerlink" title="关联"></a>关联</h4><p>对象之间的关联使模型和实现变得更复杂，模型层面关联代表两个对象的关系的抽象，实现层面关联相当于对象之间的引用。现实中存在大量多对多及双向的关联，但这样的关联大都并不代表关系的本质。因此我们需要简化这样的关联，方法有如下三种</p>
@@ -430,10 +346,10 @@
 <li>消除不必要的关联</li>
 </ul>
 <p>Entity（Reference Object）：用来表示某种具有连续性和标识的事物，例如帐户<br>Value Object：用来描述某种状态的属性，例如账单地址<br>Service：领域中适合用操作来表示的概念，例如转账，不要把操作的职责强加到Entity或Value Object中</p>
-<h4 id="模式：Entity"><a href="#模式：Entity" class="headerlink" title="模式：Entity"></a>模式：Entity</h4><p>职责：确保连续性，使对象行为清楚且可预测<br>注意点：保持entity简练，仅保留用于识别查找或匹配对象的特征，以及对概念至关重要的行为和这些行为所必需的属性。考虑将行为和属性转移到关联的对象中（可以是Entity或VO）。<br>标识设计：确保在系统中唯一，通过唯一性的属性或属性组合，但一般是数据库ID，在分布式系统中会复杂些，需要专门的ID生成服务<br><img src="http://i.imgur.com/8t34bxp.jpg" alt=""></p>
-<h4 id="模式：Value-Object（VO）"><a href="#模式：Value-Object（VO）" class="headerlink" title="模式：Value Object（VO）"></a>模式：Value Object（VO）</h4><p>职责：描述事务的某种特征<br>注意点：不需要加上标识，这只会带来额外的复杂度，对于VO我们只关心它们是什么，而不关心它们是谁。VO所包含的属性应该形成一个概念整体。<br><img src="http://i.imgur.com/Er6PNm2.jpg" alt=""></p>
+<h4 id="模式：Entity"><a href="#模式：Entity" class="headerlink" title="模式：Entity"></a>模式：Entity</h4><p>职责：确保连续性，使对象行为清楚且可预测<br>注意点：保持entity简练，仅保留用于识别查找或匹配对象的特征，以及对概念至关重要的行为和这些行为所必需的属性。考虑将行为和属性转移到关联的对象中（可以是Entity或VO）。<br>标识设计：确保在系统中唯一，通过唯一性的属性或属性组合，但一般是数据库ID，在分布式系统中会复杂些，需要专门的ID生成服务<br><img src="http://i.imgur.com/8t34bxp.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
+<h4 id="模式：Value-Object（VO）"><a href="#模式：Value-Object（VO）" class="headerlink" title="模式：Value Object（VO）"></a>模式：Value Object（VO）</h4><p>职责：描述事务的某种特征<br>注意点：不需要加上标识，这只会带来额外的复杂度，对于VO我们只关心它们是什么，而不关心它们是谁。VO所包含的属性应该形成一个概念整体。<br><img src="http://i.imgur.com/Er6PNm2.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>设计VO<br>不用关心使用的是哪个VO实例，设计时不受ID的约束。从简化设计或优化性能角度出发，常用的选择包括：<br>复制：例如分布式系统中共享成本较高，以及数据库中冗余减少访问次数<br>共享：节约空间及对象维护成本<br>Immutable：简化实现，确保共享的安全性。除非维护Immutable性能开销大并且不共享，否则VO都应该是不可变的</p>
-<h4 id="模式：Service"><a href="#模式：Service" class="headerlink" title="模式：Service"></a>模式：Service</h4><p>职责：代表领域中那些<strong>不是Entity或VO的自然职责</strong>的操作或过程<br>注意点：Service是无状态的。接口及操作名称要使用ubiquitous language。Service可能属于多个层。<br><img src="http://i.imgur.com/dhcKkg4.jpg" alt=""></p>
+<h4 id="模式：Service"><a href="#模式：Service" class="headerlink" title="模式：Service"></a>模式：Service</h4><p>职责：代表领域中那些<strong>不是Entity或VO的自然职责</strong>的操作或过程<br>注意点：Service是无状态的。接口及操作名称要使用ubiquitous language。Service可能属于多个层。<br><img src="http://i.imgur.com/dhcKkg4.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>粒度<br>中等粒度：Service<br>细粒度：Entity，VO<br>中等粒度的领域层Service避免了应用层需要处理过于复杂的逻辑（从而导致领域知识泄露），并且增加了复用性。</p>
 <h4 id="模式：Module（Package）"><a href="#模式：Module（Package）" class="headerlink" title="模式：Module（Package）"></a>模式：Module（Package）</h4><p>职责：从高层对模型进行概念划分，包含一个内聚的概念集合。<br>注意点：高内聚低耦合。Module需要同模型和代码一起演变，即重构代码时也要重构Module。</p>
 <p><strong>技术模型分层</strong><br>接口/功能/持久层<br>优点：更容易在技术层面理解各层<br>缺点：将实现概念对象的元素分散到各层，代码无法清楚的表示模型，最终得到一个贫血的领域模型。</p>
@@ -448,7 +364,7 @@
 <li>使用存储库（REPOSITORY）提供AGGREGATE持久化及查找的功能</li>
 </ul>
 <h4 id="模式：AGGREGATE"><a href="#模式：AGGREGATE" class="headerlink" title="模式：AGGREGATE"></a>模式：AGGREGATE</h4><p>一组相关对象的集合，作为数据修改单元，每个聚合中有一个root和一个boundary</p>
-<p>聚合根（root）：聚合中特定的Entity，外部对象只能引用root<br>边界（boundary）：定义了聚合内部有什么<br>固定规则（invariant）：数据变化时必须保持的一致性规则。事务完成时，聚合内部的固定规则<strong>必须满足</strong>，外部的只需保证<strong>最终一致性</strong><br><img src="http://i.imgur.com/AZOq1KX.jpg" alt=""></p>
+<p>聚合根（root）：聚合中特定的Entity，外部对象只能引用root<br>边界（boundary）：定义了聚合内部有什么<br>固定规则（invariant）：数据变化时必须保持的一致性规则。事务完成时，聚合内部的固定规则<strong>必须满足</strong>，外部的只需保证<strong>最终一致性</strong><br><img src="http://i.imgur.com/AZOq1KX.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
 <ul>
 <li>聚合根Entity具有全局标识，并负责检查固定规则</li>
 <li>边界内的Entity具有本地标识，内部唯一</li>
@@ -485,270 +401,120 @@
 <p>REPOSITORY查询：特定参数或封装SO</p>
 <h4 id="关系数据库设计"><a href="#关系数据库设计" class="headerlink" title="关系数据库设计"></a>关系数据库设计</h4><p>简单映射 - 映射保持透明并易于理解，例如一个对象到一个表的映射<br>数据模型与对象模型不必保持完全一致，但差别不应太大，可以牺牲规范化来帮助简单映射<br>利用UBIQUITOUS LANGUAGE统一对象名称和关系表中的对应项</p>
 <h3 id="Chapter-7-示例-货物运输系统"><a href="#Chapter-7-示例-货物运输系统" class="headerlink" title="Chapter 7 示例 - 货物运输系统"></a>Chapter 7 示例 - 货物运输系统</h3>
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/architecture/" rel="tag"># architecture</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
+                
+              </div>
             
-              <a href="/2017/03/26/rwp_hangzhou/" rel="next" title="ORACLE RWP性能之旅杭州站活动记录">
-                <i class="fa fa-chevron-left"></i> ORACLE RWP性能之旅杭州站活动记录
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/04/26/czech_drone/" rel="prev" title="捷克无人机法规">
-                捷克无人机法规 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-  </div>
-
-
-        </div>
-        
-          
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/architecture/" class="print-no-link">#architecture</a>
+      
     </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>领域驱动设计读书笔记 PART I &amp; II</div>
+      <div>http://blog.yongbin.me/2017/04/14/ddd/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Allen Xu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>April 14, 2017</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
   </div>
 
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
 
-      
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2017/04/26/czech_drone/" title="捷克无人机法规">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">捷克无人机法规</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/03/26/rwp_hangzhou/" title="ORACLE RWP性能之旅杭州站活动记录">
+                        <span class="hidden-mobile">ORACLE RWP性能之旅杭州站活动记录</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
 
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpg"
-               alt="Allen Xu" />
-          <p class="site-author-name" itemprop="name">Allen Xu</p>
-          <p class="site-description motion-element" itemprop="description"></p>
+            
+          </article>
         </div>
-        <nav class="site-state motion-element">
-        
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">33</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">18</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/allenxuyb" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="https://twitter.com/allenxuyb" target="_blank" title="Twitter">
-                  
-                    <i class="fa fa-fw fa-twitter"></i>
-                  
-                  Twitter
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              Friends
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://lanourain.github.io" title="Lanourain's blog" target="_blank">Lanourain's blog</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://czmonster.com" title="Day Day Up" target="_blank">Day Day Up</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://majiahui.github.io" title="Jiahui's Blog" target="_blank">Jiahui's Blog</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Part-1-运用领域模型"><span class="nav-number">1.</span> <span class="nav-text">Part 1 运用领域模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模型"><span class="nav-number">1.0.1.</span> <span class="nav-text">模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#软件的核心"><span class="nav-number">1.0.2.</span> <span class="nav-text">软件的核心</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#有效建模的要素"><span class="nav-number">1.0.3.</span> <span class="nav-text">有效建模的要素</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-1-消化知识"><span class="nav-number">1.1.</span> <span class="nav-text">Chapter 1 消化知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#传统方法的缺陷"><span class="nav-number">1.1.1.</span> <span class="nav-text">传统方法的缺陷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#持续学习"><span class="nav-number">1.1.2.</span> <span class="nav-text">持续学习</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#知识丰富的设计"><span class="nav-number">1.1.3.</span> <span class="nav-text">知识丰富的设计</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#深层模型"><span class="nav-number">1.1.4.</span> <span class="nav-text">深层模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-2-交流和语言的使用"><span class="nav-number">1.2.</span> <span class="nav-text">Chapter 2 交流和语言的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Ubiquitous-Language（通用语言）"><span class="nav-number">1.2.1.</span> <span class="nav-text">Ubiquitous Language（通用语言）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一个团队，一种语言"><span class="nav-number">1.2.2.</span> <span class="nav-text">一个团队，一种语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文档和图"><span class="nav-number">1.2.3.</span> <span class="nav-text">文档和图</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#图"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#文档"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">文档</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解释性模型"><span class="nav-number">1.2.4.</span> <span class="nav-text">解释性模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-3-绑定模型和实现"><span class="nav-number">1.3.</span> <span class="nav-text">Chapter 3 绑定模型和实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模式：Model-Driven-Design"><span class="nav-number">1.3.1.</span> <span class="nav-text">模式：Model-Driven Design</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模式：Hands-on-Modeler"><span class="nav-number">1.3.2.</span> <span class="nav-text">模式：Hands-on Modeler</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Part-2-模型驱动设计的构造块"><span class="nav-number">2.</span> <span class="nav-text">Part 2 模型驱动设计的构造块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-4-分离领域"><span class="nav-number">2.1.</span> <span class="nav-text">Chapter 4 分离领域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Layered-Architecture-分层架构"><span class="nav-number">2.1.1.</span> <span class="nav-text">Layered Architecture 分层架构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-5-软件中表示的模型"><span class="nav-number">2.2.</span> <span class="nav-text">Chapter 5 软件中表示的模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关联"><span class="nav-number">2.2.1.</span> <span class="nav-text">关联</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模式：Entity"><span class="nav-number">2.2.2.</span> <span class="nav-text">模式：Entity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模式：Value-Object（VO）"><span class="nav-number">2.2.3.</span> <span class="nav-text">模式：Value Object（VO）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模式：Service"><span class="nav-number">2.2.4.</span> <span class="nav-text">模式：Service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模式：Module（Package）"><span class="nav-number">2.2.5.</span> <span class="nav-text">模式：Module（Package）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#建模范式"><span class="nav-number">2.2.6.</span> <span class="nav-text">建模范式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-6-领域对象的生命周期"><span class="nav-number">2.3.</span> <span class="nav-text">Chapter 6 领域对象的生命周期</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#模式：AGGREGATE"><span class="nav-number">2.3.1.</span> <span class="nav-text">模式：AGGREGATE</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模式：FACTORY"><span class="nav-number">2.3.2.</span> <span class="nav-text">模式：FACTORY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模式：REPOSITORY"><span class="nav-number">2.3.3.</span> <span class="nav-text">模式：REPOSITORY</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关系数据库设计"><span class="nav-number">2.3.4.</span> <span class="nav-text">关系数据库设计</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chapter-7-示例-货物运输系统"><span class="nav-number">2.4.</span> <span class="nav-text">Chapter 7 示例 - 货物运输系统</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
+      </div>
     </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
   </aside>
 
 
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Allen Xu</span>
-</div>
-
-
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
     </div>
   </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
+</div>
 
 
 
@@ -759,104 +525,211 @@
 
 
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
 
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
 </script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
 
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
   
 
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

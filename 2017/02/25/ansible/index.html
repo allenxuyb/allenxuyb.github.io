@@ -1,361 +1,284 @@
-<!doctype html>
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
 
 
 
-
-<html class="theme-next pisces" lang="en">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-  <meta name="google-site-verification" content="A3i-1Xpg82p4y5iO94S8DtTX0tt6DMqqy81g2VVEylw" />
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
+  <link rel="apple-touch-icon" sizes="76x76" href="/uploads/avatar.jpg">
+  <link rel="icon" href="/uploads/avatar.jpg">
   
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-    
-    
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Allen Xu">
+  <meta name="keywords" content="undefined">
   
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="ansible,devops," />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
-
-
-
-
-
-
-<meta name="description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
-目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。
-首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
+    <meta name="description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。 目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。 首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ansible学习笔记">
 <meta property="og:url" content="http://blog.yongbin.me/2017/02/25/ansible/index.html">
 <meta property="og:site_name" content="El Psy Congroo">
-<meta property="og:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
-目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。
-首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
-<meta property="og:updated_time" content="2017-02-26T04:15:48.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ansible学习笔记">
-<meta name="twitter:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。
-目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。
-首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
+<meta property="og:description" content="Why AnsibleAnsible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。 目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。 首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabri">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-02-25T04:00:00.000Z">
+<meta property="article:modified_time" content="2017-02-26T04:14:39.000Z">
+<meta property="article:author" content="Allen Xu">
+<meta property="article:tag" content="ansible">
+<meta property="article:tag" content="devops">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Ansible学习笔记 - El Psy Congroo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: false,
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.yongbin.me","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home","tag"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
     }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://blog.yongbin.me/2017/02/25/ansible/"/>
-
-
-
-
-
-  <title> Ansible学习笔记 | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
   
 
 
-<!-- hexo-inject:begin --><!-- hexo-inject:end --><script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-90810901-1', 'auto');
-  ga('send', 'pageview');
-</script>
-
-
-
-
-
-
-
-
-
   
+<meta name="generator" content="Hexo 8.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
   
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
     
-  
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">El Psy Congroo</span>
-      <span class="logo-line-after"><i></i></span>
+<div class="header-inner" style="height: 25vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>El Psy Congroo</strong>
     </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
   </div>
-    
-      <p class="site-subtitle"></p>
-    
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
 </nav>
 
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
   
 
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2017/02/25/ansible/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Ansible学习笔记
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-25T12:00:00+08:00">
-                2017-02-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/uploads/kaguya01.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
           
-
+            <span id="subtitle">Ansible学习笔记</span>
           
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
         </div>
-      </header>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-02-25 12:00" pubdate>
+          February 25, 2017 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.4k words
+        
+      </span>
     
 
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          54 mins
+        
+      </span>
+    
 
-    <div class="post-body" itemprop="articleBody">
+    
+    
+  </div>
+
+
+        
+      </div>
 
       
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
       
 
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
       
-        <h2 id="Why-Ansible"><a href="#Why-Ansible" class="headerlink" title="Why Ansible"></a>Why Ansible</h2><p>Ansible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。</p>
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Ansible学习笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Why-Ansible"><a href="#Why-Ansible" class="headerlink" title="Why Ansible"></a>Why Ansible</h2><p>Ansible是一个轻量级的IT自动化工具，和Fabric类似，实现了批量系统配置、程序部署、运行命令等功能。</p>
 <p>目前我们开发环境大部分自动化脚本都是用Fabric实现的，因此在学习使用Ansible之前，我们肯定要了解下使用Ansible替换Fabric的收益和成本。</p>
 <p>首先两者都是通过SSH来完成大部分工作的，因此不需要安装Agent，也没有Server的概念，其中Fabric直接通过SSH运行命令，Ansible先将Module推送到目标服务器，再远程执行。</p>
-<p>两者最大的区别在于抽象层次的不同，Fabric是所见即所得的实现方式，抽象比较少，基本上所有的内容都在一个文件中，容易理解，上手简单，并且得益于Python的强大，可以灵活实现各种功能。但这种扁平的管理方式也有着显著的缺点，随着主机数量，主机间差异，脚本功能不断增加时，整套系统会越来越难以维护。<br><a id="more"></a><br>有句古话说计算机科学领域的任何问题都可以通过增加一个间接的中间层来解决，Ansible就使用这种方式，设计了较厚的抽象层次，显著的降低了使用者需要面对的复杂度。通过Module来封装功能，Task调用Module实现需求，用Role来组织可重用的Task，用Inventory来管理主机，用Playbook将Role和Inventory编排在一起，形成最终需要执行的操作。这里需要强调一点，Playbook的作用不是让主机拥有Role，而是用Role来decorate目标主机。</p>
+<p>两者最大的区别在于抽象层次的不同，Fabric是所见即所得的实现方式，抽象比较少，基本上所有的内容都在一个文件中，容易理解，上手简单，并且得益于Python的强大，可以灵活实现各种功能。但这种扁平的管理方式也有着显著的缺点，随着主机数量，主机间差异，脚本功能不断增加时，整套系统会越来越难以维护。<br><span id="more"></span><br>有句古话说计算机科学领域的任何问题都可以通过增加一个间接的中间层来解决，Ansible就使用这种方式，设计了较厚的抽象层次，显著的降低了使用者需要面对的复杂度。通过Module来封装功能，Task调用Module实现需求，用Role来组织可重用的Task，用Inventory来管理主机，用Playbook将Role和Inventory编排在一起，形成最终需要执行的操作。这里需要强调一点，Playbook的作用不是让主机拥有Role，而是用Role来decorate目标主机。</p>
 <p>相对于Fabric使用Python作为载体，Ansible则是使用YAML创建了一套DSL，并内建了大量Module，因此有一定的学习成本。下面通过一个简单任务：在目标系统中安装Apache，来直观了解下Fabric和Ansible的使用差异。</p>
 <ul>
 <li>使用Fabric</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># fabfile.py</div><div class="line">from fabric.api import *</div><div class="line">	</div><div class="line">env.hosts = [&quot;root@localhost:9022&quot;,]</div><div class="line">	</div><div class="line">def install_apache():</div><div class="line">    run(&apos;yum install httpd -y&apos;)</div></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ fab install_apache</div></pre></td></tr></table></figure>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-comment"># fabfile.py</span><br><span class="hljs-keyword">from</span> fabric.api import *<br>	<br><span class="hljs-keyword">env</span>.hosts = [<span class="hljs-string">&quot;root@localhost:9022&quot;</span>,]<br>	<br>def install_apache():<br>    <span class="hljs-keyword">run</span><span class="language-bash">(<span class="hljs-string">&#x27;yum install httpd -y&#x27;</span>)</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ fab install_apache<br></code></pre></td></tr></table></figure>
 <ul>
 <li>使用Ansible</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"># tree</div><div class="line">├── group_vars/</div><div class="line">├── host_vars/</div><div class="line">├── hosts</div><div class="line">├── roles/</div><div class="line">│   └── httpd/</div><div class="line">│       └── tasks/</div><div class="line">│           └── main.yml</div><div class="line">└── site.yml</div></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># hosts</span></div><div class="line"><span class="attr">localhost:</span><span class="number">9022</span> ansible_user=root</div></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># main.yml</span></div><div class="line"><span class="attr">- name:</span> install the latest version of Apache</div><div class="line"><span class="attr">  yum:</span></div><div class="line"><span class="attr">    name:</span> httpd</div><div class="line"><span class="attr">    state:</span> latest</div></pre></td></tr></table></figure>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># site.yml</span></div><div class="line"><span class="attr">name:</span> install the latest version of Apache</div><div class="line"><span class="attr">hosts:</span> all</div><div class="line">	</div><div class="line"><span class="attr">roles:</span></div><div class="line"><span class="bullet">  -</span> httpd</div></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ansible-playbook site.yml</div></pre></td></tr></table></figure>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-comment"># tree</span><br>├── group_vars<span class="hljs-symbol">/</span><br>├── host_vars<span class="hljs-symbol">/</span><br>├── hosts<br>├── roles<span class="hljs-symbol">/</span><br>│   └── httpd<span class="hljs-symbol">/</span><br>│       └── tasks<span class="hljs-symbol">/</span><br>│           └── main.yml<br>└── site.yml<br></code></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># hosts</span><br><span class="hljs-string">localhost:9022</span> <span class="hljs-string">ansible_user=root</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># main.yml</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">install</span> <span class="hljs-string">the</span> <span class="hljs-string">latest</span> <span class="hljs-string">version</span> <span class="hljs-string">of</span> <span class="hljs-string">Apache</span><br>  <span class="hljs-attr">yum:</span><br>    <span class="hljs-attr">name:</span> <span class="hljs-string">httpd</span><br>    <span class="hljs-attr">state:</span> <span class="hljs-string">latest</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># site.yml</span><br><span class="hljs-attr">name:</span> <span class="hljs-string">install</span> <span class="hljs-string">the</span> <span class="hljs-string">latest</span> <span class="hljs-string">version</span> <span class="hljs-string">of</span> <span class="hljs-string">Apache</span><br><span class="hljs-attr">hosts:</span> <span class="hljs-string">all</span><br>	<br><span class="hljs-attr">roles:</span><br>  <span class="hljs-bullet">-</span> <span class="hljs-string">httpd</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ ansible-playbook site.yml<br></code></pre></td></tr></table></figure>
 <p>看起来Ansible似乎更繁琐，完成一个简单任务需要更多的代码量，但在实际使用时，我们关心的并不是执行的细节，而是需要达成的目标，<code>site.yml</code>明确的描述了这个目标，相对于Fabric，需要阅读的代码量其实更少了。</p>
-<h2 id="Step-by-Step"><a href="#Step-by-Step" class="headerlink" title="Step by Step"></a>Step by Step</h2><p>首先花<a href="https://learnxinyminutes.com/docs/yaml/" target="_blank" rel="external">三分钟</a>学习下YAML，Ansible中的一切都是用YAML来组织的。YAML是专门为可读性设计的配置语言，基本上就是一个用换行分隔属性，用缩进代表嵌套的JSON。接下来我们来学习Ansible的一些基本概念。</p>
-<h3 id="Inventory"><a href="#Inventory" class="headerlink" title="Inventory"></a>Inventory</h3><p>用于配置由Ansible管理的主机，支持分组及分组嵌套。这里也可以直接配置主机和分组对应的变量，但还是推荐使用前面演示的<a href="http://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout" target="_blank" rel="external">目录结构</a>来管理变量。Ansible默认从<code>/etc/ansible/hosts</code>文件读取配置，可以在<code>ansible.cfg</code>中修改默认配置，或运行时使用<code>-i &lt;path&gt;</code>设置。<br>一个典型的Inventory文件如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># hosts</div><div class="line">[web]</div><div class="line">foo.example.com</div><div class="line">bar.example.com</div><div class="line"></div><div class="line">[db]</div><div class="line">mysql.example.com</div><div class="line"></div><div class="line">[all_server:children]</div><div class="line">web</div><div class="line">db</div></pre></td></tr></table></figure>
+<h2 id="Step-by-Step"><a href="#Step-by-Step" class="headerlink" title="Step by Step"></a>Step by Step</h2><p>首先花<a href="https://learnxinyminutes.com/docs/yaml/">三分钟</a>学习下YAML，Ansible中的一切都是用YAML来组织的。YAML是专门为可读性设计的配置语言，基本上就是一个用换行分隔属性，用缩进代表嵌套的JSON。接下来我们来学习Ansible的一些基本概念。</p>
+<h3 id="Inventory"><a href="#Inventory" class="headerlink" title="Inventory"></a>Inventory</h3><p>用于配置由Ansible管理的主机，支持分组及分组嵌套。这里也可以直接配置主机和分组对应的变量，但还是推荐使用前面演示的<a href="http://docs.ansible.com/ansible/playbooks_best_practices.html#directory-layout">目录结构</a>来管理变量。Ansible默认从<code>/etc/ansible/hosts</code>文件读取配置，可以在<code>ansible.cfg</code>中修改默认配置，或运行时使用<code>-i &lt;path&gt;</code>设置。<br>一个典型的Inventory文件如下：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-meta"># hosts</span><br>[<span class="hljs-meta">web</span>]<br>foo.example.com<br>bar.example.com<br><br>[<span class="hljs-meta">db</span>]<br>mysql.example.com<br><br>[<span class="hljs-meta">all_server:children</span>]<br>web<br>db<br></code></pre></td></tr></table></figure>
 <h3 id="How-to-run"><a href="#How-to-run" class="headerlink" title="How to run"></a>How to run</h3><p>有了Inventory以后，我们就可以运行第一条Ansible命令了。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 对Inventory中所有主机执行ping module，探测是否可达</span></div><div class="line">ansible all -m ping</div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 对Inventory中所有主机执行ping module，探测是否可达</span><br>ansible all -m ping<br></code></pre></td></tr></table></figure>
 <p>以这种方式运行的命令被Ansible称为ad-hoc命令，适合进行一些简单的一次性操作，基本语法如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">ansible [-i inventory] &lt;pattern&gt; [-m &lt;module&gt;] [<span class="_">-a</span> args]</div><div class="line"><span class="comment"># -i: inventory文件路径</span></div><div class="line"><span class="comment"># pattern: 主机匹配模式，常用的是分组名，主机名，或者all，此外还支持一些更复杂的语法，包括集合操作等</span></div><div class="line"><span class="comment"># -m: module名称，不指定时，默认为command</span></div><div class="line"><span class="comment"># -a: module参数，对于一般module，使用KV对形式，对于run commands类例如command、shell，输入需要执行的命令</span></div><div class="line"></div><div class="line"><span class="comment"># e.g.</span></div><div class="line">ansible all <span class="_">-a</span> <span class="string">"hostname -i"</span></div><div class="line">ansible db -m shell <span class="_">-a</span> <span class="string">"echo <span class="variable">$HOME</span>"</span></div><div class="line">ansible web -m yum <span class="_">-a</span> <span class="string">"name=httpd state=latest"</span></div></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs bash">ansible [-i inventory] &lt;pattern&gt; [-m &lt;module&gt;] [-a args]<br><span class="hljs-comment"># -i: inventory文件路径</span><br><span class="hljs-comment"># pattern: 主机匹配模式，常用的是分组名，主机名，或者all，此外还支持一些更复杂的语法，包括集合操作等</span><br><span class="hljs-comment"># -m: module名称，不指定时，默认为command</span><br><span class="hljs-comment"># -a: module参数，对于一般module，使用KV对形式，对于run commands类例如command、shell，输入需要执行的命令</span><br><br><span class="hljs-comment"># e.g.</span><br>ansible all -a <span class="hljs-string">&quot;hostname -i&quot;</span><br>ansible db -m shell -a <span class="hljs-string">&quot;echo <span class="hljs-variable">$HOME</span>&quot;</span><br>ansible web -m yum -a <span class="hljs-string">&quot;name=httpd state=latest&quot;</span><br></code></pre></td></tr></table></figure>
 <p>但如果要执行一些复杂任务，例如应用部署，ad-hoc命令就不合适了，那我们接着来介绍playbook</p>
 <h3 id="Playbook"><a href="#Playbook" class="headerlink" title="Playbook"></a>Playbook</h3><p>官网有首好诗，很好的解释了playbook中的一些概念，引用过来大家感受下…</p>
 <blockquote>
@@ -364,7 +287,7 @@
 <p><strong>Handlers</strong> are triggered by tasks,<br>and are run once, at the end of plays</p>
 </blockquote>
 <p>下面通过一个简单的例子来具体看下上述几个概念。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># deploy_tomcat.yml</span></div><div class="line"><span class="meta">---</span></div><div class="line"><span class="attr">- name:</span> deploy tomcat</div><div class="line"><span class="attr">  hosts:</span> all</div><div class="line"><span class="attr">  vars:</span></div><div class="line"><span class="attr">    tomcat_home:</span> ~/tomcat</div><div class="line"><span class="attr">    tomcat_port:</span> <span class="number">9080</span></div><div class="line"></div><div class="line"><span class="attr">  tasks:</span></div><div class="line"><span class="attr">    - name:</span> check whether tomcat is deployed</div><div class="line"><span class="attr">      stat:</span> path=&#123;&#123; tomcat_home &#125;&#125;</div><div class="line"><span class="attr">      register:</span> out_check</div><div class="line"></div><div class="line"><span class="attr">    - name:</span> copy and unpack tomcat</div><div class="line"><span class="attr">      unarchive:</span> src=upload/apache-tomcat<span class="bullet">-8.5</span><span class="number">.9</span>.prod.tar.gz dest=~/</div><div class="line"><span class="attr">      register:</span> out_unpack</div><div class="line"><span class="attr">      when:</span> not out_check.stat.exists</div><div class="line"></div><div class="line"><span class="attr">    - name:</span> rename tomcat</div><div class="line"><span class="attr">      shell:</span> mv ~/apache-tomcat<span class="bullet">-8.5</span><span class="number">.9</span> &#123;&#123; tomcat_home &#125;&#125;</div><div class="line"><span class="attr">      when:</span> out_unpack.changed</div><div class="line"></div><div class="line"><span class="attr">    - name:</span> update server.xml</div><div class="line"><span class="attr">      template:</span></div><div class="line"><span class="attr">        src:</span> upload/server.xml.j2</div><div class="line"><span class="attr">        dest:</span> <span class="string">"<span class="template-variable">&#123;&#123; tomcat_home &#125;&#125;</span>/conf/server.xml"</span></div><div class="line"><span class="attr">        backup:</span> <span class="literal">yes</span></div><div class="line"><span class="attr">      notify:</span> restart tomcat</div><div class="line"></div><div class="line"><span class="attr">    - name:</span> add test html</div><div class="line"><span class="attr">      copy:</span> src=upload/test.html dest=<span class="string">"<span class="template-variable">&#123;&#123; tomcat_home &#125;&#125;</span>/webapps/test/index.html"</span></div><div class="line"><span class="attr">      notify:</span> restart tomcat</div><div class="line"></div><div class="line"><span class="attr">  handlers:</span></div><div class="line"><span class="attr">    - name:</span> shutdown tomcat</div><div class="line"><span class="attr">      command:</span> <span class="string">"/bin/bash -l -c <span class="template-variable">&#123;&#123; tomcat_home &#125;&#125;</span>/bin/shutdown.sh"</span></div><div class="line"><span class="attr">      ignore_errors:</span> <span class="literal">yes</span></div><div class="line"><span class="attr">      listen:</span> <span class="string">"restart tomcat"</span></div><div class="line"></div><div class="line"><span class="attr">    - name:</span> start tomcat</div><div class="line"><span class="attr">      command:</span> <span class="string">"/bin/bash -l -c 'nohup <span class="template-variable">&#123;&#123; tomcat_home &#125;&#125;</span>/bin/startup.sh'"</span></div><div class="line"><span class="attr">      listen:</span> <span class="string">"restart tomcat"</span></div><div class="line"></div><div class="line"><span class="attr">    - name:</span> wait tomcat start</div><div class="line"><span class="attr">      wait_for:</span></div><div class="line"><span class="attr">        port:</span> <span class="string">"<span class="template-variable">&#123;&#123; tomcat_port &#125;&#125;</span>"</span></div><div class="line"><span class="attr">      listen:</span> <span class="string">"restart tomcat"</span></div></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># deploy_tomcat.yml</span><br><span class="hljs-meta">---</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">deploy</span> <span class="hljs-string">tomcat</span><br>  <span class="hljs-attr">hosts:</span> <span class="hljs-string">all</span><br>  <span class="hljs-attr">vars:</span><br>    <span class="hljs-attr">tomcat_home:</span> <span class="hljs-string">~/tomcat</span><br>    <span class="hljs-attr">tomcat_port:</span> <span class="hljs-number">9080</span><br><br>  <span class="hljs-attr">tasks:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">check</span> <span class="hljs-string">whether</span> <span class="hljs-string">tomcat</span> <span class="hljs-string">is</span> <span class="hljs-string">deployed</span><br>      <span class="hljs-attr">stat:</span> <span class="hljs-string">path=&#123;&#123;</span> <span class="hljs-string">tomcat_home</span> <span class="hljs-string">&#125;&#125;</span><br>      <span class="hljs-attr">register:</span> <span class="hljs-string">out_check</span><br><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">copy</span> <span class="hljs-string">and</span> <span class="hljs-string">unpack</span> <span class="hljs-string">tomcat</span><br>      <span class="hljs-attr">unarchive:</span> <span class="hljs-string">src=upload/apache-tomcat-8.5.9.prod.tar.gz</span> <span class="hljs-string">dest=~/</span><br>      <span class="hljs-attr">register:</span> <span class="hljs-string">out_unpack</span><br>      <span class="hljs-attr">when:</span> <span class="hljs-string">not</span> <span class="hljs-string">out_check.stat.exists</span><br><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">rename</span> <span class="hljs-string">tomcat</span><br>      <span class="hljs-attr">shell:</span> <span class="hljs-string">mv</span> <span class="hljs-string">~/apache-tomcat-8.5.9</span> &#123;&#123; <span class="hljs-string">tomcat_home</span> &#125;&#125;<br>      <span class="hljs-attr">when:</span> <span class="hljs-string">out_unpack.changed</span><br><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">update</span> <span class="hljs-string">server.xml</span><br>      <span class="hljs-attr">template:</span><br>        <span class="hljs-attr">src:</span> <span class="hljs-string">upload/server.xml.j2</span><br>        <span class="hljs-attr">dest:</span> <span class="hljs-string">&quot;<span class="hljs-template-variable">&#123;&#123; tomcat_home &#125;&#125;</span>/conf/server.xml&quot;</span><br>        <span class="hljs-attr">backup:</span> <span class="hljs-literal">yes</span><br>      <span class="hljs-attr">notify:</span> <span class="hljs-string">restart</span> <span class="hljs-string">tomcat</span><br><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">add</span> <span class="hljs-string">test</span> <span class="hljs-string">html</span><br>      <span class="hljs-attr">copy:</span> <span class="hljs-string">src=upload/test.html</span> <span class="hljs-string">dest=&quot;&#123;&#123;</span> <span class="hljs-string">tomcat_home</span> <span class="hljs-string">&#125;&#125;/webapps/test/index.html&quot;</span><br>      <span class="hljs-attr">notify:</span> <span class="hljs-string">restart</span> <span class="hljs-string">tomcat</span><br><br>  <span class="hljs-attr">handlers:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">shutdown</span> <span class="hljs-string">tomcat</span><br>      <span class="hljs-attr">command:</span> <span class="hljs-string">&quot;/bin/bash -l -c <span class="hljs-template-variable">&#123;&#123; tomcat_home &#125;&#125;</span>/bin/shutdown.sh&quot;</span><br>      <span class="hljs-attr">ignore_errors:</span> <span class="hljs-literal">yes</span><br>      <span class="hljs-attr">listen:</span> <span class="hljs-string">&quot;restart tomcat&quot;</span><br><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">start</span> <span class="hljs-string">tomcat</span><br>      <span class="hljs-attr">command:</span> <span class="hljs-string">&quot;/bin/bash -l -c &#x27;nohup <span class="hljs-template-variable">&#123;&#123; tomcat_home &#125;&#125;</span>/bin/startup.sh&#x27;&quot;</span><br>      <span class="hljs-attr">listen:</span> <span class="hljs-string">&quot;restart tomcat&quot;</span><br><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">wait</span> <span class="hljs-string">tomcat</span> <span class="hljs-string">start</span><br>      <span class="hljs-attr">wait_for:</span><br>        <span class="hljs-attr">port:</span> <span class="hljs-string">&quot;<span class="hljs-template-variable">&#123;&#123; tomcat_port &#125;&#125;</span>&quot;</span><br>      <span class="hljs-attr">listen:</span> <span class="hljs-string">&quot;restart tomcat&quot;</span><br></code></pre></td></tr></table></figure>
 <p><code>deploy_tomcat.yml</code>这个文件就是一个<code>playbook</code>，包含了<code>deploy tomcat</code>这个<code>play</code><br><code>play</code>指定了目标主机<code>all</code>，设置了变量<code>vars</code>，并且包含了一系列<code>task</code><br><code>task</code>是顺序执行的，但可以指定执行条件，例如<code>copy and unpack tomcat</code>这个<code>task</code>只有当<code>tomcat_home</code>目录不存在时才会执行  </p>
 <p>这里要提到Ansible的一个设计理念</p>
 <blockquote>
@@ -372,27 +295,26 @@
 </blockquote>
 <p>写自动化脚本的目的是让目标主机达到所需的状态，而不仅仅是机械的执行一连串命令，Ansible就是以这样的理念来设计的，大部分<code>module</code>都会由当前状态来判断是否需要执行，因此<code>module</code>的执行是幂等的，此外每一个<code>task</code>都有一个<code>changed</code>状态，来表示这次运行是否对目标主机产生了改变，没有改变就不要去fix，像<code>handler</code>只会在<code>task</code>的<code>changed == true</code>时才会被执行。这也是为什么我们写<code>task</code>时应该尽量使用相应的<code>module</code>，而少用<code>run commands</code>例如<code>shell</code>的原因，因为Ansible无法判断<code>shell</code>运行内容，因此<code>changed</code>永远为<code>true</code>，此外大部分的<code>shell</code>命令都不是幂等的，重复执行结果无法预期。</p>
 <blockquote>
-<p>PS: 这里为了展示playbook的功能，因此没有按<a href="http://docs.ansible.com/ansible/playbooks_best_practices.html" target="_blank" rel="external">最佳实践</a>来操作，这里的tasks显然属于一个role，这些变量直接定义在playbook中也并不合适。</p>
+<p>PS: 这里为了展示playbook的功能，因此没有按<a href="http://docs.ansible.com/ansible/playbooks_best_practices.html">最佳实践</a>来操作，这里的tasks显然属于一个role，这些变量直接定义在playbook中也并不合适。</p>
 </blockquote>
 <h3 id="Role"><a href="#Role" class="headerlink" title="Role"></a>Role</h3><p>Role只是一个抽象概念，从实现角度来看role就是一种特殊形式的playbook。引入role这个概念主要是为了将实现细节从playbook抽象出来，一方面方便复用，另一方面增加了role这层抽象之后，playbook就不再需要关心实现细节了，需要关心的只有目标主机和目标状态，这样playbook的可读性也大大提高了。同时role通过使用约定的目录结构来存储playbook中的各个元素，更有利于我们管理。</p>
 <ul>
 <li>Role的目录结构</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">roles/</div><div class="line">   webservers/</div><div class="line">     files/</div><div class="line">     templates/</div><div class="line">     tasks/</div><div class="line">     handlers/</div><div class="line">     vars/</div><div class="line">     defaults/</div><div class="line">     meta/</div><div class="line">   common/...</div></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs plain">roles/<br>   webservers/<br>     files/<br>     templates/<br>     tasks/<br>     handlers/<br>     vars/<br>     defaults/<br>     meta/<br>   common/...<br></code></pre></td></tr></table></figure>
 <ul>
 <li>使用role之后的playbook</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">- hosts: webservers</div><div class="line">  roles:</div><div class="line">     - common</div><div class="line">     - webservers</div></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-meta">---</span><br><span class="hljs-bullet">-</span> <span class="hljs-attr">hosts:</span> <span class="hljs-string">webservers</span><br>  <span class="hljs-attr">roles:</span><br>     <span class="hljs-bullet">-</span> <span class="hljs-string">common</span><br>     <span class="hljs-bullet">-</span> <span class="hljs-string">webservers</span><br></code></pre></td></tr></table></figure>
 <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><ul>
 <li>变量名：字母，数字及下划线，必须字母开头</li>
 <li><p>变量使用<br>  变量可以使用在playbook及template文件中，基本引用语法如下：</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;&#123; var &#125;&#125;</div><div class="line"># PS: 由于YAML会将&#123;&#125;解释为map，因此当变量位于value行首时，整个value需要加上双引号</div><div class="line">&quot;&#123;&#123; var &#125;&#125; start a value&quot;</div></pre></td></tr></table></figure>
-<p>  Ansible是基于Jinja2来提供变量访问功能的，因此有大量的<a href="http://docs.ansible.com/ansible/playbooks_templating.html" target="_blank" rel="external">表达式</a>可以用来对变量进行动态处理</p>
+  <figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs handlebars"><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">var</span> &#125;&#125;</span><span class="language-xml"></span><br><span class="language-xml"># PS: 由于YAML会将&#123;&#125;解释为map，因此当变量位于value行首时，整个value需要加上双引号</span><br><span class="language-xml">&quot;</span><span class="hljs-template-variable">&#123;&#123; <span class="hljs-name">var</span> &#125;&#125;</span><span class="language-xml"> start a value&quot;</span><br></code></pre></td></tr></table></figure>
+<p>  Ansible是基于Jinja2来提供变量访问功能的，因此有大量的<a href="http://docs.ansible.com/ansible/playbooks_templating.html">表达式</a>可以用来对变量进行动态处理</p>
 </li>
 <li><p>特殊的变量: Facts<br>  既然Ansible是基于状态运行的，那目标主机状态的采集自然也是必不可少的。运行playbook时，Ansible默认会先运行一个<code>setup</code>的task，采集大量目标主机的信息，包括操作系统版本，IP地址，磁盘空间，内存使用，当前登录用户信息等等，供我们在playbook中使用。具体采集的内容可以用如下方式查看：</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible hostname -m setup</div></pre></td></tr></table></figure>
-</li>
-<li><p>变量优先级<br>  由于变量可以来自各个地方，<a href="http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable" target="_blank" rel="external">优先级</a>是个坑，因此我们首先要做的是</p>
+  <figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">ansible hostname -m setup<br></code></pre></td></tr></table></figure></li>
+<li><p>变量优先级<br>  由于变量可以来自各个地方，<a href="http://docs.ansible.com/ansible/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable">优先级</a>是个坑，因此我们首先要做的是</p>
 <blockquote>
 <p>避免在多个地方设置同一个变量!</p>
 </blockquote>
@@ -409,353 +331,357 @@
 </ul>
 </li>
 <li><p>合理的命名Plays和Tasks</p>
-  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="attr">- hosts:</span> web</div><div class="line"><span class="attr">  name:</span> installs and starts apache</div><div class="line"><span class="attr">  tasks:</span></div><div class="line"><span class="attr">    - name:</span> install apache packages</div><div class="line"><span class="attr">      yum:</span></div><div class="line"><span class="attr">        name:</span> httpd</div><div class="line"><span class="attr">        state:</span> latest</div><div class="line"><span class="comment"># output</span></div><div class="line"><span class="comment"># PLAY [install and starts apache]</span></div><div class="line"><span class="comment"># TASK [install apache packages]</span></div><div class="line"><span class="comment"># ok: [web1]</span></div></pre></td></tr></table></figure>
-</li>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-bullet">-</span> <span class="hljs-attr">hosts:</span> <span class="hljs-string">web</span><br>  <span class="hljs-attr">name:</span> <span class="hljs-string">installs</span> <span class="hljs-string">and</span> <span class="hljs-string">starts</span> <span class="hljs-string">apache</span><br>  <span class="hljs-attr">tasks:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">install</span> <span class="hljs-string">apache</span> <span class="hljs-string">packages</span><br>      <span class="hljs-attr">yum:</span><br>        <span class="hljs-attr">name:</span> <span class="hljs-string">httpd</span><br>        <span class="hljs-attr">state:</span> <span class="hljs-string">latest</span><br><span class="hljs-comment"># output</span><br><span class="hljs-comment"># PLAY [install and starts apache]</span><br><span class="hljs-comment"># TASK [install apache packages]</span><br><span class="hljs-comment"># ok: [web1]</span><br></code></pre></td></tr></table></figure></li>
 <li><p>使用前缀和有助理解的词命名变量，并保持命名的一致性</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">apache_max_keepalive: 25</div><div class="line">apache_port: 80</div><div class="line">tomcat_port: 8080</div></pre></td></tr></table></figure>
-</li>
+  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">apache_max_keepalive:</span> <span class="hljs-number">25</span><br><span class="hljs-attr">apache_port:</span> <span class="hljs-number">80</span><br><span class="hljs-attr">tomcat_port:</span> <span class="hljs-number">8080</span><br></code></pre></td></tr></table></figure></li>
 <li><p>使用YAML语法，少用KV对，增加可读性（感觉适当使用KV对可读性还是有帮助的）</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- name: configure telegraf</div><div class="line">  template: src=telegraf.conf.j2 dest=/etc/telegraf/telegraf.conf</div><div class="line"></div><div class="line">- name: configure telegraf</div><div class="line">  template:</div><div class="line">    src: telegraf.conf.j2</div><div class="line">    dest: /etc/telegraf/telegraf.conf</div></pre></td></tr></table></figure>
-</li>
+  <figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs nix">- <span class="hljs-params">name:</span> configure telegraf<br>  <span class="hljs-params">template:</span> src<span class="hljs-operator">=</span>telegraf.conf.j2 dest<span class="hljs-operator">=</span><span class="hljs-symbol">/etc/telegraf/telegraf.conf</span><br><br><span class="hljs-operator">-</span> <span class="hljs-params">name:</span> configure telegraf<br>  <span class="hljs-params">template:</span><br>    <span class="hljs-params">src:</span> telegraf.conf.j2<br>    <span class="hljs-params">dest:</span> <span class="hljs-operator">/</span>etc<span class="hljs-operator">/</span>telegraf<span class="hljs-operator">/</span>telegraf.conf<br></code></pre></td></tr></table></figure></li>
 <li><p>尽量使用Modules替代Run Commands</p>
 <p>  包括<code>command</code>,<code>shell</code>,<code>raw</code>,<code>script</code>，这类命令没有状态的概念，也不保证幂等性，在ad-hoc命令中使用没有问题，但是在playbook中，无法预期的返回结果以及各种可能出现的异常会使脚本的健壮性大大降低。以删除文件为例，<code>rm foo</code>当foo不存在时会报错，因此我们还需要额外判断文件是否存在</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">if [ -f foo ];then rm foo;fi</div></pre></td></tr></table></figure>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">if</span> [ -f foo ];<span class="hljs-keyword">then</span> <span class="hljs-built_in">rm</span> foo;<span class="hljs-keyword">fi</span><br></code></pre></td></tr></table></figure>
 <p>  这类异常事先很容易忽略，处理起来的代码也不好看，如果用file module来处理就简洁多了</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- file:</div><div class="line">	path: foo</div><div class="line">	state: absent</div></pre></td></tr></table></figure>
+  <figure class="highlight pf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pf">- file:<br>	path: foo<br>	<span class="hljs-keyword">state</span>: absent<br></code></pre></td></tr></table></figure>
 </li>
-</ul>
-<ul>
 <li><p>设置debug日志级别</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- debug:</div><div class="line">    msg: &quot;This always displays&quot;</div><div class="line"></div><div class="line">- debug:</div><div class="line">    msg: &quot;This only displays with ansible-playbook -vv+&quot;</div><div class="line">    verbosity: 2</div></pre></td></tr></table></figure>
+  <figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs nix">- <span class="hljs-params">debug:</span><br>    <span class="hljs-params">msg:</span> <span class="hljs-string">&quot;This always displays&quot;</span><br><br><span class="hljs-operator">-</span> <span class="hljs-params">debug:</span><br>    <span class="hljs-params">msg:</span> <span class="hljs-string">&quot;This only displays with ansible-playbook -vv+&quot;</span><br>    <span class="hljs-params">verbosity:</span> <span class="hljs-number">2</span><br></code></pre></td></tr></table></figure>
 </li>
 </ul>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://lanourain.github.io/2017/02/16/ansible_basic/" target="_blank" rel="external">ansible基础教程</a><br><a href="https://insights.sei.cmu.edu/devops/2015/03/devops-technologies-fabric-or-ansible.html" target="_blank" rel="external">DevOps Technologies: Fabric or Ansible</a><br><a href="http://docs.ansible.com/ansible/" target="_blank" rel="external">Ansible Documentation</a><br><a href="https://www.ansible.com/blog/ansible-best-practices-essentials" target="_blank" rel="external">Ansible Best Practices: The Essentials</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://lanourain.github.io/2017/02/16/ansible_basic/">ansible基础教程</a><br><a href="https://insights.sei.cmu.edu/devops/2015/03/devops-technologies-fabric-or-ansible.html">DevOps Technologies: Fabric or Ansible</a><br><a href="http://docs.ansible.com/ansible/">Ansible Documentation</a><br><a href="https://www.ansible.com/blog/ansible-best-practices-essentials">Ansible Best Practices: The Essentials</a></p>
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/ansible/" rel="tag"># ansible</a>
-          
-            <a href="/tags/devops/" rel="tag"># devops</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
+                
+              </div>
             
-              <a href="/2017/02/15/semaphore/" rel="next" title="利用Docker搭建Semaphore测试环境">
-                <i class="fa fa-chevron-left"></i> 利用Docker搭建Semaphore测试环境
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/14/homebridge/" rel="prev" title="小米网关接入Homekit">
-                小米网关接入Homekit <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-  </div>
-
-
-        </div>
-        
-          
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/ansible/" class="print-no-link">#ansible</a>
+      
+        <a href="/tags/devops/" class="print-no-link">#devops</a>
+      
     </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Ansible学习笔记</div>
+      <div>http://blog.yongbin.me/2017/02/25/ansible/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Allen Xu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 25, 2017</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
   </div>
 
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
 
-      
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2017/03/14/homebridge/" title="小米网关接入Homekit">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">小米网关接入Homekit</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/02/15/semaphore/" title="利用Docker搭建Semaphore测试环境">
+                        <span class="hidden-mobile">利用Docker搭建Semaphore测试环境</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
 
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpg"
-               alt="Allen Xu" />
-          <p class="site-author-name" itemprop="name">Allen Xu</p>
-          <p class="site-description motion-element" itemprop="description"></p>
+            
+          </article>
         </div>
-        <nav class="site-state motion-element">
-        
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">33</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">18</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/allenxuyb" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="https://twitter.com/allenxuyb" target="_blank" title="Twitter">
-                  
-                    <i class="fa fa-fw fa-twitter"></i>
-                  
-                  Twitter
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              Friends
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://lanourain.github.io" title="Lanourain's blog" target="_blank">Lanourain's blog</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://czmonster.com" title="Day Day Up" target="_blank">Day Day Up</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://majiahui.github.io" title="Jiahui's Blog" target="_blank">Jiahui's Blog</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-Ansible"><span class="nav-number">1.</span> <span class="nav-text">Why Ansible</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Step-by-Step"><span class="nav-number">2.</span> <span class="nav-text">Step by Step</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Inventory"><span class="nav-number">2.1.</span> <span class="nav-text">Inventory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-to-run"><span class="nav-number">2.2.</span> <span class="nav-text">How to run</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Playbook"><span class="nav-number">2.3.</span> <span class="nav-text">Playbook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Role"><span class="nav-number">2.4.</span> <span class="nav-text">Role</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量"><span class="nav-number">2.5.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Advanced-playbook-capability"><span class="nav-number">2.6.</span> <span class="nav-text">Advanced playbook capability</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最佳实践"><span class="nav-number">3.</span> <span class="nav-text">最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
+      </div>
     </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
   </aside>
 
 
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Allen Xu</span>
-</div>
-
-
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
     </div>
   </div>
+</div>
+
+
+
+
 
   
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
 </script>
 
 
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
   
 
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -767,44 +693,9 @@
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
-
-
-
-  
-
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
 </body>
 </html>

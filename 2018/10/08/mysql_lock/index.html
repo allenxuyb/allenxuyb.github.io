@@ -1,372 +1,258 @@
-<!doctype html>
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
 
 
 
-
-<html class="theme-next pisces" lang="en">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-  <meta name="google-site-verification" content="A3i-1Xpg82p4y5iO94S8DtTX0tt6DMqqy81g2VVEylw" />
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
+  <link rel="apple-touch-icon" sizes="76x76" href="/uploads/avatar.jpg">
+  <link rel="icon" href="/uploads/avatar.jpg">
   
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-    
-    
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Allen Xu">
+  <meta name="keywords" content="undefined">
   
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="mysql," />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
-
-
-
-
-
-
-<meta name="description" content="两种读取方式
-快照读（snapshot read）
-
-MVCC实现，无锁，高性能但数据不实时，事务中首次select时确定快照版本
-
-  select ...
-
-当前读（current read）
-
-加锁实现：next-key
-
-  12345select ... lock in share modeselect ... for updateinsertupdatedelete
-
-
-锁机制2PL：">
+    <meta name="description" content="两种读取方式 快照读（snapshot read）  MVCC实现，无锁，高性能但数据不实时，事务中首次select时确定快照版本    select ...  当前读（current read）  加锁实现：next-key    12345select ... lock in share modeselect ... for updateinsertupdatedelete   锁机制2PL：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL锁机制分析">
 <meta property="og:url" content="http://blog.yongbin.me/2018/10/08/mysql_lock/index.html">
 <meta property="og:site_name" content="El Psy Congroo">
-<meta property="og:description" content="两种读取方式
-快照读（snapshot read）
+<meta property="og:description" content="两种读取方式 快照读（snapshot read）  MVCC实现，无锁，高性能但数据不实时，事务中首次select时确定快照版本    select ...  当前读（current read）  加锁实现：next-key    12345select ... lock in share modeselect ... for updateinsertupdatedelete   锁机制2PL：">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-10-08T04:00:00.000Z">
+<meta property="article:modified_time" content="2020-11-30T13:38:40.207Z">
+<meta property="article:author" content="Allen Xu">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>MySQL锁机制分析 - El Psy Congroo</title>
 
-MVCC实现，无锁，高性能但数据不实时，事务中首次select时确定快照版本
-
-  select ...
-
-当前读（current read）
-
-加锁实现：next-key
-
-  12345select ... lock in share modeselect ... for updateinsertupdatedelete
-
-
-锁机制2PL：">
-<meta property="og:updated_time" content="2020-11-30T13:38:40.207Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL锁机制分析">
-<meta name="twitter:description" content="两种读取方式
-快照读（snapshot read）
-
-MVCC实现，无锁，高性能但数据不实时，事务中首次select时确定快照版本
-
-  select ...
-
-当前读（current read）
-
-加锁实现：next-key
-
-  12345select ... lock in share modeselect ... for updateinsertupdatedelete
-
-
-锁机制2PL：">
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: false,
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.yongbin.me","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home","tag"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
     }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://blog.yongbin.me/2018/10/08/mysql_lock/"/>
-
-
-
-
-
-  <title> MySQL锁机制分析 | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
   
 
 
-<!-- hexo-inject:begin --><!-- hexo-inject:end --><script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-90810901-1', 'auto');
-  ga('send', 'pageview');
-</script>
-
-
-
-
-
-
-
-
-
   
+<meta name="generator" content="Hexo 8.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
   
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
     
-  
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">El Psy Congroo</span>
-      <span class="logo-line-after"><i></i></span>
+<div class="header-inner" style="height: 25vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>El Psy Congroo</strong>
     </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
   </div>
-    
-      <p class="site-subtitle"></p>
-    
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
 </nav>
 
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
   
 
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2018/10/08/mysql_lock/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                MySQL锁机制分析
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-08T12:00:00+08:00">
-                2018-10-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/uploads/kaguya01.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
           
-
+            <span id="subtitle">MySQL锁机制分析</span>
           
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
         </div>
-      </header>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2018-10-08 12:00" pubdate>
+          October 8, 2018 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k words
+        
+      </span>
     
 
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 mins
+        
+      </span>
+    
 
-    <div class="post-body" itemprop="articleBody">
+    
+    
+  </div>
+
+
+        
+      </div>
 
       
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
       
 
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
       
-        <h4 id="两种读取方式"><a href="#两种读取方式" class="headerlink" title="两种读取方式"></a>两种读取方式</h4><ul>
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MySQL锁机制分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h4 id="两种读取方式"><a href="#两种读取方式" class="headerlink" title="两种读取方式"></a>两种读取方式</h4><ul>
 <li><p>快照读（snapshot read）</p>
 <blockquote>
 <p>MVCC实现，无锁，高性能但数据不实时，事务中首次<code>select</code>时确定快照版本</p>
@@ -377,7 +263,7 @@ MVCC实现，无锁，高性能但数据不实时，事务中首次select时确�
 <blockquote>
 <p>加锁实现：next-key</p>
 </blockquote>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">select ... lock in share mode</div><div class="line">select ... for update</div><div class="line">insert</div><div class="line">update</div><div class="line">delete</div></pre></td></tr></table></figure>
+  <figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> ... lock <span class="hljs-keyword">in</span> share mode<br><span class="hljs-keyword">select</span> ... <span class="hljs-keyword">for</span> <span class="hljs-keyword">update</span><br><span class="hljs-keyword">insert</span><br><span class="hljs-keyword">update</span><br><span class="hljs-keyword">delete</span><br></code></pre></td></tr></table></figure>
 </li>
 </ul>
 <h4 id="锁机制"><a href="#锁机制" class="headerlink" title="锁机制"></a>锁机制</h4><h5 id="2PL：Two-Phase-Locking"><a href="#2PL：Two-Phase-Locking" class="headerlink" title="2PL：Two-Phase Locking"></a>2PL：Two-Phase Locking</h5><p>锁操作分为两个阶段：加锁阶段与解锁阶段，并且保证加锁阶段与解锁阶段不相交</p>
@@ -391,7 +277,7 @@ MVCC实现，无锁，高性能但数据不实时，事务中首次select时确�
 <li>表级锁，IS/IX锁表明事务有意图获取表中某一行的S或X锁</li>
 <li>规则：事务在获取行锁之前必须获取到相同或更高级别的表级意向锁</li>
 <li>用途：加表级锁时无需遍历全表查找是否存在行级锁</li>
-<li>意向锁兼容性（用于判断是否允许加锁，以下锁类型均为表级锁）<a id="more"></a>
+<li>意向锁兼容性（用于判断是否允许加锁，以下锁类型均为表级锁）<span id="more"></span>
 </li>
 </ul>
 </li>
@@ -542,283 +428,133 @@ MVCC实现，无锁，高性能但数据不实时，事务中首次select时确�
 </ul>
 <h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><ul>
 <li><p>查看事务加锁情况</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//查询隔离级别</div><div class="line">select @@global.tx_isolation;</div><div class="line">select @@tx_isolation;</div><div class="line">// innodb_locks记录了所有innodb正在等待的锁，和被等待的锁</div><div class="line">  select * from information_schema.innodb_locks;</div><div class="line">  // innodb_lock_waits记录了所有innodb锁的持有和等待关系</div><div class="line">  select * from information_schema.innodb_lock_waits;</div></pre></td></tr></table></figure>
-</li>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mel"><span class="hljs-comment">//查询隔离级别</span><br><span class="hljs-keyword">select</span> @@<span class="hljs-keyword">global</span>.tx_isolation;<br><span class="hljs-keyword">select</span> @@tx_isolation;<br><span class="hljs-comment">// innodb_locks记录了所有innodb正在等待的锁，和被等待的锁</span><br>  <span class="hljs-keyword">select</span> * from information_schema.innodb_locks;<br>  <span class="hljs-comment">// innodb_lock_waits记录了所有innodb锁的持有和等待关系</span><br>  <span class="hljs-keyword">select</span> * from information_schema.innodb_lock_waits;<br></code></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">	mysql&gt; <span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span> innodb_status_output=<span class="hljs-keyword">ON</span>; // 可选。将监控输出到log_error输出中，<span class="hljs-number">15</span>秒刷新一次<br>	mysql&gt; <span class="hljs-keyword">set</span> <span class="hljs-keyword">global</span> innodb_status_output_locks=<span class="hljs-keyword">ON</span>; // 输出的内容包含锁的详细信息<br>	mysql&gt; <span class="hljs-keyword">show</span> engine innodb status;<br>	<br>	// 在两个事务中执行：<span class="hljs-keyword">insert</span> <span class="hljs-keyword">into</span> city(city_name) <span class="hljs-keyword">values</span>(<span class="hljs-string">&#x27;wz&#x27;</span>);<br>+<span class="hljs-comment">-------+------------+---------------+--------------+-------------+</span><br>| <span class="hljs-keyword">Table</span> | Non_unique | Key_name      | Seq_in_index | <span class="hljs-built_in">Column_name</span> |<br>+<span class="hljs-comment">-------+------------+---------------+--------------+-------------+</span><br>| city  |          <span class="hljs-number">0</span> | <span class="hljs-keyword">PRIMARY</span>       |            <span class="hljs-number">1</span> | id          |<br>| city  |          <span class="hljs-number">0</span> | uni_city_name |            <span class="hljs-number">1</span> | city_name   |<br>+<span class="hljs-comment">-------+------------+---------------+--------------+-------------+</span><br>	<br>	 <span class="hljs-comment">---TRANSACTION 78390, ACTIVE 31 sec inserting</span><br>	// 事务<span class="hljs-number">78390</span>对`city`表持有IX<br>	<span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">LOCK</span> <span class="hljs-keyword">table</span> `test`.`city` trx id <span class="hljs-number">78390</span> <span class="hljs-keyword">lock</span> mode IX<br>	// `space id` 唯一确定一张表 `page <span class="hljs-keyword">no</span>` 锁所在页<br>	// 事务等待`city`表`uni_city_name`索引记录的S锁`<span class="hljs-keyword">lock</span> mode S waiting`<br>	<span class="hljs-type">RECORD</span> LOCKS space id <span class="hljs-number">238</span> page <span class="hljs-keyword">no</span> <span class="hljs-number">4</span> n bits <span class="hljs-number">72</span> <span class="hljs-keyword">index</span> uni_city_name <span class="hljs-keyword">of</span> <span class="hljs-keyword">table</span> `test`.`city` trx id <span class="hljs-number">78390</span> <span class="hljs-keyword">lock</span> mode S waiting<br>	<span class="hljs-type">Record</span> <span class="hljs-keyword">lock</span>, heap <span class="hljs-keyword">no</span> <span class="hljs-number">4</span> PHYSICAL <span class="hljs-type">RECORD</span>: n_fields <span class="hljs-number">2</span>; compact <span class="hljs-keyword">format</span>; <span class="hljs-keyword">info</span> bits <span class="hljs-number">0</span><br>	// 索引记录`<span class="hljs-number">777</span>a`，对应的<span class="hljs-keyword">asc</span>字符为`wz`<br>	 <span class="hljs-number">0</span>: len <span class="hljs-number">2</span>; hex <span class="hljs-number">777</span>a; <span class="hljs-keyword">asc</span> wz;;<br>	// 主键索引记录`<span class="hljs-number">00000003</span>`，对应id为<span class="hljs-number">3</span><br>	 <span class="hljs-number">1</span>: len <span class="hljs-number">4</span>; hex <span class="hljs-number">00000003</span>; <span class="hljs-keyword">asc</span>     ;;<br>	<br>	<span class="hljs-comment">---TRANSACTION 78385, ACTIVE 53 sec</span><br>	<span class="hljs-keyword">TABLE</span> <span class="hljs-keyword">LOCK</span> <span class="hljs-keyword">table</span> `test`.`city` trx id <span class="hljs-number">78385</span> <span class="hljs-keyword">lock</span> mode IX<br>	// 事务持有`city`表`uni_city_name`索引记录的X锁`lock_mode X locks rec but <span class="hljs-keyword">not</span> gap`<br>	<span class="hljs-type">RECORD</span> LOCKS space id <span class="hljs-number">238</span> page <span class="hljs-keyword">no</span> <span class="hljs-number">4</span> n bits <span class="hljs-number">72</span> <span class="hljs-keyword">index</span> uni_city_name <span class="hljs-keyword">of</span> <span class="hljs-keyword">table</span> `test`.`city` trx id <span class="hljs-number">78385</span> lock_mode X locks rec but <span class="hljs-keyword">not</span> gap<br>	<span class="hljs-type">Record</span> <span class="hljs-keyword">lock</span>, heap <span class="hljs-keyword">no</span> <span class="hljs-number">4</span> PHYSICAL <span class="hljs-type">RECORD</span>: n_fields <span class="hljs-number">2</span>; compact <span class="hljs-keyword">format</span>; <span class="hljs-keyword">info</span> bits <span class="hljs-number">0</span><br>	 <span class="hljs-number">0</span>: len <span class="hljs-number">2</span>; hex <span class="hljs-number">777</span>a; <span class="hljs-keyword">asc</span> wz;;<br>	 <span class="hljs-number">1</span>: len <span class="hljs-number">4</span>; hex <span class="hljs-number">00000003</span>; <span class="hljs-keyword">asc</span>     ;;<br></code></pre></td></tr></table></figure>
+<h4 id="常见死锁场景"><a href="#常见死锁场景" class="headerlink" title="常见死锁场景"></a>常见死锁场景</h4><h5 id="并发insert同一条数据且存在唯一性索引"><a href="#并发insert同一条数据且存在唯一性索引" class="headerlink" title="并发insert同一条数据且存在唯一性索引"></a>并发insert同一条数据且存在唯一性索引</h5></li>
 </ul>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">	mysql&gt; set global innodb_status_output=ON; // 可选。将监控输出到log_error输出中，15秒刷新一次</div><div class="line">	mysql&gt; set global innodb_status_output_locks=ON; // 输出的内容包含锁的详细信息</div><div class="line">	mysql&gt; show engine innodb status;</div><div class="line">	</div><div class="line">	// 在两个事务中执行：insert into city(city_name) values(&apos;wz&apos;);</div><div class="line">+-------+------------+---------------+--------------+-------------+</div><div class="line">| Table | Non_unique | Key_name      | Seq_in_index | Column_name |</div><div class="line">+-------+------------+---------------+--------------+-------------+</div><div class="line">| city  |          0 | PRIMARY       |            1 | id          |</div><div class="line">| city  |          0 | uni_city_name |            1 | city_name   |</div><div class="line">+-------+------------+---------------+--------------+-------------+</div><div class="line">	</div><div class="line">	 ---TRANSACTION 78390, ACTIVE 31 sec inserting</div><div class="line">	// 事务78390对`city`表持有IX</div><div class="line">	TABLE LOCK table `test`.`city` trx id 78390 lock mode IX</div><div class="line">	// `space id` 唯一确定一张表 `page no` 锁所在页</div><div class="line">	// 事务等待`city`表`uni_city_name`索引记录的S锁`lock mode S waiting`</div><div class="line">	RECORD LOCKS space id 238 page no 4 n bits 72 index uni_city_name of table `test`.`city` trx id 78390 lock mode S waiting</div><div class="line">	Record lock, heap no 4 PHYSICAL RECORD: n_fields 2; compact format; info bits 0</div><div class="line">	// 索引记录`777a`，对应的asc字符为`wz`</div><div class="line">	 0: len 2; hex 777a; asc wz;;</div><div class="line">	// 主键索引记录`00000003`，对应id为3</div><div class="line">	 1: len 4; hex 00000003; asc     ;;</div><div class="line">	</div><div class="line">	---TRANSACTION 78385, ACTIVE 53 sec</div><div class="line">	TABLE LOCK table `test`.`city` trx id 78385 lock mode IX</div><div class="line">	// 事务持有`city`表`uni_city_name`索引记录的X锁`lock_mode X locks rec but not gap`</div><div class="line">	RECORD LOCKS space id 238 page no 4 n bits 72 index uni_city_name of table `test`.`city` trx id 78385 lock_mode X locks rec but not gap</div><div class="line">	Record lock, heap no 4 PHYSICAL RECORD: n_fields 2; compact format; info bits 0</div><div class="line">	 0: len 2; hex 777a; asc wz;;</div><div class="line">	 1: len 4; hex 00000003; asc     ;;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="常见死锁场景"><a href="#常见死锁场景" class="headerlink" title="常见死锁场景"></a>常见死锁场景</h4><h5 id="并发insert同一条数据且存在唯一性索引"><a href="#并发insert同一条数据且存在唯一性索引" class="headerlink" title="并发insert同一条数据且存在唯一性索引"></a>并发insert同一条数据且存在唯一性索引</h5><ul>
+<ul>
 <li>参考<ul>
-<li><a href="http://hedengcheng.com/?p=771" target="_blank" rel="external">何登成: MySQL 加锁处理分析</a></li>
-<li><a href="http://www.fanyilun.me/2017/04/20/MySQL%E5%8A%A0%E9%94%81%E5%88%86%E6%9E%90/" target="_blank" rel="external">MySQL加锁分析</a></li>
-<li><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-locking.html" target="_blank" rel="external">MySQL 5.7 Reference Manual 14.5.1 InnoDB Locking</a></li>
+<li><a href="http://hedengcheng.com/?p=771">何登成: MySQL 加锁处理分析</a></li>
+<li><a href="http://www.fanyilun.me/2017/04/20/MySQL%E5%8A%A0%E9%94%81%E5%88%86%E6%9E%90/">MySQL加锁分析</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-locking.html">MySQL 5.7 Reference Manual 14.5.1 InnoDB Locking</a></li>
 </ul>
 </li>
 </ul>
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/mysql/" rel="tag"># mysql</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
+                
+              </div>
             
-              <a href="/2017/06/04/code_review/" rel="next" title="Code Review 约定">
-                <i class="fa fa-chevron-left"></i> Code Review 约定
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/03/01/nz_2019/" rel="prev" title="2019新西兰南岛自驾行程分享">
-                2019新西兰南岛自驾行程分享 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-  </div>
-
-
-        </div>
-        
-          
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/mysql/" class="print-no-link">#mysql</a>
+      
     </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MySQL锁机制分析</div>
+      <div>http://blog.yongbin.me/2018/10/08/mysql_lock/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Allen Xu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>October 8, 2018</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
   </div>
 
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
 
-      
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/03/01/nz_2019/" title="2019新西兰南岛自驾行程分享">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">2019新西兰南岛自驾行程分享</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/06/04/code_review/" title="Code Review 约定">
+                        <span class="hidden-mobile">Code Review 约定</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
 
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpg"
-               alt="Allen Xu" />
-          <p class="site-author-name" itemprop="name">Allen Xu</p>
-          <p class="site-description motion-element" itemprop="description"></p>
+            
+          </article>
         </div>
-        <nav class="site-state motion-element">
-        
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">33</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">18</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/allenxuyb" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="https://twitter.com/allenxuyb" target="_blank" title="Twitter">
-                  
-                    <i class="fa fa-fw fa-twitter"></i>
-                  
-                  Twitter
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              Friends
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://lanourain.github.io" title="Lanourain's blog" target="_blank">Lanourain's blog</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://czmonster.com" title="Day Day Up" target="_blank">Day Day Up</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://majiahui.github.io" title="Jiahui's Blog" target="_blank">Jiahui's Blog</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#两种读取方式"><span class="nav-number">1.</span> <span class="nav-text">两种读取方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#锁机制"><span class="nav-number">2.</span> <span class="nav-text">锁机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2PL：Two-Phase-Locking"><span class="nav-number">2.1.</span> <span class="nav-text">2PL：Two-Phase Locking</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#锁模式"><span class="nav-number">2.2.</span> <span class="nav-text">锁模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#锁类型"><span class="nav-number">2.3.</span> <span class="nav-text">锁类型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#加锁场景"><span class="nav-number">3.</span> <span class="nav-text">加锁场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他"><span class="nav-number">4.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见死锁场景"><span class="nav-number">5.</span> <span class="nav-text">常见死锁场景</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#并发insert同一条数据且存在唯一性索引"><span class="nav-number">5.1.</span> <span class="nav-text">并发insert同一条数据且存在唯一性索引</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
+      </div>
     </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
   </aside>
 
 
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Allen Xu</span>
-</div>
-
-
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
     </div>
   </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
+</div>
 
 
 
@@ -829,104 +565,211 @@ MVCC实现，无锁，高性能但数据不实时，事务中首次select时确�
 
 
   
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
 
 
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
-</script>
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
     }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
 </script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
 
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
   
 
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>

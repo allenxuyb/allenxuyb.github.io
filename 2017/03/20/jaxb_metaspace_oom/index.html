@@ -1,333 +1,261 @@
-<!doctype html>
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
 
 
 
-
-<html class="theme-next pisces" lang="en">
 <head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-  <meta name="google-site-verification" content="A3i-1Xpg82p4y5iO94S8DtTX0tt6DMqqy81g2VVEylw" />
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
+  <link rel="apple-touch-icon" sizes="76x76" href="/uploads/avatar.jpg">
+  <link rel="icon" href="/uploads/avatar.jpg">
   
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-    
-    
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Allen Xu">
+  <meta name="keywords" content="undefined">
   
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="jvm," />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
-
-
-
-
-
-
-<meta name="description" content="最近生产服务器从JDK 7升级到了JDK 8，运行一段时间后发现一台服务器出现了java.lang.OutOfMemoryError: Metaspace错误。这个角色的服务器在使用JDK 7时设置的MaxPermSize是256M，实际使用在100M左右，因此虽然JDK 8的Metaspace可以不设置最大值，但为了防止类似classloader leak的问题导致系统内存耗尽，我们还是设置了5">
+    <meta name="description" content="最近生产服务器从JDK 7升级到了JDK 8，运行一段时间后发现一台服务器出现了java.lang.OutOfMemoryError: Metaspace错误。这个角色的服务器在使用JDK 7时设置的MaxPermSize是256M，实际使用在100M左右，因此虽然JDK 8的Metaspace可以不设置最大值，但为了防止类似classloader leak的问题导致系统内存耗尽，我们还是设置了5">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JAXB导致的Metaspace OOM问题分析">
 <meta property="og:url" content="http://blog.yongbin.me/2017/03/20/jaxb_metaspace_oom/index.html">
 <meta property="og:site_name" content="El Psy Congroo">
 <meta property="og:description" content="最近生产服务器从JDK 7升级到了JDK 8，运行一段时间后发现一台服务器出现了java.lang.OutOfMemoryError: Metaspace错误。这个角色的服务器在使用JDK 7时设置的MaxPermSize是256M，实际使用在100M左右，因此虽然JDK 8的Metaspace可以不设置最大值，但为了防止类似classloader leak的问题导致系统内存耗尽，我们还是设置了5">
+<meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://i.imgur.com/QuOgmFV.jpg">
 <meta property="og:image" content="http://i.imgur.com/3A8Azwi.jpg">
-<meta property="og:updated_time" content="2017-03-20T08:37:39.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JAXB导致的Metaspace OOM问题分析">
-<meta name="twitter:description" content="最近生产服务器从JDK 7升级到了JDK 8，运行一段时间后发现一台服务器出现了java.lang.OutOfMemoryError: Metaspace错误。这个角色的服务器在使用JDK 7时设置的MaxPermSize是256M，实际使用在100M左右，因此虽然JDK 8的Metaspace可以不设置最大值，但为了防止类似classloader leak的问题导致系统内存耗尽，我们还是设置了5">
+<meta property="article:published_time" content="2017-03-20T04:00:00.000Z">
+<meta property="article:modified_time" content="2017-03-20T08:37:39.000Z">
+<meta property="article:author" content="Allen Xu">
+<meta property="article:tag" content="jvm">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://i.imgur.com/QuOgmFV.jpg">
+  
+  
+  
+  <title>JAXB导致的Metaspace OOM问题分析 - El Psy Congroo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"post"},
-    fancybox: true,
-    motion: false,
-    duoshuo: {
-      userId: '0',
-      author: 'Author'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"blog.yongbin.me","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":["home","tag"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
     }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://blog.yongbin.me/2017/03/20/jaxb_metaspace_oom/"/>
-
-
-
-
-
-  <title> JAXB导致的Metaspace OOM问题分析 | El Psy Congroo </title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="en">
-
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
   
 
 
-<!-- hexo-inject:begin --><!-- hexo-inject:end --><script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-90810901-1', 'auto');
-  ga('send', 'pageview');
-</script>
-
-
-
-
-
-
-
-
-
   
+<meta name="generator" content="Hexo 8.1.1"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+
+<body>
   
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
     
-  
 
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">El Psy Congroo</span>
-      <span class="logo-line-after"><i></i></span>
+<div class="header-inner" style="height: 25vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>El Psy Congroo</strong>
     </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
   </div>
-    
-      <p class="site-subtitle"></p>
-    
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            Home
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            Archives
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            Tags
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
 </nav>
 
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
   
 
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://blog.yongbin.me/2017/03/20/jaxb_metaspace_oom/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="Allen Xu">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/uploads/avatar.jpg">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="El Psy Congroo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="El Psy Congroo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                JAXB导致的Metaspace OOM问题分析
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-03-20T12:00:00+08:00">
-                2017-03-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/uploads/kaguya01.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
           
-
+            <span id="subtitle">JAXB导致的Metaspace OOM问题分析</span>
           
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
         </div>
-      </header>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2017-03-20 12:00" pubdate>
+          March 20, 2017 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k words
+        
+      </span>
     
 
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 mins
+        
+      </span>
+    
 
-    <div class="post-body" itemprop="articleBody">
+    
+    
+  </div>
+
+
+        
+      </div>
 
       
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
       
 
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
       
-        <p>最近生产服务器从JDK 7升级到了JDK 8，运行一段时间后发现一台服务器出现了<code>java.lang.OutOfMemoryError: Metaspace</code>错误。这个角色的服务器在使用JDK 7时设置的MaxPermSize是256M，实际使用在100M左右，因此虽然JDK 8的Metaspace可以不设置最大值，但为了防止类似classloader leak的问题导致系统内存耗尽，我们还是设置了512M的限制。由于代码没有变更过，因此怀疑是JDK 8的Metaspace回收机制有变化导致了OOM。<br><a id="more"></a></p>
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">JAXB导致的Metaspace OOM问题分析</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>最近生产服务器从JDK 7升级到了JDK 8，运行一段时间后发现一台服务器出现了<code>java.lang.OutOfMemoryError: Metaspace</code>错误。这个角色的服务器在使用JDK 7时设置的MaxPermSize是256M，实际使用在100M左右，因此虽然JDK 8的Metaspace可以不设置最大值，但为了防止类似classloader leak的问题导致系统内存耗尽，我们还是设置了512M的限制。由于代码没有变更过，因此怀疑是JDK 8的Metaspace回收机制有变化导致了OOM。<br><span id="more"></span></p>
 <h3 id="故障分析"><a href="#故障分析" class="headerlink" title="故障分析"></a>故障分析</h3><h4 id="分析GC日志"><a href="#分析GC日志" class="headerlink" title="分析GC日志"></a>分析GC日志</h4><p>出现OOM异常时，系统一直在进行<code>Full GC (Metadata GC Threshold)</code>，但Metaspace空间始终无法回收</p>
 <h4 id="MAT-Eclipse-Memory-Analyzer-分析Heap-Dump"><a href="#MAT-Eclipse-Memory-Analyzer-分析Heap-Dump" class="headerlink" title="MAT(Eclipse Memory Analyzer)分析Heap Dump"></a>MAT(Eclipse Memory Analyzer)分析Heap Dump</h4><p>MAT分析Metaspace的手段比较有限，从Class Loader Explorer看起来classloader数量，defined class数量都在合理范围内</p>
 <h4 id="分析运行时数据"><a href="#分析运行时数据" class="headerlink" title="分析运行时数据"></a>分析运行时数据</h4><p>jcmd提供了多种分析Metaspace的手段，包括</p>
@@ -335,345 +263,354 @@
 <li><code>VM.native_memory</code>，通过<code>-XX:NativeMemoryTracking=summary</code>启用，分类汇总Native Memory的使用量</li>
 <li><code>GC.class_stats</code>，通过<code>-XX:+UnlockDiagnosticVMOptions</code>启用，打印所有class信息</li>
 </ul>
-<p>修改JVM启动参数运行一段时间后，通过VM.native_memory发现，大部分内存占用都在Class上<br>通过GC.class_stats可以看到class数量在不停增长，简单统计后，发现是同一个类<code>com.foo.Bar$JaxbAccessorF_baz</code>的数量在不停增长，从class_stats里可以看出这个类的父类是<code>com.sun.xml.bind.v2.runtime.reflect.Accessor</code>，怀疑是JAXB的bug，尝试<a href="https://www.google.com/search?q=com.sun.xml.bind.v2.runtime.reflect.Accessor+metaspace+leak" target="_blank" rel="external">google</a>下，发现的确有相关的jira，<a href="https://java.net/jira/si/jira.issueviews:issue-html/JAXB-564/JAXB-564.html" target="_blank" rel="external">JAXB-564 Reflection Injector for Optimisation Loosing Previously Defined Classes)</a>，StackOverflow上也有人反馈类似问题<a href="http://stackoverflow.com/questions/33255578/old-jaxb-and-jdk8-metaspace-outofmemory-issue" target="_blank" rel="external">Old JaxB and JDK8 Metaspace OutOfMemory Issue</a></p>
+<p>修改JVM启动参数运行一段时间后，通过VM.native_memory发现，大部分内存占用都在Class上<br>通过GC.class_stats可以看到class数量在不停增长，简单统计后，发现是同一个类<code>com.foo.Bar$JaxbAccessorF_baz</code>的数量在不停增长，从class_stats里可以看出这个类的父类是<code>com.sun.xml.bind.v2.runtime.reflect.Accessor</code>，怀疑是JAXB的bug，尝试<a href="https://www.google.com/search?q=com.sun.xml.bind.v2.runtime.reflect.Accessor+metaspace+leak">google</a>下，发现的确有相关的jira，<a href="https://java.net/jira/si/jira.issueviews:issue-html/JAXB-564/JAXB-564.html">JAXB-564 Reflection Injector for Optimisation Loosing Previously Defined Classes)</a>，StackOverflow上也有人反馈类似问题<a href="http://stackoverflow.com/questions/33255578/old-jaxb-and-jdk8-metaspace-outofmemory-issue">Old JaxB and JDK8 Metaspace OutOfMemory Issue</a></p>
 <h3 id="JAXB-Bug分析"><a href="#JAXB-Bug分析" class="headerlink" title="JAXB Bug分析"></a>JAXB Bug分析</h3><p>JAXB为了避免每次通过反射去访问对象属性或者方法，会为属性和方法动态生成Accessor类，并通过Injector对象进行管理</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">private static final Map&lt;ClassLoader,WeakReference&lt;Injector&gt;&gt; injectors =</div><div class="line">        Collections.synchronizedMap(new WeakHashMap&lt;ClassLoader,WeakReference&lt;Injector&gt;&gt;());</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs swift"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Map</span>&lt;<span class="hljs-type">ClassLoader</span>,<span class="hljs-type">WeakReference</span>&lt;<span class="hljs-type">Injector</span>&gt;&gt; injectors <span class="hljs-operator">=</span><br>        <span class="hljs-type">Collections</span>.synchronizedMap(new <span class="hljs-type">WeakHashMap</span>&lt;<span class="hljs-type">ClassLoader</span>,<span class="hljs-type">WeakReference</span>&lt;<span class="hljs-type">Injector</span>&gt;&gt;());<br></code></pre></td></tr></table></figure>
 <p>Injector是通过WeakHashMap进行缓存的，GC以后，Injector就被回收了，因此后续访问时就无法获取到生成过的Accessor类，于是JAXB会重新创建一个Injector再次动态生成Accessor类，然而classloader中这个对应的Accessor类已经存在，因此会报<code>LinkageError</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">java.lang.LinkageError: loader (instance of  sun/misc/Launcher$AppClassLoader): attempted  duplicate class definition for name: &quot;com/foo/bar/Baz$JaxbAccessorF_somefield&quot;</div></pre></td></tr></table></figure>
-<p>修复方式也比较简单，即生成Accessor类前先去classloader里查找下是否已经生成过，具体可以看一下<a href="http://grepcode.com/file_/repo1.maven.org/maven2/com.sun.xml.bind/jaxb-impl/2.1.13/com/sun/xml/bind/v2/runtime/reflect/opt/Injector.java/?v=diff&amp;id2=2.1.9" target="_blank" rel="external">Patch代码</a></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">java.lang.LinkageError: loader (instance of  sun/misc/Launcher$AppClassLoader): attempted  duplicate <span class="hljs-keyword">class</span> <span class="hljs-symbol">definition</span> <span class="hljs-symbol">for</span> <span class="hljs-symbol">name: </span>&quot;<span class="hljs-symbol">com</span>/<span class="hljs-symbol">foo</span>/<span class="hljs-symbol">bar</span>/<span class="hljs-symbol">Baz</span>$<span class="hljs-symbol">JaxbAccessorF_somefield</span>&quot;<br></code></pre></td></tr></table></figure>
+<p>修复方式也比较简单，即生成Accessor类前先去classloader里查找下是否已经生成过，具体可以看一下<a href="http://grepcode.com/file_/repo1.maven.org/maven2/com.sun.xml.bind/jaxb-impl/2.1.13/com/sun/xml/bind/v2/runtime/reflect/opt/Injector.java/?v=diff&amp;id2=2.1.9">Patch代码</a></p>
 <h3 id="故障重现"><a href="#故障重现" class="headerlink" title="故障重现"></a>故障重现</h3><p>为了验证是否是重复定义类造成的OOM，我们尝试下重现故障，重复加载当前package下<code>Foo</code>这个类，使用默认的并发收集器，并限制Permgen/Metaspace为20MB，测试代码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">   Method defineClass = ClassLoader.class.getDeclaredMethod(</div><div class="line">           <span class="string">"defineClass"</span>, String.class, <span class="keyword">byte</span>[].class, Integer.TYPE, Integer.TYPE);</div><div class="line">   defineClass.setAccessible(<span class="keyword">true</span>);</div><div class="line"></div><div class="line">   ClassLoader cl = ClassLoader.getSystemClassLoader();</div><div class="line">   String classAsPath = Foo.class.getName().replace(<span class="string">'.'</span>, <span class="string">'/'</span>) + <span class="string">".class"</span>;</div><div class="line">   InputStream stream = cl.getResourceAsStream(classAsPath);</div><div class="line">   <span class="keyword">byte</span>[] image = IOUtils.toByteArray(stream);</div><div class="line">   <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</div><div class="line">       <span class="keyword">try</span> &#123;</div><div class="line">           Class c = (Class) defineClass.invoke(cl, <span class="string">"com.test.Foo"</span>, image, <span class="number">0</span>, image.length);</div><div class="line">       &#125; <span class="keyword">catch</span> (IllegalAccessException | InvocationTargetException e) &#123;</div><div class="line">           <span class="comment">// e.printStackTrace();</span></div><div class="line">       &#125;</div><div class="line">       TimeUnit.MILLISECONDS.sleep(<span class="number">1L</span>);</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h4 id="JDK-7-运行结果"><a href="#JDK-7-运行结果" class="headerlink" title="JDK 7 运行结果"></a>JDK 7 运行结果</h4><p><img src="http://i.imgur.com/QuOgmFV.jpg" alt=""></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">23.007: [Full GC [PSYoungGen: 2560K-&gt;0K(76800K)] [ParOldGen: 8K-&gt;961K(67072K)] 2568K-&gt;961K(143872K) [PSPermGen: 20479K-&gt;4116K(20480K)], 0.0113200 secs] [Times: user=0.04 sys=0.00, real=0.01 secs]</div></pre></td></tr></table></figure>
-<h4 id="JDK-8-运行结果"><a href="#JDK-8-运行结果" class="headerlink" title="JDK 8 运行结果"></a>JDK 8 运行结果</h4><p><img src="http://i.imgur.com/3A8Azwi.jpg" alt=""></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">84.960: [Full GC (Metadata GC Threshold) [PSYoungGen: 0K-&gt;0K(1397248K)] [ParOldGen: 2876K-&gt;2876K(2796544K)] 2876K-&gt;2876K(4193792K), [Metaspace: 19588K-&gt;19588K(1060864K)], 0.0075317 secs] [Times: user=0.03 sys=0.00, real=0.01 secs]</div></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Class部分committed不断上涨</span></div><div class="line">$ jcmd 62033 VM.native_memory</div><div class="line">62033:</div><div class="line"></div><div class="line">Native Memory Tracking:</div><div class="line"></div><div class="line">Total: reserved=5710329KB, committed=365629KB</div><div class="line">-                 Java Heap (reserved=4194304KB, committed=154624KB)</div><div class="line">                            (mmap: reserved=4194304KB, committed=154624KB)</div><div class="line"></div><div class="line">-                     Class (reserved=1068183KB, committed=23447KB)</div><div class="line">                            (classes <span class="comment">#10578)</span></div><div class="line">                            (malloc=9367KB <span class="comment">#381)</span></div><div class="line">                            (mmap: reserved=1058816KB, committed=14080KB)</div></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># com.test.Foo数量不断增加</span></div><div class="line">$ jcmd 62033 GC.class_stats | awk <span class="string">'&#123;print $13&#125;'</span> | sort | uniq -c | sort -nrk1 | head</div><div class="line">  10242 com.test.Foo</div><div class="line">      3</div><div class="line">      2 ClassName</div><div class="line">      1 sun.util.resources.en.TimeZoneNames_en</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>   <span class="hljs-type">Method</span> <span class="hljs-variable">defineClass</span> <span class="hljs-operator">=</span> ClassLoader.class.getDeclaredMethod(<br>           <span class="hljs-string">&quot;defineClass&quot;</span>, String.class, <span class="hljs-type">byte</span>[].class, Integer.TYPE, Integer.TYPE);<br>   defineClass.setAccessible(<span class="hljs-literal">true</span>);<br><br>   <span class="hljs-type">ClassLoader</span> <span class="hljs-variable">cl</span> <span class="hljs-operator">=</span> ClassLoader.getSystemClassLoader();<br>   <span class="hljs-type">String</span> <span class="hljs-variable">classAsPath</span> <span class="hljs-operator">=</span> Foo.class.getName().replace(<span class="hljs-string">&#x27;.&#x27;</span>, <span class="hljs-string">&#x27;/&#x27;</span>) + <span class="hljs-string">&quot;.class&quot;</span>;<br>   <span class="hljs-type">InputStream</span> <span class="hljs-variable">stream</span> <span class="hljs-operator">=</span> cl.getResourceAsStream(classAsPath);<br>   <span class="hljs-type">byte</span>[] image = IOUtils.toByteArray(stream);<br>   <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) &#123;<br>       <span class="hljs-keyword">try</span> &#123;<br>           <span class="hljs-type">Class</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> (Class) defineClass.invoke(cl, <span class="hljs-string">&quot;com.test.Foo&quot;</span>, image, <span class="hljs-number">0</span>, image.length);<br>       &#125; <span class="hljs-keyword">catch</span> (IllegalAccessException | InvocationTargetException e) &#123;<br>           <span class="hljs-comment">// e.printStackTrace();</span><br>       &#125;<br>       TimeUnit.MILLISECONDS.sleep(<span class="hljs-number">1L</span>);<br>   &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="JDK-7-运行结果"><a href="#JDK-7-运行结果" class="headerlink" title="JDK 7 运行结果"></a>JDK 7 运行结果</h4><p><img src="http://i.imgur.com/QuOgmFV.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mathematica"><span class="hljs-number">23.007</span><span class="hljs-operator">:</span> <span class="hljs-punctuation">[</span><span class="hljs-built_in">Full</span> <span class="hljs-variable">GC</span> <span class="hljs-punctuation">[</span><span class="hljs-variable">PSYoungGen</span><span class="hljs-operator">:</span> <span class="hljs-number">2560</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">0</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">76800</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span><span class="hljs-variable">ParOldGen</span><span class="hljs-operator">:</span> <span class="hljs-number">8</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">961</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">67072</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">]</span> <span class="hljs-number">2568</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">961</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">143872</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span> <span class="hljs-punctuation">[</span><span class="hljs-variable">PSPermGen</span><span class="hljs-operator">:</span> <span class="hljs-number">20479</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">4116</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">20480</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">]</span><span class="hljs-operator">,</span> <span class="hljs-number">0.0113200</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span><span class="hljs-built_in">Times</span><span class="hljs-operator">:</span> <span class="hljs-variable">user</span><span class="hljs-operator">=</span><span class="hljs-number">0.04</span> <span class="hljs-variable">sys</span><span class="hljs-operator">=</span><span class="hljs-number">0.00</span><span class="hljs-operator">,</span> <span class="hljs-variable">real</span><span class="hljs-operator">=</span><span class="hljs-number">0.01</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span> <br></code></pre></td></tr></table></figure>
+<h4 id="JDK-8-运行结果"><a href="#JDK-8-运行结果" class="headerlink" title="JDK 8 运行结果"></a>JDK 8 运行结果</h4><p><img src="http://i.imgur.com/3A8Azwi.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mathematica"><span class="hljs-number">84.960</span><span class="hljs-operator">:</span> <span class="hljs-punctuation">[</span><span class="hljs-built_in">Full</span> <span class="hljs-variable">GC</span> <span class="hljs-punctuation">(</span><span class="hljs-variable">Metadata</span> <span class="hljs-variable">GC</span> <span class="hljs-built_in">Threshold</span><span class="hljs-punctuation">)</span> <span class="hljs-punctuation">[</span><span class="hljs-variable">PSYoungGen</span><span class="hljs-operator">:</span> <span class="hljs-number">0</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">0</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">1397248</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span><span class="hljs-variable">ParOldGen</span><span class="hljs-operator">:</span> <span class="hljs-number">2876</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">2876</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">2796544</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">]</span> <span class="hljs-number">2876</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">2876</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">4193792</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span> <span class="hljs-punctuation">[</span><span class="hljs-variable">Metaspace</span><span class="hljs-operator">:</span> <span class="hljs-number">19588</span><span class="hljs-built_in">K</span><span class="hljs-operator">-&gt;</span><span class="hljs-number">19588</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">(</span><span class="hljs-number">1060864</span><span class="hljs-built_in">K</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">]</span><span class="hljs-operator">,</span> <span class="hljs-number">0.0075317</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span> <span class="hljs-punctuation">[</span><span class="hljs-built_in">Times</span><span class="hljs-operator">:</span> <span class="hljs-variable">user</span><span class="hljs-operator">=</span><span class="hljs-number">0.03</span> <span class="hljs-variable">sys</span><span class="hljs-operator">=</span><span class="hljs-number">0.00</span><span class="hljs-operator">,</span> <span class="hljs-variable">real</span><span class="hljs-operator">=</span><span class="hljs-number">0.01</span> <span class="hljs-variable">secs</span><span class="hljs-punctuation">]</span> <br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># Class部分committed不断上涨</span><br>$ jcmd 62033 VM.native_memory<br>62033:<br><br>Native Memory Tracking:<br><br>Total: reserved=5710329KB, committed=365629KB<br>-                 Java Heap (reserved=4194304KB, committed=154624KB)<br>                            (mmap: reserved=4194304KB, committed=154624KB)<br><br>-                     Class (reserved=1068183KB, committed=23447KB)<br>                            (classes <span class="hljs-comment">#10578)</span><br>                            (malloc=9367KB <span class="hljs-comment">#381)</span><br>                            (mmap: reserved=1058816KB, committed=14080KB)<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># com.test.Foo数量不断增加</span><br>$ jcmd 62033 GC.class_stats | awk <span class="hljs-string">&#x27;&#123;print $13&#125;&#x27;</span> | <span class="hljs-built_in">sort</span> | <span class="hljs-built_in">uniq</span> -c | <span class="hljs-built_in">sort</span> -nrk1 | <span class="hljs-built_in">head</span><br>  10242 com.test.Foo<br>      3<br>      2 ClassName<br>      1 sun.util.resources.en.TimeZoneNames_en<br></code></pre></td></tr></table></figure>
 <h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>从重现过程中可以看出，虽然类定义失败了，但过程中产生的数据似乎并没有被清理。在JDK 7中，对Permgen中对象的回收会进行存活性检查，因此重复定义时产生的数据会在GC时被清理。然而在JDK 8中，Metaspace的回收只依赖classloader的存活，当classloader还活着时，它所产生的对象无论存活与否都不会被回收，由此引发了OOM。</p>
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/jvm/" rel="tag"># jvm</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
+                
+              </div>
             
-              <a href="/2017/03/14/homebridge/" rel="next" title="小米网关接入Homekit">
-                <i class="fa fa-chevron-left"></i> 小米网关接入Homekit
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/03/26/rwp_hangzhou/" rel="prev" title="ORACLE RWP性能之旅杭州站活动记录">
-                ORACLE RWP性能之旅杭州站活动记录 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-  </div>
-
-
-        </div>
-        
-          
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/jvm/" class="print-no-link">#jvm</a>
+      
     </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>JAXB导致的Metaspace OOM问题分析</div>
+      <div>http://blog.yongbin.me/2017/03/20/jaxb_metaspace_oom/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Allen Xu</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>March 20, 2017</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
   </div>
 
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
 
-      
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2017/03/26/rwp_hangzhou/" title="ORACLE RWP性能之旅杭州站活动记录">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ORACLE RWP性能之旅杭州站活动记录</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2017/03/14/homebridge/" title="小米网关接入Homekit">
+                        <span class="hidden-mobile">小米网关接入Homekit</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
 
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/uploads/avatar.jpg"
-               alt="Allen Xu" />
-          <p class="site-author-name" itemprop="name">Allen Xu</p>
-          <p class="site-description motion-element" itemprop="description"></p>
+            
+          </article>
         </div>
-        <nav class="site-state motion-element">
-        
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">33</span>
-                <span class="site-state-item-name">posts</span>
-              </a>
-            </div>
-          
-
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">18</span>
-                <span class="site-state-item-name">tags</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/allenxuyb" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-              <span class="links-of-author-item">
-                <a href="https://twitter.com/allenxuyb" target="_blank" title="Twitter">
-                  
-                    <i class="fa fa-fw fa-twitter"></i>
-                  
-                  Twitter
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              Friends
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://lanourain.github.io" title="Lanourain's blog" target="_blank">Lanourain's blog</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://czmonster.com" title="Day Day Up" target="_blank">Day Day Up</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://majiahui.github.io" title="Jiahui's Blog" target="_blank">Jiahui's Blog</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-        
-
-
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#故障分析"><span class="nav-number">1.</span> <span class="nav-text">故障分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分析GC日志"><span class="nav-number">1.1.</span> <span class="nav-text">分析GC日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MAT-Eclipse-Memory-Analyzer-分析Heap-Dump"><span class="nav-number">1.2.</span> <span class="nav-text">MAT(Eclipse Memory Analyzer)分析Heap Dump</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析运行时数据"><span class="nav-number">1.3.</span> <span class="nav-text">分析运行时数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JAXB-Bug分析"><span class="nav-number">2.</span> <span class="nav-text">JAXB Bug分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#故障重现"><span class="nav-number">3.</span> <span class="nav-text">故障重现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK-7-运行结果"><span class="nav-number">3.1.</span> <span class="nav-text">JDK 7 运行结果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK-8-运行结果"><span class="nav-number">3.2.</span> <span class="nav-text">JDK 8 运行结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结论"><span class="nav-number">4.</span> <span class="nav-text">结论</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
+      </div>
     </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
   </aside>
 
 
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Allen Xu</span>
-</div>
-
-
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
-  </a>
-</div>
-
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
     </div>
   </div>
+</div>
+
+
+
+
 
   
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
 </script>
 
 
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
 
 
 
 
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
   
 
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+  MathJax.Hub.Config({{ JSON.stringify(config) }});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -685,44 +622,9 @@
   });
 </script>
 
-<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" src="{{ src }}">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
-
-
-
-  
-
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-
 </body>
 </html>
